@@ -10,12 +10,12 @@ class NewsController extends \core\Controller
     }
     public function viewAction()
     {
-       return $this-> render();
+        return $this->render();
     }
 
     public function indexAction()
     {
-        return $this-> render(null, [
+        return $this->render(null, [
             'title' => 'Список новин',
         ]);
     }

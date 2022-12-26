@@ -2,6 +2,8 @@
 
 namespace core;
 
+use controllers\MainController;
+
 class Core
 {
     private static $instance = null;
@@ -25,13 +27,13 @@ class Core
     public function Run()
     {
         // if (!empty($_GET['route']))
-            $route = $_GET['route']??null;
+        $route = $_GET['route'] ?? null;
         // else
-            // $route = 'main/index';
+        // $route = 'main/index';
         $routeParts = explode('/', $route);
         $moduleName = array_shift($routeParts);
         if (empty($moduleName))
-             $moduleName = 'main';
+            $moduleName = 'main';
         $actionName = array_shift($routeParts);
         if (empty($actionName))
             $actionName = 'index';
@@ -43,7 +45,7 @@ class Core
         if (class_exists($controllerName)) {
             $controller = new $controllerName();
             if (method_exists($controller, $controllerActionName))
-               $this->app['actionResult'] = $controller->$controllerActionName();
+                $this->app['actionResult'] = $controller->$controllerActionName();
             else
                 $statusCode = 404;
         } else
@@ -51,7 +53,7 @@ class Core
 
         $statusCodeType = intval($statusCode / 100);
         if ($statusCodeType == 4 || $statusCodeType == 5) {
-            $mainController = new \controllers\MainController();
+            $mainController = new MainController();
             $mainController->errorAction($statusCode);
         }
     }

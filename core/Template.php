@@ -17,7 +17,7 @@ class Template
         $this->params[$name] = $value;
     }
 
-     public function setParams($params)
+    public function setParams($params)
     {
         foreach ($params as $name => $value)
             $this->setParam($name, $value);
