@@ -46,6 +46,31 @@ class DB
         $wherePartString = "WHERE " . implode(' AND ', $whereParts);
 
         $res = $this->pdo->prepare("UPDATE $tableName SET $setPartString $wherePartString");
-        return $res->execute($paramsArray);
+        $res->execute($paramsArray);
+    }
+
+    public function insert($tableName, $newRowArray)
+    {
+        $fieldsArray = array_keys($newRowArray);
+        $fieldListString = implode(', ', $fieldsArray);
+        $values = array_values($newRowArray);
+        $paramsArray = [];
+        foreach ($newRowArray as $key => $value) {
+            $paramsArray[] = ':' . $key;
+        }
+        $valuesListString = implode(', ', $paramsArray);
+        $res = $this->pdo->prepare("INSERT INTO $tableName ($fieldListString) VALUES($valuesListString)");
+        $res->execute($newRowArray);
+    }
+
+    public function delete($tableName, $conditionArray){
+        $whereParts = [];
+        foreach ($conditionArray as $key => $value) {
+            $whereParts[] = "$key = :$key";
+            $paramsArray[$key] = $value;
+        }
+        $wherePartString = "WHERE " . implode(' AND ', $whereParts);
+        $res = $this->pdo->prepare("DELETE FROM $tableName $wherePartString");
+        $res->execute($conditionArray);
     }
 }

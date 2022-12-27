@@ -8,6 +8,7 @@ class Core
 {
     private static $instance = null;
     public $app;
+    public $db;
     private function __construct()
     {
         $this->app = [];
@@ -22,6 +23,7 @@ class Core
 
     public function Initialize()
     {
+        $this->db = new DB(DATABASE_HOSTNAME, DATABASE_LOGIN, DATABASE_PASSWORD, DATABASE_NAME);
     }
 
     public function Run()
@@ -30,7 +32,7 @@ class Core
         $route = $_GET['route'] ?? null;
         // else
         // $route = 'main/index';
-        $routeParts = explode('/', $route);
+        $routeParts = explode('/', $route ?? '');
         $moduleName = array_shift($routeParts);
         if (empty($moduleName))
             $moduleName = 'main';
