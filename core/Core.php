@@ -8,10 +8,14 @@ class Core
 {
     private static $instance = null;
     public $app;
-    public $db;
+    public $pageParams;
+    public DB $db;
+    public $requestMethod;
     private function __construct()
     {
+        global $pageParams;
         $this->app = [];
+        $this->pageParams = $pageParams;
     }
     public static function getInstance()
     {
@@ -23,15 +27,14 @@ class Core
 
     public function Initialize()
     {
+        session_start();
         $this->db = new DB(DATABASE_HOSTNAME, DATABASE_LOGIN, DATABASE_PASSWORD, DATABASE_NAME);
+        $this->requestMethod = $_SERVER['REQUEST_METHOD'];
     }
 
     public function Run()
     {
-        // if (!empty($_GET['route']))
         $route = $_GET['route'] ?? null;
-        // else
-        // $route = 'main/index';
         $routeParts = explode('/', $route ?? '');
         $moduleName = array_shift($routeParts);
         if (empty($moduleName))
@@ -56,7 +59,7 @@ class Core
         $statusCodeType = intval($statusCode / 100);
         if ($statusCodeType == 4 || $statusCodeType == 5) {
             $mainController = new MainController();
-            $mainController->errorAction($statusCode);
+            $this->app['actionResult'] = $mainController->errorAction($statusCode);
         }
     }
 
@@ -64,7 +67,8 @@ class Core
     {
         $pathToLayout = 'themes/light/layout.php';
         $tpl = new Template($pathToLayout);
-        $tpl->setParam('Content', $this->app['actionResult']);
+        $tpl->setParam('content', $this->app['actionResult']);
+        $tpl->setParams($this->pageParams);
         $html = $tpl->getHTML();
         echo $html;
     }

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Час створення: Гру 27 2022 р., 13:12
+-- Час створення: Гру 28 2022 р., 17:27
 -- Версія сервера: 8.0.30
 -- Версія PHP: 8.1.9
 
@@ -106,7 +106,15 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id`, `login`, `password`, `lastname`, `firstname`) VALUES
-(1, 'admin', 'admin', 'Mankivskyi', 'Vladyslav');
+(1, 'mankivskiy.vlsd@gmail.com', 'admin', 'Mankivskyi', 'Vladyslav'),
+(8, 'mankivskyi.vlad@gmail.com', 'test', 'test', ''),
+(9, 'mankivskyi@gmail.com', 'test', 'test', 'test'),
+(10, 'mankivskyi3@gmail.com', 'test', 'test', 'test'),
+(11, 'mankivskyi4@gmail.com', 'test', 'test', 'test'),
+(12, 'mankivskyi5@gmail.com', 'test', 'test', 'test'),
+(13, 'mankivskyi6@gmail.com', 'test', 'test', 'test'),
+(14, 'mankivskyi7@gmail.com', 'test', 'test', 'test'),
+(15, 'mankivskyi8@gmail.com', 'test', 'test', 'test');
 
 --
 -- Індекси збережених таблиць
@@ -164,7 +172,7 @@ ALTER TABLE `product`
 -- AUTO_INCREMENT для таблиці `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- Обмеження зовнішнього ключа збережених таблиць

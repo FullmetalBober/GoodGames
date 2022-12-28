@@ -2,6 +2,9 @@
 
 namespace core;
 
+/**
+ * Class for working with database
+ */
 class DB
 {
     protected $pdo;
@@ -10,6 +13,13 @@ class DB
         $this->pdo = new \PDO("mysql:host=$hostname;dbname=$database", $login, $password);
     }
 
+    /**
+     * select data from database
+     * @param  string $tableName - table name
+     * @param  string|array $fieldList - list of fields to select
+     * @param  array|null $conditionArray - array of conditions
+     * @return array|false
+     */
     public function select($tableName, $fieldList = "*", $conditionArray = null)
     {
         if (is_string($fieldList))
@@ -63,7 +73,8 @@ class DB
         $res->execute($newRowArray);
     }
 
-    public function delete($tableName, $conditionArray){
+    public function delete($tableName, $conditionArray)
+    {
         $whereParts = [];
         foreach ($conditionArray as $key => $value) {
             $whereParts[] = "$key = :$key";
