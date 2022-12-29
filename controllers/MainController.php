@@ -2,21 +2,20 @@
 
 namespace controllers;
 
-class MainController
+use core\Controller;
+
+class MainController extends Controller
 {
     public function indexAction()
     {
-        echo 'mainIndexAction';
+        return $this->render();
     }
 
     public function errorAction($code)
     {
         switch ($code) {
             case 404:
-                echo 'Error 404';
-                break;
-            default:
-                echo 'error';
+                return $this->render('views/main/error.php');
         }
     }
 }

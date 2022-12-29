@@ -85,6 +85,12 @@ class User
 
     public static function getCurrentAuthentificatedUser()
     {
-        return $_SESSION['user'];
+        return $_SESSION['user'] ?? null;
+    }
+
+    public static function isAdmin()
+    {
+        $user = self::getCurrentAuthentificatedUser();
+        return $user['access_level'] ?? null == 10;
     }
 }
