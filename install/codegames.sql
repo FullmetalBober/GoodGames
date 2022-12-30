@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Час створення: Гру 29 2022 р., 15:49
+-- Час створення: Гру 30 2022 р., 16:16
 -- Версія сервера: 8.0.30
 -- Версія PHP: 8.1.9
 
@@ -38,13 +38,13 @@ CREATE TABLE `category` (
 --
 
 INSERT INTO `category` (`id`, `name`, `photo`) VALUES
-(1, 'Ноутбуки', ''),
-(2, 'Планшети', ''),
+(1, 'Ноутбуки', '63aedd16eca10.jpg'),
+(2, 'Планшети', '63aedd3c5d78a.jpg'),
 (3, 'Телефони', ''),
 (4, 'Генеретори', ''),
 (5, 'Павербанки', ''),
 (6, 'test', ''),
-(7, 'qwe', '123456789.jpg');
+(8, 'rt', '63aeb08283f71.jpg');
 
 -- --------------------------------------------------------
 
@@ -55,8 +55,7 @@ INSERT INTO `category` (`id`, `name`, `photo`) VALUES
 CREATE TABLE `product` (
   `id` int NOT NULL COMMENT 'ID',
   `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Назва товару',
-  `producer_id` int NOT NULL COMMENT 'Виробник',
-  `category_id` int NOT NULL COMMENT 'Категорія',
+  `category_id` int DEFAULT NULL COMMENT 'Категорія',
   `price` double NOT NULL COMMENT 'Ціна',
   `count` int NOT NULL COMMENT 'Кількість',
   `short_description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT 'Короткий опис товару',
@@ -68,9 +67,9 @@ CREATE TABLE `product` (
 -- Дамп даних таблиці `product`
 --
 
-INSERT INTO `product` (`id`, `name`, `producer_id`, `category_id`, `price`, `count`, `short_description`, `description`, `visible`) VALUES
-(1, 'Ноутбук Lenovo Vostro 15 3500', 1, 1, 25000, 12, 'Тут буде короткий опис ноутбуку', '', 1),
-(2, 'Ноутбук Lenovo Vostro 15 3600', 1, 1, 27500, 11, 'Тут буде короткий опис ноутбуку', '', 1);
+INSERT INTO `product` (`id`, `name`, `category_id`, `price`, `count`, `short_description`, `description`, `visible`) VALUES
+(1, 'Ноутбук Lenovo Vostro 15 3500', 1, 25000, 12, 'Тут буде короткий опис ноутбуку', '', 1),
+(2, 'Ноутбук Lenovo Vostro 15 3600', 1, 27500, 11, 'Тут буде короткий опис ноутбуку', '', 1);
 
 -- --------------------------------------------------------
 
@@ -92,16 +91,18 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id`, `login`, `password`, `lastname`, `firstname`, `access_level`) VALUES
-(1, 'mankivskiy.vlsd@gmail.com', 'admin', 'Mankivskyi', 'Vladyslav', 10),
-(8, 'mankivskyi.vlad@gmail.com', 'test', 'test', '', 1),
-(9, 'mankivskyi@gmail.com', 'test', 'test', 'test', 1),
-(10, 'mankivskyi3@gmail.com', 'test', 'test', 'test', 1),
-(11, 'mankivskyi4@gmail.com', 'test', 'test', 'test', 1),
-(12, 'mankivskyi5@gmail.com', 'test', 'test', 'test', 1),
-(13, 'mankivskyi6@gmail.com', 'test', 'test', 'test', 1),
-(14, 'mankivskyi7@gmail.com', 'test', 'test', 'test', 1),
-(15, 'mankivskyi8@gmail.com', 'test', 'test', 'test', 1),
-(16, 'test@gmail.com', 'test', 'test', 'test', 1);
+(1, 'mankivskiy.vlsd@gmail.com', '21232f297a57a5a743894a0e4a801fc3', 'Mankivskyi', 'Vladyslav', 10),
+(8, 'mankivskyi.vlad@gmail.com', '098f6bcd4621d373cade4e832627b4f6', 'test', '', 1),
+(9, 'mankivskyi@gmail.com', '098f6bcd4621d373cade4e832627b4f6', 'test', 'test', 1),
+(10, 'mankivskyi3@gmail.com', '098f6bcd4621d373cade4e832627b4f6', 'test', 'test', 1),
+(11, 'mankivskyi4@gmail.com', '098f6bcd4621d373cade4e832627b4f6', 'test', 'test', 1),
+(12, 'mankivskyi5@gmail.com', '098f6bcd4621d373cade4e832627b4f6', 'test', 'test', 1),
+(13, 'mankivskyi6@gmail.com', '098f6bcd4621d373cade4e832627b4f6', 'test', 'test', 1),
+(14, 'mankivskyi7@gmail.com', '098f6bcd4621d373cade4e832627b4f6', 'test', 'test', 1),
+(15, 'mankivskyi8@gmail.com', '098f6bcd4621d373cade4e832627b4f6', 'test', 'test', 1),
+(16, 'test@gmail.com', '098f6bcd4621d373cade4e832627b4f6', 'test', 'test', 1),
+(17, 'test1@gmail.com', '098f6bcd4621d373cade4e832627b4f6', 'test', 'test', 1),
+(18, 'test2@gmail.com', '098f6bcd4621d373cade4e832627b4f6', 'test', 'test', 1);
 
 --
 -- Індекси збережених таблиць
@@ -118,8 +119,7 @@ ALTER TABLE `category`
 --
 ALTER TABLE `product`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `category_id` (`category_id`),
-  ADD KEY `producer_id` (`producer_id`);
+  ADD KEY `category_id` (`category_id`);
 
 --
 -- Індекси таблиці `user`
@@ -135,7 +135,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT для таблиці `category`
 --
 ALTER TABLE `category`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT COMMENT 'ID', AUTO_INCREMENT=8;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT COMMENT 'ID', AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT для таблиці `product`
@@ -147,7 +147,7 @@ ALTER TABLE `product`
 -- AUTO_INCREMENT для таблиці `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- Обмеження зовнішнього ключа збережених таблиць
@@ -157,7 +157,7 @@ ALTER TABLE `user`
 -- Обмеження зовнішнього ключа таблиці `product`
 --
 ALTER TABLE `product`
-  ADD CONSTRAINT `product_ibfk_1` FOREIGN KEY (`category_id`) REFERENCES `category` (`id`);
+  ADD CONSTRAINT `product_ibfk_1` FOREIGN KEY (`category_id`) REFERENCES `category` (`id`) ON DELETE SET NULL;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

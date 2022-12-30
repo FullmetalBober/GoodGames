@@ -4,15 +4,14 @@
 core\Core::getInstance()->pageParams['title'] = 'Вхід на сайт';
 ?>
 
-<?php if (!empty($error)): ?>
-    <div class="message error"><?= $error ?></div>
-<?php endif; ?>
-
 <main class="form-signin w-100 m-auto text-center">
     <form method="post" action="">
         <!-- <img class="mb-4" src="/docs/5.3/assets/brand/bootstrap-logo.svg" alt="" width="72" height="57"> -->
         <!-- <h1 class="h3 mb-3 fw-normal">Please sign in</h1> -->
         <h1 class="h3 mb-3 fw-normal">Вхід</h1>
+        <?php if (!empty($error)): ?>
+            <div class="message error mb-2"><?= $error ?></div>
+            <?php endif; ?>
         <div class="form-floating">
             <input type="email" class="form-control" name="login" id="login" value="<?= $model['login'] ?? null ?>"
                 placeholder="name@example.com">

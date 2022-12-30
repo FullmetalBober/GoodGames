@@ -13,11 +13,16 @@ class User
             self::$tableName,
             [
                 'login' => $login,
-                'password' => $password,
+                'password' => self::hashPassword($password),
                 'lastname' => $lastname,
                 'firstname' => $firstname
             ]
         );
+    }
+
+    public static function hashPassword($password)
+    {
+        return md5($password);
     }
 
     public static function updateUser($id, $updatesArray)
@@ -60,7 +65,7 @@ class User
             '*',
             [
                 'login' => $login,
-                'password' => $password
+                'password' => self::hashPassword($password)
             ]
         );
         if (!empty($user))
@@ -91,6 +96,8 @@ class User
     public static function isAdmin()
     {
         $user = self::getCurrentAuthentificatedUser();
-        return $user['access_level'] ?? null == 10;
+        if (empty($user))
+            return false;
+        return $user['access_level'] == 10;
     }
 }

@@ -49,9 +49,12 @@ class Core
         $statusCode = 200;
         if (class_exists($controllerName)) {
             $controller = new $controllerName();
-            if (method_exists($controller, $controllerActionName))
-            $this->pageParams['content'] = $controller->$controllerActionName();
-            else
+            if (method_exists($controller, $controllerActionName)) {
+                $actionResult = $controller->$controllerActionName($routeParts);
+                if ($actionResult instanceof Error)
+                    $statusCode = $actionResult->code;
+                $this->pageParams['content'] = $actionResult;
+            } else
                 $statusCode = 404;
         } else
             $statusCode = 404;

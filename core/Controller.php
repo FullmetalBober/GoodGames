@@ -24,6 +24,11 @@ class Controller
         return $tpl->getHTML();
     }
 
+    public function error($code, $message = null)
+    {
+        return new Error($code, $message);
+    }
+
     public function redirect($url)
     {
         header("Location: $url");
