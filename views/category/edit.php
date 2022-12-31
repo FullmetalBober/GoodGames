@@ -1,5 +1,7 @@
 <?php
 /** @var array $category */
+/** @var array $model */
+/** @var array $errors */
 ?>
 
 <h2>Редагування категорії</h2>
@@ -8,6 +10,12 @@
     <div class="mb-3">
         <label for="name" class="form-label">Назва категорії</label>
         <input type="text" class="form-control" id="name" name="name" placeholder="" value="<?= $category['name'] ?>">
+
+        <?php if (!empty($errors['name'])): ?>
+            <div id="nameHelp" class="form-text text-danger">
+                <?= $errors['name'] ?>
+            </div>
+            <?php endif; ?>
     </div>
 
     <div class="col-3">

@@ -5,6 +5,7 @@ use models\User;
 ?>
 
 <h2>Список категорій</h2>
+
 <div class="row row-cols-1 row-cols-md-4 g-4 categories-list">
     <?php foreach ($rows as $row): ?>
         <div class="col">
@@ -24,7 +25,6 @@ use models\User;
                         </h5>
                     </div>
                     <div class="card-body">
-
                     </div>
                 </div>
             </a>

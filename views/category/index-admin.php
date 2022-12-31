@@ -5,11 +5,11 @@ use models\User;
 ?>
 
 <h2>Список категорій</h2>
-<div class="mb-3">
-    <?php if (User::isAdmin()): ?>
+<?php if (User::isAdmin()): ?>
+    <div class="mb-3">
         <a href="category/add" class="btn btn-success">Додати категорію</a>
-        <?php endif; ?>
-</div>
+    </div>
+<?php endif; ?>
 
 <div class="row row-cols-1 row-cols-md-4 g-4 categories-list">
     <?php foreach ($rows as $row): ?>

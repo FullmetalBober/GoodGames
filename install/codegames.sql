@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Час створення: Гру 30 2022 р., 16:16
+-- Час створення: Гру 31 2022 р., 15:16
 -- Версія сервера: 8.0.30
 -- Версія PHP: 8.1.9
 
@@ -40,11 +40,12 @@ CREATE TABLE `category` (
 INSERT INTO `category` (`id`, `name`, `photo`) VALUES
 (1, 'Ноутбуки', '63aedd16eca10.jpg'),
 (2, 'Планшети', '63aedd3c5d78a.jpg'),
-(3, 'Телефони', ''),
+(3, 'Телефони', '63b007b3226a9.jpg'),
 (4, 'Генеретори', ''),
 (5, 'Павербанки', ''),
 (6, 'test', ''),
-(8, 'rt', '63aeb08283f71.jpg');
+(8, 'rt', '63aeb08283f71.jpg'),
+(10, 'qwee', '63b0255a1d9e6.jpg');
 
 -- --------------------------------------------------------
 
@@ -59,7 +60,7 @@ CREATE TABLE `product` (
   `price` double NOT NULL COMMENT 'Ціна',
   `count` int NOT NULL COMMENT 'Кількість',
   `short_description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT 'Короткий опис товару',
-  `description` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `visible` int NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -68,8 +69,11 @@ CREATE TABLE `product` (
 --
 
 INSERT INTO `product` (`id`, `name`, `category_id`, `price`, `count`, `short_description`, `description`, `visible`) VALUES
-(1, 'Ноутбук Lenovo Vostro 15 3500', 1, 25000, 12, 'Тут буде короткий опис ноутбуку', '', 1),
-(2, 'Ноутбук Lenovo Vostro 15 3600', 1, 27500, 11, 'Тут буде короткий опис ноутбуку', '', 1);
+(1, 'test', 1, 25000, 12, 'Тут буде короткий опис ноутбуку', '', 1),
+(3, 'test', 2, 100, 10, 'test', 'test', 1),
+(4, 'test', 1, 333, 20, 'qwe', 'eewqewqewqe', 1),
+(5, 'wqwe', 6, 361, 5, '<h2>qwe</h2><p>qweqwe<strong>qwe</strong></p><p><strong>sdwdw</strong></p>', 'qwedw', 1),
+(6, 'qwe', 1, 62, 2, '', '', 1);
 
 -- --------------------------------------------------------
 
@@ -135,13 +139,13 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT для таблиці `category`
 --
 ALTER TABLE `category`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT COMMENT 'ID', AUTO_INCREMENT=9;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT COMMENT 'ID', AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT для таблиці `product`
 --
 ALTER TABLE `product`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT COMMENT 'ID', AUTO_INCREMENT=3;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT COMMENT 'ID', AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT для таблиці `user`

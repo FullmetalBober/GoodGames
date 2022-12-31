@@ -14,7 +14,7 @@ core\Core::getInstance()->pageParams['title'] = 'Реєстрація на са�
                 aria-describedby="emailHelp">
 
             <?php if (!empty($errors['login'])): ?>
-                <div id="emailHelp" class="form-text">
+                <div id="emailHelp" class="form-text text-danger">
                     <?= $errors['login'] ?>
                 </div>
                 <?php endif; ?>
@@ -22,11 +22,11 @@ core\Core::getInstance()->pageParams['title'] = 'Реєстрація на са�
         <!-- password -->
         <div class="mb-3">
             <label for="password" class="form-label">Пароль</label>
-            <input type="password" class="form-control" name="password" id="password" value="<?= $model['password'] ?? null ?>"
-            aria-describedby="passwordHelp">
+            <input type="password" class="form-control" name="password" id="password"
+                value="<?= $model['password'] ?? null ?>" aria-describedby="passwordHelp">
 
             <?php if (!empty($errors['password'])): ?>
-                <div id="passwordHelp" class="form-text">
+                <div id="passwordHelp" class="form-text text-danger">
                     <?= $errors['password'] ?>
                 </div>
                 <?php endif; ?>
@@ -34,11 +34,11 @@ core\Core::getInstance()->pageParams['title'] = 'Реєстрація на са�
         <!-- password2 -->
         <div class="mb-3">
             <label for="password2" class="form-label">Пароль (ще раз)</label>
-            <input type="password" class="form-control" name="password2" id="password2" value="<?= $model['password2'] ?? null ?>"
-            aria-describedby="password2Help">
+            <input type="password" class="form-control" name="password2" id="password2"
+                value="<?= $model['password2'] ?? null ?>" aria-describedby="password2Help">
 
             <?php if (!empty($errors['password2'])): ?>
-                <div id="password2Help" class="form-text">
+                <div id="password2Help" class="form-text text-danger">
                     <?= $errors['password2'] ?>
                 </div>
                 <?php endif; ?>
@@ -46,11 +46,11 @@ core\Core::getInstance()->pageParams['title'] = 'Реєстрація на са�
         <!-- lastname -->
         <div class="mb-3">
             <label for="lastname" class="form-label">Прізвище</label>
-            <input type="text" class="form-control" name="lastname" id="lastname" value="<?= $model['lastname'] ?? null ?>"
-            aria-describedby="lastnameHelp">
+            <input type="text" class="form-control" name="lastname" id="lastname"
+                value="<?= $model['lastname'] ?? null ?>" aria-describedby="lastnameHelp">
 
             <?php if (!empty($errors['lastname'])): ?>
-                <div id="lastnameHelp" class="form-text">
+                <div id="lastnameHelp" class="form-text text-danger">
                     <?= $errors['lastname'] ?>
                 </div>
                 <?php endif; ?>
@@ -58,11 +58,11 @@ core\Core::getInstance()->pageParams['title'] = 'Реєстрація на са�
         <!-- firstname -->
         <div class="mb-3">
             <label for="firstname" class="form-label">Ім'я</label>
-            <input type="text" class="form-control" name="firstname" id="firstname" value="<?= $model['firstname'] ?? null ?>"
-            aria-describedby="firstnameHelp">
+            <input type="text" class="form-control" name="firstname" id="firstname"
+                value="<?= $model['firstname'] ?? null ?>" aria-describedby="firstnameHelp">
 
             <?php if (!empty($errors['firstname'])): ?>
-                <div id="firstnameHelp" class="form-text">
+                <div id="firstnameHelp" class="form-text text-danger">
                     <?= $errors['firstname'] ?>
                 </div>
                 <?php endif; ?>

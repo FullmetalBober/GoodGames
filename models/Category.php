@@ -25,13 +25,17 @@ class Category
         );
     }
 
-    public static function changePhoto($id, $newPhoto)
+    public static function deletePhotoFile($id)
     {
         $row = self::getCategoryById($id);
         $photoPath = "files/category/" . $row['photo'];
         if (is_file($photoPath))
             unlink($photoPath);
+    }
 
+    public static function changePhoto($id, $newPhoto)
+    {
+        self::deletePhotoFile($id);
         do {
             $fileName = uniqid() . '.jpg';
             $newPath = "files/category/$fileName";
@@ -67,6 +71,7 @@ class Category
 
     public static function deleteCategory($id)
     {
+        self::deletePhotoFile($id);
         Core::getInstance()->db->delete(
             self::$tableName,
             [
