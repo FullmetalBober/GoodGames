@@ -5,6 +5,7 @@ namespace controllers;
 use core\Controller;
 use core\Core;
 use models\Category;
+use models\Product;
 use models\User;
 
 class CategoryController extends Controller
@@ -13,8 +14,8 @@ class CategoryController extends Controller
     {
         $rows = Category::getCategories();
         $viewPath = null;
-        if (User::isAdmin())
-            $viewPath = "views/category/index-admin.php";
+        // if (User::isAdmin())
+        //     $viewPath = "views/category/index-admin.php";
         return $this->render(
             $viewPath,
             [
@@ -36,7 +37,7 @@ class CategoryController extends Controller
 
             if (empty($errors)) {
                 Category::addCategory($_POST['name'], $_FILES['file']['tmp_name']);
-                 $this->redirect('/category/index');
+                $this->redirect('/category/index');
             } else {
                 $model = $_POST;
                 return $this->render(null, [
@@ -63,7 +64,7 @@ class CategoryController extends Controller
             if (file_exists($filePath))
                 unlink($filePath);
             Category::deleteCategory($id);
-             $this->redirect('/category/index');
+            $this->redirect('/category/index');
         }
         return $this->render(null, [
             'category' => $category
@@ -87,7 +88,7 @@ class CategoryController extends Controller
                     Category::updateCategory($id, $_POST['name']);
                     if (!empty($_FILES['file']['tmp_name']))
                         Category::changePhoto($id, $_FILES['file']['tmp_name']);
-                     $this->redirect('/category/index');
+                    $this->redirect('/category/index');
                 } else {
                     return $this->render(null, [
                         'errors' => $errors,
@@ -101,5 +102,16 @@ class CategoryController extends Controller
             ]);
         } else
             return $this->error(403);
+    }
+
+    public function viewAction($params)
+    {
+        $id = intval($params[0]);
+        $category = Category::getCategoryById($id);
+        $products = Product::getProductsInCategoryId($id);
+        return $this->render(null, [
+            'category' => $category,
+            'products' => $products
+        ]);
     }
 }

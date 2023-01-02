@@ -11,13 +11,16 @@ class ProductController extends Controller
 {
     public function indexAction()
     {
-        return $this->render();
+        $rows = Product::getProducts();
+        return $this->render(null, [
+            'rows' => $rows
+        ]);
     }
 
-    public function addAction()
+    public function addAction($params)
     {
+        $category_id = intval($params[0]??null);
         $categories = Category::getCategories();
-
         if (Core::getInstance()->requestMethod === 'POST') {
 
             $errors = [];
@@ -37,13 +40,26 @@ class ProductController extends Controller
                 return $this->render(null, [
                     'errors' => $errors,
                     'model' => $model,
-                    'categories' => $categories
+                    'categories' => $categories,
+                    'category_id' => $category_id
                 ]);
             }
         }
 
         return $this->render(null, [
-            'categories' => $categories
+            'categories' => $categories,
+            'category_id' => $category_id
+        ]);
+    }
+
+    public function viewAction($params)
+    {
+        $id = intval($params[0]);
+        $product = Product::getProductById($id);
+        // if ($product === null)
+        //     return $this->error(404);
+        return $this->render(null, [
+            'product' => $product
         ]);
     }
 }

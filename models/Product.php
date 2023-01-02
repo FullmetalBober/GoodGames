@@ -34,7 +34,7 @@ class Product
 
     public static function getProductById($id)
     {
-        $row = Core::getInstance()->db->select(self::$tableName, [
+        $row = Core::getInstance()->db->select(self::$tableName, '*', [
             'id' => $id
         ]);
         if(!empty($row))
@@ -48,6 +48,12 @@ class Product
         $rows = Core::getInstance()->db->select(self::$tableName, '*', [
             'category_id' => $category_id
         ]);
+        return $rows;
+    }
+
+    public static function getProducts()
+    {
+        $rows = Core::getInstance()->db->select(self::$tableName);
         return $rows;
     }
 }

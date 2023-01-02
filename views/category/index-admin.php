@@ -7,7 +7,7 @@ use models\User;
 <h2>Список категорій</h2>
 <?php if (User::isAdmin()): ?>
     <div class="mb-3">
-        <a href="category/add" class="btn btn-success">Додати категорію</a>
+        <a href="/category/add" class="btn btn-success">Додати категорію</a>
     </div>
 <?php endif; ?>
 

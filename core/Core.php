@@ -38,7 +38,7 @@ class Core
         $routeParts = explode('/', $route ?? '');
         $moduleName = array_shift($routeParts);
         if (empty($moduleName))
-            $moduleName = 'main';
+            $moduleName = 'product';
         $actionName = array_shift($routeParts);
         if (empty($actionName))
             $actionName = 'index';

@@ -2,6 +2,7 @@
 /** @var array $model */
 /** @var array $errors */
 /** @var array $categories */
+/** @var int|null $category_id */
 ?>
 <h2>Додавання товару</h2>
 
@@ -23,7 +24,8 @@
         <select class="form-select" id="category_id" name="category_id" placeholder=""
             aria-describedby="category_idHelp">
             <?php foreach ($categories as $category): ?>
-                <option value="<?= $category['id'] ?>">
+                <option <?php if ($category['id'] == $category_id)
+                echo 'selected'; ?> value="<?= $category['id'] ?>">
                     <?= $category['name'] ?>
                 </option>
                 <?php endforeach; ?>
@@ -84,8 +86,8 @@
     <div class="mb-3">
         <label for="visible" class="form-label">Чи відображати товар?</label>
         <select class="form-select" id="visible" name="visible" placeholder="" aria-describedby="visibleHelp">
-                <option value="1">так</option>
-                <option value="0">ні</option>
+            <option value="1">так</option>
+            <option value="0">ні</option>
         </select>
         <?php if (!empty($errors['visible'])): ?>
             <div id="visibleHelp" class="form-text text-danger">
@@ -106,11 +108,11 @@
 <script src="https://cdn.ckeditor.com/ckeditor5/35.4.0/classic/ckeditor.js"></script>
 <script>
     let editors = document.querySelectorAll('.ckeditor');
-    for(let editor of editors){
-    ClassicEditor
-        .create(editor)
-        .catch( error => {
-            console.error( error );
-        } );
+    for (let editor of editors) {
+        ClassicEditor
+            .create(editor)
+            .catch(error => {
+                console.error(error);
+            });
     }
 </script>

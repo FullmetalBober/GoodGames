@@ -5,6 +5,11 @@ use models\User;
 ?>
 
 <h2>Список категорій</h2>
+<?php if (User::isAdmin()): ?>
+    <div class="mb-3">
+        <a href="/category/add" class="btn btn-success">Додати категорію</a>
+    </div>
+<?php endif; ?>
 
 <div class="row row-cols-1 row-cols-md-4 g-4 categories-list">
     <?php foreach ($rows as $row): ?>
@@ -23,8 +28,11 @@ use models\User;
                         <h5 class="card-title">
                             <?= $row['name'] ?>
                         </h5>
-                    </div>
-                    <div class="card-body">
+
+                        <?php if (User::isAdmin()): ?>
+                            <a href="/category/edit/<?= $row['id'] ?>" class="btn btn-primary">Редагувати</a>
+                            <a href="/category/delete/<?= $row['id'] ?>" class="btn btn-danger">Видалити</a>
+                            <?php endif; ?>
                     </div>
                 </div>
             </a>

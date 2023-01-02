@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Час створення: Гру 31 2022 р., 15:16
+-- Час створення: Січ 02 2023 р., 17:10
 -- Версія сервера: 8.0.30
 -- Версія PHP: 8.1.9
 
@@ -61,19 +61,20 @@ CREATE TABLE `product` (
   `count` int NOT NULL COMMENT 'Кількість',
   `short_description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT 'Короткий опис товару',
   `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
-  `visible` int NOT NULL DEFAULT '1'
+  `visible` int NOT NULL DEFAULT '1',
+  `photo` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Дамп даних таблиці `product`
 --
 
-INSERT INTO `product` (`id`, `name`, `category_id`, `price`, `count`, `short_description`, `description`, `visible`) VALUES
-(1, 'test', 1, 25000, 12, 'Тут буде короткий опис ноутбуку', '', 1),
-(3, 'test', 2, 100, 10, 'test', 'test', 1),
-(4, 'test', 1, 333, 20, 'qwe', 'eewqewqewqe', 1),
-(5, 'wqwe', 6, 361, 5, '<h2>qwe</h2><p>qweqwe<strong>qwe</strong></p><p><strong>sdwdw</strong></p>', 'qwedw', 1),
-(6, 'qwe', 1, 62, 2, '', '', 1);
+INSERT INTO `product` (`id`, `name`, `category_id`, `price`, `count`, `short_description`, `description`, `visible`, `photo`) VALUES
+(1, 'test', 1, 25000, 12, 'Тут буде короткий опис ноутбуку', '', 1, ''),
+(3, 'test', 2, 100, 10, 'test', 'test', 1, ''),
+(4, 'test', 1, 333, 20, 'qwe', 'eewqewqewqe', 1, ''),
+(5, 'wqwe', 6, 361, 5, '<h2>qwe</h2><p>qweqwe<strong>qwe</strong></p><p><strong>sdwdw</strong></p>', 'qwedw', 1, ''),
+(6, 'qwe', 1, 62, 2, '', '', 1, '');
 
 -- --------------------------------------------------------
 

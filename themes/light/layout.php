@@ -66,7 +66,7 @@ else
         </symbol>
     </svg>
 
-    <div class="container">
+    <div class="container-fluid">
         <header>
             <div class="px-3 py-2 text-bg-dark">
                 <div class="container">
@@ -80,7 +80,7 @@ else
 
                         <ul class="nav col-12 col-lg-auto my-2 justify-content-center my-md-0 text-small">
                             <li>
-                                <a href="/" class="nav-link text-secondary">
+                                <a href="/main" class="nav-link text-secondary">
                                     <svg class="bi d-block mx-auto mb-1" width="24" height="24">
                                         <use xlink:href="#home"></use>
                                     </svg>
@@ -119,6 +119,14 @@ else
                                     Товари
                                 </a>
                             </li>
+                            <li>
+                                <a href="/basket" class="nav-link text-white">
+                                    <svg class="bi d-block mx-auto mb-1" width="24" height="24">
+                                        <use xlink:href="#grid"></use>
+                                    </svg>
+                                    Кошик
+                                </a>
+                            </li>
                             <!-- <li>
                             <a href="#" class="nav-link text-white">
                                 <svg class="bi d-block mx-auto mb-1" width="24" height="24">
@@ -154,7 +162,7 @@ else
         <?= $content ?? null ?>
     </div>
 
-    <div class="container footer">
+    <div class="container-fluid footer">
         <footer class="py-3 my-4">
             <ul class="nav justify-content-center border-bottom pb-3 mb-3">
                 <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Home</a></li>
