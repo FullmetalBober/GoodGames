@@ -104,11 +104,11 @@ else
                             </a>
                         </li> -->
                             <li>
-                                <a href="/category" class="nav-link text-white">
+                                <a href="/publisher" class="nav-link text-white">
                                     <svg class="bi d-block mx-auto mb-1" width="24" height="24">
                                         <use xlink:href="#grid"></use>
                                     </svg>
-                                    Категорії
+                                    Видавці
                                 </a>
                             </li>
                             <li>

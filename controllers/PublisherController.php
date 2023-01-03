@@ -4,15 +4,15 @@ namespace controllers;
 
 use core\Controller;
 use core\Core;
-use models\Category;
+use models\Publisher;
 use models\Product;
 use models\User;
 
-class CategoryController extends Controller
+class PublisherController extends Controller
 {
     public function indexAction()
     {
-        $rows = Category::getCategories();
+        $rows = Publisher::getPublishers();
         $viewPath = null;
         // if (User::isAdmin())
         //     $viewPath = "views/category/index-admin.php";
@@ -36,8 +36,8 @@ class CategoryController extends Controller
                 $errors['name'] = 'Назва категорії не може бути порожньою';
 
             if (empty($errors)) {
-                Category::addCategory($_POST['name'], $_FILES['file']['tmp_name']);
-                $this->redirect('/category/index');
+                Publisher::addPublisher($_POST['name'], $_FILES['file']['tmp_name']);
+                $this->redirect('/publisher/index');
             } else {
                 $model = $_POST;
                 return $this->render(null, [
@@ -58,16 +58,16 @@ class CategoryController extends Controller
             return $this->error(403);
         if ($id <= 0)
             return $this->error(403);
-        $category = Category::getCategoryById($id);
+        $publisher = Publisher::getPublisherById($id);
         if ($yes) {
-            $filePath = 'files/category' . $category['photo'];
+            $filePath = 'files/publisher' . $publisher['photo'];
             if (file_exists($filePath))
                 unlink($filePath);
-            Category::deleteCategory($id);
-            $this->redirect('/category/index');
+            Publisher::deletePublisher($id);
+            $this->redirect('/publisher/index');
         }
         return $this->render(null, [
-            'category' => $category
+            'publisher' => $publisher
         ]);
     }
 
@@ -77,7 +77,7 @@ class CategoryController extends Controller
         if (!User::isAdmin())
             return $this->error(403);
         if ($id > 0) {
-            $category = Category::getCategoryById($id);
+            $publisher = Publisher::getPublisherById($id);
             if (Core::getInstance()->requestMethod === 'POST') {
 
                 $errors = [];
@@ -85,20 +85,20 @@ class CategoryController extends Controller
                     $errors['name'] = 'Назва категорії не може бути порожньою';
 
                 if (empty($errors)) {
-                    Category::updateCategory($id, $_POST['name']);
+                    Publisher::updatePublisher($id, $_POST['name']);
                     if (!empty($_FILES['file']['tmp_name']))
-                        Category::changePhoto($id, $_FILES['file']['tmp_name']);
-                    $this->redirect('/category/index');
+                        Publisher::changePhoto($id, $_FILES['file']['tmp_name']);
+                    $this->redirect('/publisher/index');
                 } else {
                     return $this->render(null, [
                         'errors' => $errors,
                         'model' => $_POST,
-                        'category' => $category
+                        'publisher' => $publisher
                     ]);
                 }
             }
             return $this->render(null, [
-                'category' => $category
+                'publisher' => $publisher
             ]);
         } else
             return $this->error(403);
@@ -107,10 +107,10 @@ class CategoryController extends Controller
     public function viewAction($params)
     {
         $id = intval($params[0]);
-        $category = Category::getCategoryById($id);
-        $products = Product::getProductsInCategoryId($id);
+        $publisher = Publisher::getPublisherById($id);
+        $products = Product::getProductsInPublisherId($id);
         return $this->render(null, [
-            'category' => $category,
+            'publisher' => $publisher,
             'products' => $products
         ]);
     }

@@ -5,7 +5,7 @@ namespace controllers;
 use core\Core;
 use core\Controller;
 use models\Product;
-use models\Category;
+use models\Publisher;
 
 class ProductController extends Controller
 {
@@ -19,15 +19,15 @@ class ProductController extends Controller
 
     public function addAction($params)
     {
-        $category_id = intval($params[0]??null);
-        $categories = Category::getCategories();
+        $publisher_id = intval($params[0]??null);
+        $publishers = Publisher::getPublishers();
         if (Core::getInstance()->requestMethod === 'POST') {
 
             $errors = [];
             if (empty($_POST['name']))
                 $errors['name'] = 'Назва не може бути порожньою';
-            if (empty($_POST['category_id']))
-                $errors['category_id'] = 'Категорія не може бути порожньою';
+            if (empty($_POST['publisher_id']))
+                $errors['publisher_id'] = 'Категорія не може бути порожньою';
             if ($_POST['price'] <= 0)
                 $errors['price'] = 'Ціна некоректна';
             if ($_POST['count'] <= 0)
@@ -40,15 +40,15 @@ class ProductController extends Controller
                 return $this->render(null, [
                     'errors' => $errors,
                     'model' => $model,
-                    'categories' => $categories,
-                    'category_id' => $category_id
+                    'publishers' => $publishers,
+                    'publisher_id' => $publisher_id
                 ]);
             }
         }
 
         return $this->render(null, [
-            'categories' => $categories,
-            'category_id' => $category_id
+            'publishers' => $publishers,
+            'publisher_id' => $publisher_id
         ]);
     }
 

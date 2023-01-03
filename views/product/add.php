@@ -1,8 +1,8 @@
 <?php
 /** @var array $model */
 /** @var array $errors */
-/** @var array $categories */
-/** @var int|null $category_id */
+/** @var array $publishers */
+/** @var int|null $publisher_id */
 ?>
 <h2>Додавання товару</h2>
 
@@ -18,21 +18,21 @@
             </div>
             <?php endif; ?>
     </div>
-    <!-- category_id -->
+    <!-- publisher_id -->
     <div class="mb-3">
-        <label for="category_id" class="form-label">Категорія</label>
-        <select class="form-select" id="category_id" name="category_id" placeholder=""
-            aria-describedby="category_idHelp">
-            <?php foreach ($categories as $category): ?>
-                <option <?php if ($category['id'] == $category_id)
-                echo 'selected'; ?> value="<?= $category['id'] ?>">
-                    <?= $category['name'] ?>
+        <label for="publisher_id" class="form-label">Категорія</label>
+        <select class="form-select" id="publisher_id" name="publisher_id" placeholder=""
+            aria-describedby="publisher_idHelp">
+            <?php foreach ($publishers as $publisher): ?>
+                <option <?php if ($publisher['id'] == $publisher_id)
+                echo 'selected'; ?> value="<?= $publisher['id'] ?>">
+                    <?= $publisher['name'] ?>
                 </option>
                 <?php endforeach; ?>
         </select>
-        <?php if (!empty($errors['category_id'])): ?>
-            <div id="category_idHelp" class="form-text text-danger">
-                <?= $errors['category_id'] ?>
+        <?php if (!empty($errors['publisher_id'])): ?>
+            <div id="publisher_idHelp" class="form-text text-danger">
+                <?= $errors['publisher_id'] ?>
             </div>
             <?php endif; ?>
     </div>

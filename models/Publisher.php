@@ -5,14 +5,14 @@ namespace models;
 use core\Core;
 use core\Utils;
 
-class Category
+class Publisher
 {
-    protected static $tableName = 'category';
-    public static function addCategory($name, $photoPath)
+    protected static $tableName = 'publisher';
+    public static function addPublisher($name, $photoPath)
     {
         do {
             $fileName = uniqid() . '.jpg';
-            $newPath = "files/category/$fileName";
+            $newPath = "files/publisher/$fileName";
         }
         while (file_exists($newPath));
         move_uploaded_file($photoPath, $newPath);
@@ -27,8 +27,8 @@ class Category
 
     public static function deletePhotoFile($id)
     {
-        $row = self::getCategoryById($id);
-        $photoPath = "files/category/" . $row['photo'];
+        $row = self::getPublisherById($id);
+        $photoPath = "files/publisher/" . $row['photo'];
         if (is_file($photoPath))
             unlink($photoPath);
     }
@@ -38,7 +38,7 @@ class Category
         self::deletePhotoFile($id);
         do {
             $fileName = uniqid() . '.jpg';
-            $newPath = "files/category/$fileName";
+            $newPath = "files/publisher/$fileName";
         }
         while (file_exists($newPath));
         move_uploaded_file($newPhoto, $newPath);
@@ -54,7 +54,7 @@ class Category
 
     }
 
-    public static function getCategoryById($id)
+    public static function getPublisherById($id)
     {
         $rows = Core::getInstance()->db->select(
             self::$tableName,
@@ -69,7 +69,7 @@ class Category
             return null;
     }
 
-    public static function deleteCategory($id)
+    public static function deletePublisher($id)
     {
         self::deletePhotoFile($id);
         Core::getInstance()->db->delete(
@@ -80,7 +80,7 @@ class Category
         );
     }
 
-    public static function updateCategory($id, $newName)
+    public static function updatePublisher($id, $newName)
     {
         Core::getInstance()->db->update(
             self::$tableName,
@@ -93,7 +93,7 @@ class Category
         );
     }
 
-    public static function getCategories()
+    public static function getPublishers()
     {
         $rows = Core::getInstance()->db->select(self::$tableName);
         return $rows;

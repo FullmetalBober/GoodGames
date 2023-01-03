@@ -1,5 +1,5 @@
 <?php
-/** @var array $category */
+/** @var array $publisher */
 /** @var array $model */
 /** @var array $errors */
 ?>
@@ -9,7 +9,7 @@
 <form method="post" action="" enctype="multipart/form-data">
     <div class="mb-3">
         <label for="name" class="form-label">Назва категорії</label>
-        <input type="text" class="form-control" id="name" name="name" placeholder="" value="<?= $category['name'] ?>">
+        <input type="text" class="form-control" id="name" name="name" placeholder="" value="<?= $publisher['name'] ?>">
 
         <?php if (!empty($errors['name'])): ?>
             <div id="nameHelp" class="form-text text-danger">
@@ -20,9 +20,9 @@
 
     <div class="col-3">
         <div class="ratio ratio-16x9">
-            <?php $filePath = 'files/category/' . $category['photo']; ?>
+            <?php $filePath = 'files/publisher/' . $publisher['photo']; ?>
             <?php if (is_file($filePath)): ?>
-                <img src="/<?= $filePath ?>" class="card-img-top img-thumbnail" alt="<?= $category['name'] ?>">
+                <img src="/<?= $filePath ?>" class="card-img-top img-thumbnail" alt="<?= $publisher['name'] ?>">
                 <?php else: ?>
                 <img src="/static/images/default.jpg" class="card-img-top img-thumbnail" alt="default">
                 <?php endif; ?>

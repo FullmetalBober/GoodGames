@@ -11,7 +11,7 @@ class Product
 
     public static function addProduct($row)
     {
-        $fieldsList = ['name', 'category_id', 'price', 'count', 'short_description', 'description', 'visible'];
+        $fieldsList = ['name', 'publisher_id', 'price', 'count', 'short_description', 'description', 'visible'];
         $row = Utils::filterArray($row, $fieldsList);
         Core::getInstance()->db->insert(self::$tableName, $row);
     }
@@ -25,7 +25,7 @@ class Product
 
     public static function updateProduct($id, $row)
     {
-        $fieldsList = ['name', 'category_id', 'price', 'count', 'short_description', 'description', 'visible'];
+        $fieldsList = ['name', 'publisher_id', 'price', 'count', 'short_description', 'description', 'visible'];
         $row = Utils::filterArray($row, $fieldsList);
         Core::getInstance()->db->update(self::$tableName, $row, [
             'id' => $id
@@ -43,10 +43,10 @@ class Product
             return null;
     }
 
-    public static function getProductsInCategoryId($category_id)
+    public static function getProductsInPublisherId($publisher_id)
     {
         $rows = Core::getInstance()->db->select(self::$tableName, '*', [
-            'category_id' => $category_id
+            'publisher_id' => $publisher_id
         ]);
         return $rows;
     }
