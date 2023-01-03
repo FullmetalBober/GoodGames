@@ -3,6 +3,7 @@
 /** @var array $errors */
 /** @var array $publishers */
 /** @var int|null $publisher_id */
+/** @var array $categories */
 ?>
 <h2>Додавання товару</h2>
 
@@ -19,22 +20,56 @@
             <?php endif; ?>
     </div>
     <!-- publisher_id -->
-    <div class="mb-3">
-        <label for="publisher_id" class="form-label">Категорія</label>
-        <select class="form-select" id="publisher_id" name="publisher_id" placeholder=""
-            aria-describedby="publisher_idHelp">
-            <?php foreach ($publishers as $publisher): ?>
-                <option <?php if ($publisher['id'] == $publisher_id)
-                echo 'selected'; ?> value="<?= $publisher['id'] ?>">
-                    <?= $publisher['name'] ?>
-                </option>
-                <?php endforeach; ?>
-        </select>
-        <?php if (!empty($errors['publisher_id'])): ?>
-            <div id="publisher_idHelp" class="form-text text-danger">
-                <?= $errors['publisher_id'] ?>
+    <div class="accordion mb-3" id="accordionPublisher">
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingPublisher">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#collapsePublisher" aria-expanded="true" aria-controls="collapsePublisher">
+                    Список видавців
+                </button>
+            </h2>
+            <div id="collapsePublisher" class="accordion-collapse collapse" aria-labelledby="headingPublisher"
+                data-bs-parent="#accordionPublisher">
+                <ul class="list-group">
+                    <?php foreach ($publishers as $publisher): ?>
+                        <li class="list-group-item">
+                            <input class="form-check-input me-1" type="radio" name="publisher_id"
+                                value="<?= $publisher['id'] ?>" id="publisher_<?= $publisher['id'] ?>"
+                                <?php if ($publisher['id'] == $publisher_id)
+                echo 'checked'; ?> value="<?= $publisher['id'] ?>">
+                            <label class="form-check-label" for="publisher_<?= $publisher['id'] ?>">
+                                <?= $publisher['name'] ?>
+                            </label>
+                        </li>
+                        <?php endforeach; ?>
+                </ul>
             </div>
-            <?php endif; ?>
+        </div>
+    </div>
+    <!-- categories -->
+    <div class="accordion mb-3" id="accordionCategories">
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingCategories">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#collapseCategories" aria-expanded="true" aria-controls="collapseCategories">
+                    Список категорій
+                </button>
+            </h2>
+            <div id="collapseCategories" class="accordion-collapse collapse" aria-labelledby="headingCategories"
+                data-bs-parent="#accordionCategories">
+                <ul class="list-group">
+                    <?php foreach ($categories as $category): ?>
+                        <li class="list-group-item">
+                            <input type="checkbox" class="form-check-input me-1" id="category_<?= $category['id'] ?>"
+                                name="categories_id[]" value="<?= $category['id'] ?>">
+                            <label class="form-check-label stretched-link" for="category_<?= $category['id'] ?>">
+                                <?= $category['name'] ?>
+                            </label>
+                        </li>
+                        <?php endforeach; ?>
+                </ul>
+            </div>
+        </div>
     </div>
     <!-- price -->
     <div class="mb-3">
@@ -61,7 +96,7 @@
     <!-- short_description -->
     <div class="mb-3">
         <label for="short_description" class="form-label">Короткий опис</label>
-        <textarea class="form-control ckeditor" id="short_description" name="short_description" placeholder=""
+        <textarea class="form-control" id="short_description" name="short_description" placeholder=""
             aria-describedby="short_descriptionHelp"></textarea>
 
         <?php if (!empty($errors['short_description'])): ?>

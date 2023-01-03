@@ -14,8 +14,6 @@ class PublisherController extends Controller
     {
         $rows = Publisher::getPublishers();
         $viewPath = null;
-        // if (User::isAdmin())
-        //     $viewPath = "views/category/index-admin.php";
         return $this->render(
             $viewPath,
             [
@@ -33,7 +31,7 @@ class PublisherController extends Controller
 
             $errors = [];
             if (empty($_POST['name']))
-                $errors['name'] = 'Назва категорії не може бути порожньою';
+                $errors['name'] = 'Назва не може бути порожньою';
 
             if (empty($errors)) {
                 Publisher::addPublisher($_POST['name'], $_FILES['file']['tmp_name']);
@@ -82,7 +80,7 @@ class PublisherController extends Controller
 
                 $errors = [];
                 if (empty($_POST['name']))
-                    $errors['name'] = 'Назва категорії не може бути порожньою';
+                    $errors['name'] = 'Назва не може бути порожньою';
 
                 if (empty($errors)) {
                     Publisher::updatePublisher($id, $_POST['name']);

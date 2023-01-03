@@ -55,8 +55,8 @@
                     </div>
                     <div class="col-4">
                         <div>
-                            <input type="number" value="1" min="1" max="<?= $product['count'] ?>" class="form-control mb-2"
-                                name="count" id="count">
+                            <input type="number" value="1" min="1" max="<?= $product['count'] ?>"
+                                class="form-control mb-2" name="count" id="count">
                         </div>
                         <div>
                             <button class="btn btn-primary">Придбати</button>

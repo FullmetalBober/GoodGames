@@ -66,7 +66,7 @@ else
         </symbol>
     </svg>
 
-    <div class="container-fluid">
+    <div class="container-fluid fixed-top">
         <header>
             <div class="px-3 py-2 text-bg-dark">
                 <div class="container">
@@ -104,6 +104,14 @@ else
                             </a>
                         </li> -->
                             <li>
+                                <a href="/category" class="nav-link text-white">
+                                    <svg class="bi d-block mx-auto mb-1" width="24" height="24">
+                                        <use xlink:href="#grid"></use>
+                                    </svg>
+                                    Категорії
+                                </a>
+                            </li>
+                            <li>
                                 <a href="/publisher" class="nav-link text-white">
                                     <svg class="bi d-block mx-auto mb-1" width="24" height="24">
                                         <use xlink:href="#grid"></use>
@@ -139,7 +147,7 @@ else
                     </div>
                 </div>
             </div>
-            <div class="px-3 py-2 border-bottom mb-3">
+            <div class="px-3 py-2 border-bottom mb-3 text-bg-light">
                 <div class="container d-flex flex-wrap justify-content-center">
                     <form class="col-12 col-lg-auto mb-2 mb-lg-0 me-lg-auto" role="search">
                         <input type="search" class="form-control" placeholder="Пошук..." aria-label="Search">

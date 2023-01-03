@@ -1,3 +1,7 @@
+.fixed-top {
+  position: sticky;
+  top: 0;
+}
 body {
   display: flex;
   flex-direction: column;

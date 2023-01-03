@@ -71,6 +71,7 @@ class DB
         $valuesListString = implode(', ', $paramsArray);
         $res = $this->pdo->prepare("INSERT INTO $tableName ($fieldListString) VALUES($valuesListString)");
         $res->execute($newRowArray);
+        return $this->pdo->lastInsertId($tableName);
     }
 
     public function delete($tableName, $conditionArray)

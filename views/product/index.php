@@ -1,6 +1,7 @@
 <?php
 /** @var array|null $rows */
 use models\User;
+
 ?>
 <h1 class="h3 mb-3 fw-normal">Список товарів</h1>
 

@@ -33,5 +33,6 @@
             <th colspan="4">Всього:</th>
             <th><?= $basket['totalPrice'] ?> грн.</th>
         </tr>
+    </tfoot>
         <?php endif; ?>
 </table>

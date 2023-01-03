@@ -4,6 +4,8 @@ namespace controllers;
 
 use core\Core;
 use core\Controller;
+use models\Category;
+use models\CategoryList;
 use models\Product;
 use models\Publisher;
 
@@ -19,8 +21,9 @@ class ProductController extends Controller
 
     public function addAction($params)
     {
-        $publisher_id = intval($params[0]??null);
+        $publisher_id = intval($params[0] ?? null);
         $publishers = Publisher::getPublishers();
+        $categories = Category::getCategories();
         if (Core::getInstance()->requestMethod === 'POST') {
 
             $errors = [];
@@ -33,7 +36,9 @@ class ProductController extends Controller
             if ($_POST['count'] <= 0)
                 $errors['count'] = 'Кількість некоректна';
             if (empty($errors)) {
-                Product::addProduct($_POST);
+                $id = Product::addProduct($_POST);
+                if (!empty($_POST['categories_id']))
+                    CategoryList::addCategoryList($id, $_POST['categories_id']);
                 $this->redirect('/product');
             } else {
                 $model = $_POST;
@@ -41,14 +46,16 @@ class ProductController extends Controller
                     'errors' => $errors,
                     'model' => $model,
                     'publishers' => $publishers,
-                    'publisher_id' => $publisher_id
+                    'publisher_id' => $publisher_id,
+                    'categories' => $categories
                 ]);
             }
         }
 
         return $this->render(null, [
             'publishers' => $publishers,
-            'publisher_id' => $publisher_id
+            'publisher_id' => $publisher_id,
+            'categories' => $categories
         ]);
     }
 

@@ -13,7 +13,7 @@ class Product
     {
         $fieldsList = ['name', 'publisher_id', 'price', 'count', 'short_description', 'description', 'visible'];
         $row = Utils::filterArray($row, $fieldsList);
-        Core::getInstance()->db->insert(self::$tableName, $row);
+        return Core::getInstance()->db->insert(self::$tableName, $row);
     }
 
     public static function deleteProduct($id)
@@ -37,7 +37,7 @@ class Product
         $row = Core::getInstance()->db->select(self::$tableName, '*', [
             'id' => $id
         ]);
-        if(!empty($row))
+        if (!empty($row))
             return $row[0];
         else
             return null;

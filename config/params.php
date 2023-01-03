@@ -1,5 +1,5 @@
 <?php
 $pageParams = [
-'siteName' => 'GoodGame',
-'title' => 'Головна сторінка',
+    'siteName' => 'GoodGame',
+    'title' => 'Головна сторінка',
 ];
