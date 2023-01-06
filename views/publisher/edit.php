@@ -19,7 +19,7 @@
     </div>
 
     <div class="col-3">
-        <div class="ratio ratio-16x9">
+        <div class="ratio ratio-1x1">
             <?php $filePath = 'files/publisher/' . $publisher['photo']; ?>
             <?php if (is_file($filePath)): ?>
                 <img src="/<?= $filePath ?>" class="card-img-top img-thumbnail" alt="<?= $publisher['name'] ?>">

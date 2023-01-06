@@ -30,10 +30,18 @@ body {
   }
   .card {
     transition-duration: 0.5s;
-
     &:hover {
-      background-color: antiquewhite;
-      transform: scale(1.1);
+      $card-hover-color: #f8f9fa;
+      background-color: $card-hover-color;
+      // transform: scale(1.1);
+      img{
+        transition-duration: 0.5s;
+        background-color: $card-hover-color;
+        opacity: 0.8;
+      }
+    }
+    .card-title{
+      color: black;
     }
   }
 }

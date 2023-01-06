@@ -39,6 +39,13 @@ body {
   transition-duration: 0.5s;
 }
 .categories-list .card:hover {
-  background-color: antiquewhite;
-  transform: scale(1.1);
+  background-color: #f8f9fa;
+}
+.categories-list .card:hover img {
+  transition-duration: 0.5s;
+  background-color: #f8f9fa;
+  opacity: 0.8;
+}
+.categories-list .card .card-title {
+  color: black;
 }/*# sourceMappingURL=style.css.map */

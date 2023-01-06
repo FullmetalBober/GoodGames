@@ -76,6 +76,8 @@ class PublisherController extends Controller
             return $this->error(403);
         if ($id > 0) {
             $publisher = Publisher::getPublisherById($id);
+            if (empty($publisher))
+                return $this->error(404);
             if (Core::getInstance()->requestMethod === 'POST') {
 
                 $errors = [];

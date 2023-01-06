@@ -21,6 +21,23 @@ class CategoryList
         }
     }
 
+    public static function deleteCategoryList($product_id)
+    {
+        Core::getInstance()->db->delete(
+            self::$tableName,
+            [
+                'product_id' => $product_id
+            ]
+        );
+    }
+
+    public static function updateCategoryList($product_id, $category_idArray)
+    {
+        self::deleteCategoryList($product_id);
+        self::addCategoryList($product_id, $category_idArray);
+    }
+
+
     public static function getCategoriesList()
     {
         $rows = Core::getInstance()->db->select(
@@ -40,5 +57,20 @@ class CategoryList
             ]
         );
         return count($rows);
+    }
+
+    public static function getCategoryListByProductId($product_id)
+    {
+        $rows = Core::getInstance()->db->select(
+            self::$tableName,
+            '*',
+            [
+                'product_id' => $product_id
+            ]
+        );
+        $rows = array_map(function ($item) {
+            return $item['category_id'];
+        }, $rows);
+        return $rows;
     }
 }

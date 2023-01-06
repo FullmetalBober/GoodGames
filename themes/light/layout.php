@@ -149,9 +149,9 @@ else
             </div>
             <div class="px-3 py-2 border-bottom mb-3 text-bg-light">
                 <div class="container d-flex flex-wrap justify-content-center">
-                    <form class="col-12 col-lg-auto mb-2 mb-lg-0 me-lg-auto" role="search">
-                        <input type="search" class="form-control" placeholder="Пошук..." aria-label="Search">
-                    </form>
+                    <!-- <form class="col-12 col-lg-auto mb-2 mb-lg-0 me-lg-auto" role="search">
+                        
+                    </form> -->
 
                     <div class="text-end">
                         <?php if (User::isUserAuthentificated()): ?>

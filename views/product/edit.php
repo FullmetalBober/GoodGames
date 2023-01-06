@@ -2,14 +2,16 @@
 /** @var array $model */
 /** @var array $errors */
 /** @var array $publishers */
-/** @var int|null $publisher_id */
 /** @var array $categories */
-if (empty($model['visible']))
-    $model['visible'] = 1;
-?>
-<h2>Додавання товару</h2>
+/** @var array $product */
+if (empty($product['publisher_id']))
+    $product['publisher_id'] = 0;
+    ?>
+
+<h2>Редагування продукту</h2>
 
 <form method="post" action="" enctype="multipart/form-data">
+
     <!-- name -->
     <div class="mb-3">
         <label for="name" class="form-label">Назва</label>
@@ -42,9 +44,10 @@ if (empty($model['visible']))
                                         if ($model['publisher_id'] == $publisher['id'])
                                             echo 'checked';
                                     } else
-                                        if ($publisher['id'] == $publisher_id)
+                                        if ($publisher['id'] == $product['publisher_id'])
                                             echo 'checked';
-                                    ?> value="<?= $publisher['id'] ?>">
+                                    ?>
+                                value="<?= $publisher['id'] ?>">
                             <label class="form-check-label stretched-link" for="publisher_<?= $publisher['id'] ?>">
                                 <?= $publisher['name'] ?>
                             </label>
@@ -134,11 +137,59 @@ if (empty($model['visible']))
         <?php endif; ?>
     </div>
     <!-- file -->
+
+    <div class="col-3">
+        <div class="ratio ratio-16x9">
+            <?php $filePath = 'files/product/' . $product['photo']; ?>
+            <?php if (is_file($filePath)): ?>
+                <img src="/<?= $filePath ?>" class="card-img-top img-thumbnail" alt="<?= $publisher['name'] ?>">
+            <?php else: ?>
+                <img src="/static/images/default.jpg" class="card-img-top img-thumbnail" alt="default">
+            <?php endif; ?>
+        </div>
+    </div>
+
     <div class="mb-3">
         <label for="file" class="form-label">Файли з фотографією для товару</label>
         <input type="file" class="form-control" id="file" name="file" accept="imaje/jpeg">
     </div>
     <!-- additionalFiles -->
+
+    <div class="col-3">
+        <div id="carouselDark" class="carousel carousel-dark slide carousel-fade img-thumbnail" data-bs-ride="carousel">
+
+            <div class="carousel-inner">
+
+                <?php if (!empty($product['additionalPhotos'])): ?>
+                    <?php foreach ($product['additionalPhotos'] as $additionalPhoto): ?>
+                        <div class="carousel-item active">
+
+                            <?php $filePath = 'files/product/' . $additionalPhoto['photo']; ?>
+                            <?php if (is_file($filePath)): ?>
+                                <img src="/<?= $filePath ?>" class="d-block w-100" alt="<?= $product['name'] ?>">
+                            <?php else: ?>
+                                <img src="/static/images/default.jpg" class="d-block w-100" alt="default">
+                            <?php endif; ?>
+                        </div>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <div class="carousel-item active">
+                        <img src="/static/images/default.jpg" class="d-block w-100" alt="default">
+                    </div>
+                <?php endif; ?>
+            </div>
+
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselDark" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselDark" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+    </div>
+
     <div class="mb-3">
         <label for="additionalFiles" class="form-label">Додаткові фотографії</label>
         <input type="file" multiple class="form-control" id="additionalFiles" name="additionalFiles[]"
@@ -146,7 +197,7 @@ if (empty($model['visible']))
     </div>
 
     <div>
-        <button class="btn btn-primary">Додати</button>
+        <button class="btn btn-primary">Зберегти</button>
     </div>
 </form>
 

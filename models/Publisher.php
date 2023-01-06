@@ -10,12 +10,16 @@ class Publisher
     protected static $tableName = 'publisher';
     public static function addPublisher($name, $photoPath)
     {
-        do {
-            $fileName = uniqid() . '.jpg';
-            $newPath = "files/publisher/$fileName";
+        if (empty($photoPath))
+            $fileName = null;
+        else {
+            do {
+                $fileName = uniqid() . '.jpg';
+                $newPath = "files/publisher/$fileName";
+            }
+            while (file_exists($newPath));
+            move_uploaded_file($photoPath, $newPath);
         }
-        while (file_exists($newPath));
-        move_uploaded_file($photoPath, $newPath);
         Core::getInstance()->db->insert(
             self::$tableName,
             [

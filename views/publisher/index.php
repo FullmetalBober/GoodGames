@@ -16,7 +16,7 @@ use models\User;
         <div class="col">
             <a href="/publisher/view/<?= $row['id'] ?>" class="card-link">
                 <div class="card">
-                    <div class="ratio ratio-16x9">
+                    <div class="ratio ratio-1x1">
                         <?php $filePath = 'files/publisher/' . $row['photo']; ?>
                         <?php if (is_file($filePath)): ?>
                             <img src="/<?= $filePath ?>" class="card-img-top" alt="<?= $row['name'] ?>">
