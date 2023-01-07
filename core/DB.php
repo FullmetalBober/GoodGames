@@ -34,10 +34,12 @@ class DB
             }
             $wherePartString = "WHERE " . implode(' AND ', $parts);
         }
+
         $res = $this->pdo->prepare("SELECT $fieldListString FROM $tableName $wherePartString");
         $res->execute($conditionArray);
         return $res->fetchAll(\PDO::FETCH_ASSOC);
     }
+
 
     public function update($tableName, $newValuesArray, $conditionArray)
     {

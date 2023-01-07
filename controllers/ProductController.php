@@ -13,7 +13,7 @@ use models\User;
 
 class ProductController extends Controller
 {
-    public function indexAction()
+    public function indexAction($params)
     {
         $rows = Product::getProducts();
         $rows = array_reverse($rows);
@@ -21,7 +21,22 @@ class ProductController extends Controller
         $categories = Category::getCategories();
         $categoryList = CategoryList::getCategoriesList();
 
+        $page = 0;
+        $count = 6;
         if (Core::getInstance()->requestMethod === 'GET') {
+
+            if (!empty($_GET['sortBy'])) {
+                if ($_GET['sortBy'] === 'name') {
+                    usort($rows, function ($a, $b) {
+                        return strcmp($a['name'], $b['name']);
+                    });
+                }
+                if ($_GET['sortBy'] === 'price') {
+                    usort($rows, function ($a, $b) {
+                        return $a['price'] - $b['price'];
+                    });
+                }
+            }
 
             if (!empty($_GET['name']))
                 $rows = array_filter($rows, function ($row) {
@@ -42,18 +57,30 @@ class ProductController extends Controller
                     if (array_intersect($array1, $array2) == $array1)
                         return $row;
                 });
-
             }
+
+            if (!empty($_GET['price']) && $_GET['price'] <= 480) {
+                $rows = array_filter($rows, function ($row) {
+                    if ($row['price'] <= $_GET['price'])
+                        return $row;
+                });
+            }
+            if (!empty($_GET['page']))
+                $page = $_GET['page'] - 1;
+
+
 
             $model = $_GET;
         }
+        $model['page'] = $page + 1;
+        $model['pageCount'] = ceil(count($rows) / $count);
+        $rows = array_slice($rows, $page * $count, $count);
         return $this->render(null, [
             'rows' => $rows,
             'publishers' => $publishers,
             'categories' => $categories,
             'model' => $model
         ]);
-
     }
 
     public function addAction($params)

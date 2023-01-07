@@ -12,40 +12,58 @@ use models\User;
     </div>
 <?php endif; ?>
 
-<div class="row">
-    <div class="col-md-10 order-2 order-md-1">
-        <div class="row row-cols-1 row-cols-md-4 g-4 categories-list">
-            <?php foreach ($rows as $row): ?>
-                <div class="col">
-                    <a href="/product/view/<?= $row['id'] ?>" class="card-link">
-                        <div class="card">
-                            <div class="ratio ratio-16x9">
-                                <?php $filePath = 'files/product/' . $row['photo']; ?>
-                                <?php if (is_file($filePath)): ?>
-                                    <img src="/<?= $filePath ?>" class="card-img-top" alt="<?= $row['name'] ?>">
-                                <?php else: ?>
-                                    <img src="/static/images/default.jpg" class="card-img-top" alt="default">
-                                <?php endif; ?>
-                            </div>
-                            <div class="card-body">
-                                <h5 class="card-title">
-                                    <?= $row['name'] ?>
-                                </h5>
-                                <h6 class="card-title"><?= $row['price'] ?> ₴</h5>
-                                    <?php if (User::isAdmin()): ?>
-                                        <a href="/product/edit/<?= $row['id'] ?>" class="btn btn-primary">Редагувати</a>
-                                        <a href="/product/delete/<?= $row['id'] ?>" class="btn btn-danger">Видалити</a>
+<form method="get" action="">
+    <div class="row mb-5">
+        <div class="col-md-10 order-2 order-md-1">
+            <div class="row row-cols-1 row-cols-md-4 g-4 categories-list">
+                <?php foreach ($rows as $row): ?>
+                    <div class="col">
+                        <a href="/product/view/<?= $row['id'] ?>" class="card-link">
+                            <div class="card">
+                                <div class="ratio ratio-16x9">
+                                    <?php $filePath = 'files/product/' . $row['photo']; ?>
+                                    <?php if (is_file($filePath)): ?>
+                                        <img src="/<?= $filePath ?>" class="card-img-top" alt="<?= $row['name'] ?>">
+                                    <?php else: ?>
+                                        <img src="/static/images/default.jpg" class="card-img-top" alt="default">
                                     <?php endif; ?>
+                                </div>
+                                <div class="card-body">
+                                    <h5 class="card-title">
+                                        <?= $row['name'] ?>
+                                    </h5>
+                                    <h6 class="card-title"><?= $row['price'] ?> ₴</h5>
+                                        <?php if (User::isAdmin()): ?>
+                                            <a href="/product/edit/<?= $row['id'] ?>" class="btn btn-primary">Редагувати</a>
+                                            <a href="/product/delete/<?= $row['id'] ?>" class="btn btn-danger">Видалити</a>
+                                        <?php endif; ?>
+                                </div>
                             </div>
-                        </div>
-                    </a>
-                </div>
-            <?php endforeach; ?>
+                        </a>
+                    </div>
+                <?php endforeach; ?>
+            </div>
         </div>
-    </div>
-
-    <div class="col-md-2 order-1 order-md-2">
-        <form method="get" action="">
+        <div class="col-md-2 order-1 order-md-2">
+            <!-- <form method="get" action=""> -->
+            <!-- sortBy -->
+            <div class="mb-3">
+                <select name="sortBy" id="sortBy" class="form-control">
+                    <option value="date" <?php
+                    if (!empty($model['sortBy']) && $model['sortBy'] == 'date')
+                        echo 'selected';
+                    ?>>Дата</option>
+                    <option value="price" <?php
+                    if (!empty($model['sortBy']) && $model['sortBy'] == 'price')
+                        echo 'selected';
+                    ?>>Ціна</option>
+                    <option value="name" <?php
+                    if (!empty($model['sortBy']) && $model['sortBy'] == 'name')
+                        echo 'selected';
+                    ?>>Назва</option>
+                </select>
+            </div>
+            <!-- search -->
             <div class="mb-3">
                 <input type="search" class="form-control" placeholder="Пошук..." aria-label="Search" name="name"
                     id="name" value="<?= $model['name'] ?? null ?>">
@@ -112,10 +130,48 @@ use models\User;
             <!-- price -->
             <input type="range" class="form-range" min="0" max="520" step="40" name="price" id="price"
                 value="<?= $model['price'] ?? 520 ?>">
-
+            <div class="mb-3 price-value text-center">Будь-яка ціна</div>
             <div>
                 <button class="btn btn-primary">Пошук</button>
             </div>
-        </form>
+            <!-- </form> -->
+        </div>
     </div>
-</div>
+
+    <!-- <form method="get" action=""> -->
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+            <li class="page-item">
+                <button type="submit" class="page-link" aria-label="Previous" value="<?= $model['page'] - 1 ?>" name="page">
+                    <span aria-hidden="true">&laquo;</span>
+                </button>
+            </li>
+            <?php for ($i = 1; $i <= $model['pageCount']; $i++): ?>
+                <li class="page-item"><input type="submit" class="page-link" value="<?= $i ?>" name="page"></li>
+            <?php endfor; ?>
+            <li class="page-item">
+                <button type="submit" class="page-link" aria-label="Next" value="<?= $model['page'] + 1 ?>" name="page">
+                    <span aria-hidden="true">&raquo;</span>
+                </button>
+            </li>
+        </ul>
+    </nav>
+    <!-- </form> -->
+</form>
+<script>
+    const price = document.querySelector('#price');
+    const priceValue = document.querySelector('.price-value');
+
+    price.addEventListener('input', setPriceValue);
+
+    setPriceValue();
+
+    function setPriceValue() {
+        if (price.value >= 520)
+            priceValue.innerHTML = 'Будь-яка ціна'
+        else if (price.value <= 0)
+            priceValue.innerHTML = 'Безкоштовно';
+        else
+            priceValue.innerHTML = price.value;
+    }
+</script>
