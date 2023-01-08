@@ -21,7 +21,7 @@ class CategoryList
         }
     }
 
-    public static function deleteCategoryList($product_id)
+    public static function deleteCategoryListByProduct($product_id)
     {
         Core::getInstance()->db->delete(
             self::$tableName,
@@ -31,9 +31,19 @@ class CategoryList
         );
     }
 
+    public static function deleteCategoryListByCategory($category_id)
+    {
+        Core::getInstance()->db->delete(
+            self::$tableName,
+            [
+                'category_id' => $category_id
+            ]
+        );
+    }
+
     public static function updateCategoryList($product_id, $category_idArray)
     {
-        self::deleteCategoryList($product_id);
+        self::deleteCategoryListByProduct($product_id);
         self::addCategoryList($product_id, $category_idArray);
     }
 

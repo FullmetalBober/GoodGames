@@ -23,7 +23,7 @@ class Product
     {
         self::deleteProductPhoto($id);
         AdditionalPhotosProduct::deleteAdditionalPhotos($id);
-        CategoryList::deleteCategoryList($id);
+        CategoryList::deleteCategoryListByProduct($id);
         Core::getInstance()->db->delete(self::$tableName, [
             'id' => $id
         ]);
@@ -91,11 +91,14 @@ class Product
         return $rows;
     }
 
-    public static function getProductsByName($name)
+    public static function checkProductByName($name)
     {
-        $rows = Core::getInstance()->db->select(self::$tableName, '*', [
+        $row = Core::getInstance()->db->select(self::$tableName, '*', [
             'name' => $name
         ]);
-        return $rows;
+        if (!empty($row))
+            return true;
+        else
+            return false;
     }
 }

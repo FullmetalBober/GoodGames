@@ -78,7 +78,9 @@
                             <input type="number" value="1" min="1" class="form-control mb-2" name="count" id="count">
                         </div> -->
                     <div class="col">
-                        <button class="btn btn-primary">Придбати</button>
+                        <form method="post" action="">
+                            <button class="btn btn-primary">Придбати</button>
+                        </form>
                     </div>
                 </div>
             </div>

@@ -21,9 +21,9 @@
         <tr>
             <td><?= $index ?></td>
             <td><?= $row['product']['name'] ?></td>
-            <td><?= $row['product']['price'] ?> грн.</td>
+            <td><?= $row['product']['price'] ?> ₴</td>
             <td><?= $row['count'] ?></td>
-            <td><?= $row['product']['price'] * $row['count'] ?></td>
+            <td><?= $row['product']['price'] * $row['count'] ?>  ₴</td>
         </tr>
         <?php
         $index++;
@@ -31,7 +31,7 @@
     <tfoot>
         <tr>
             <th colspan="4">Всього:</th>
-            <th><?= $basket['totalPrice'] ?> грн.</th>
+            <th><?= $basket['totalPrice'] ?> ₴</th>
         </tr>
     </tfoot>
         <?php endif; ?>

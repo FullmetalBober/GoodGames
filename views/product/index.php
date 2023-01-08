@@ -15,7 +15,7 @@ use models\User;
 <form method="get" action="">
     <div class="row mb-5">
         <div class="col-md-10 order-2 order-md-1">
-            <div class="row row-cols-1 row-cols-md-4 g-4 categories-list">
+            <div class="row row-cols-2 row-cols-md-4 g-4 categories-list">
                 <?php foreach ($rows as $row): ?>
                     <div class="col">
                         <a href="/product/view/<?= $row['id'] ?>" class="card-link">
@@ -34,8 +34,20 @@ use models\User;
                                     </h5>
                                     <h6 class="card-title"><?= $row['price'] ?> ₴</h5>
                                         <?php if (User::isAdmin()): ?>
-                                            <a href="/product/edit/<?= $row['id'] ?>" class="btn btn-primary">Редагувати</a>
-                                            <a href="/product/delete/<?= $row['id'] ?>" class="btn btn-danger">Видалити</a>
+                                            <a href="/product/edit/<?= $row['id'] ?>" class="btn btn-outline-primary"><svg
+                                                    xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                    fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+                                                    <path
+                                                        d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z" />
+                                                </svg></a>
+                                            <a href="/product/delete/<?= $row['id'] ?>" class="btn btn-outline-danger"><svg
+                                                    xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                    fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                                    <path
+                                                        d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
+                                                    <path fill-rule="evenodd"
+                                                        d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
+                                                </svg></a>
                                         <?php endif; ?>
                                 </div>
                             </div>
@@ -45,7 +57,6 @@ use models\User;
             </div>
         </div>
         <div class="col-md-2 order-1 order-md-2">
-            <!-- <form method="get" action=""> -->
             <!-- sortBy -->
             <div class="mb-3">
                 <select name="sortBy" id="sortBy" class="form-control">
@@ -131,33 +142,54 @@ use models\User;
             <input type="range" class="form-range" min="0" max="520" step="40" name="price" id="price"
                 value="<?= $model['price'] ?? 520 ?>">
             <div class="mb-3 price-value text-center">Будь-яка ціна</div>
+            <!-- submit -->
             <div>
                 <button class="btn btn-primary">Пошук</button>
             </div>
-            <!-- </form> -->
         </div>
     </div>
 
-    <!-- <form method="get" action=""> -->
     <nav aria-label="Page navigation example">
         <ul class="pagination justify-content-center">
             <li class="page-item">
-                <button type="submit" class="page-link" aria-label="Previous" value="<?= $model['page'] - 1 ?>" name="page">
-                    <span aria-hidden="true">&laquo;</span>
+                <button type="submit" class="page-link <?php if ($model['page'] == 1)
+                    echo 'disabled'; ?>" aria-label="Previous" value="1" name="page">
+                    <span aria-hidden="true">
+                        << </span>
                 </button>
             </li>
-            <?php for ($i = 1; $i <= $model['pageCount']; $i++): ?>
-                <li class="page-item"><input type="submit" class="page-link" value="<?= $i ?>" name="page"></li>
+            <li class="page-item">
+                <button type="submit" class="page-link <?php if ($model['page'] == 1)
+                    echo 'disabled'; ?>" aria-label="Previous" value="<?= $model['page'] - 1 ?>" name="page">
+                    <span aria-hidden="true">
+                        < </span>
+                </button>
+            </li>
+            <?php
+            $paginationCount = 3;
+            $paginationStart = $model['page'] - $paginationCount < 1 ? 1 : $model['page'] - $paginationCount;
+            $paginationEnd = $model['page'] + $paginationCount > $model['pageCount'] ? $model['pageCount'] : $model['page'] + $paginationCount;
+            for ($i = $paginationStart; $i <= $paginationEnd; $i++): ?>
+                <li class="page-item"><input type="submit" class="page-link <?php if ($model['page'] == $i)
+                    echo 'active'; ?>" value="<?= $i ?>" name="page">
+                </li>
             <?php endfor; ?>
             <li class="page-item">
-                <button type="submit" class="page-link" aria-label="Next" value="<?= $model['page'] + 1 ?>" name="page">
-                    <span aria-hidden="true">&raquo;</span>
+                <button type="submit" class="page-link <?php if ($model['page'] == $model['pageCount'])
+                    echo 'disabled'; ?>" aria-label="Next" value="<?= $model['page'] + 1 ?>" name="page">
+                    <span aria-hidden="true"> > </span>
+                </button>
+            </li>
+            <li class="page-item">
+                <button type="submit" class="page-link <?php if ($model['page'] == $model['pageCount'])
+                    echo 'disabled'; ?>" aria-label="Next" value="<?= $model['pageCount'] ?>" name="page">
+                    <span aria-hidden="true"> >> </span>
                 </button>
             </li>
         </ul>
     </nav>
-    <!-- </form> -->
 </form>
+
 <script>
     const price = document.querySelector('#price');
     const priceValue = document.querySelector('.price-value');
@@ -173,5 +205,31 @@ use models\User;
             priceValue.innerHTML = 'Безкоштовно';
         else
             priceValue.innerHTML = price.value;
+    }
+
+    const radioButtons = document.querySelectorAll('input[type="radio"]');
+
+    radioButtons.forEach(radioButton => {
+
+        if (!radioButton.checked)
+            radioButton.addEventListener('click', checkRadioButton);
+        else
+            radioButton.addEventListener('click', uncheckRadioButton);
+    });
+
+    function checkRadioButton() {
+        radioButtons.forEach(radioButton => {
+            radioButton.removeEventListener('click', uncheckRadioButton);
+            radioButton.addEventListener('click', checkRadioButton);
+        });
+        this.checked = true;
+        this.removeEventListener('click', checkRadioButton);
+        this.addEventListener('click', uncheckRadioButton);
+    }
+
+    function uncheckRadioButton() {
+        this.checked = false;
+        this.removeEventListener('click', uncheckRadioButton);
+        this.addEventListener('click', checkRadioButton);
     }
 </script>

@@ -73,6 +73,21 @@ class Publisher
             return null;
     }
 
+    public static function checkPublisherByName($name)
+    {
+        $rows = Core::getInstance()->db->select(
+            self::$tableName,
+            '*',
+            [
+                'name' => $name
+            ]
+        );
+        if (!empty($rows))
+            return true;
+        else
+            return false;
+    }
+
     public static function deletePublisher($id)
     {
         self::deletePhotoFile($id);

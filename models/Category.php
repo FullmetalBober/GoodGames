@@ -20,6 +20,7 @@ class Category
 
     public static function deleteCategory($id)
     {
+        CategoryList::deleteCategoryListByCategory($id);
         Core::getInstance()->db->delete(
             self::$tableName,
             [

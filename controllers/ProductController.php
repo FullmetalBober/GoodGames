@@ -5,6 +5,7 @@ namespace controllers;
 use core\Core;
 use core\Controller;
 use models\AdditionalPhotosProduct;
+use models\Basket;
 use models\Category;
 use models\CategoryList;
 use models\Product;
@@ -13,16 +14,15 @@ use models\User;
 
 class ProductController extends Controller
 {
-    public function indexAction($params)
+    public function indexAction()
     {
         $rows = Product::getProducts();
         $rows = array_reverse($rows);
         $publishers = Publisher::getPublishers();
         $categories = Category::getCategories();
-        $categoryList = CategoryList::getCategoriesList();
 
         $page = 0;
-        $count = 6;
+        $count = 20;
         if (Core::getInstance()->requestMethod === 'GET') {
 
             if (!empty($_GET['sortBy'])) {
@@ -59,7 +59,7 @@ class ProductController extends Controller
                 });
             }
 
-            if (!empty($_GET['price']) && $_GET['price'] <= 480) {
+            if (isset($_GET['price']) && $_GET['price'] <= 480) {
                 $rows = array_filter($rows, function ($row) {
                     if ($row['price'] <= $_GET['price'])
                         return $row;
@@ -92,6 +92,8 @@ class ProductController extends Controller
             $errors = [];
             if (empty($_POST['name']))
                 $errors['name'] = 'Назва не може бути порожньою';
+            else if (Product::checkProductByName($_POST['name']))
+                $errors['name'] = 'Товар з такою назвою вже існує';
             if (empty($_POST['publisher_id']))
                 $errors['publisher_id'] = 'Категорія не може бути порожньою';
             if ($_POST['price'] <= 0)
@@ -130,9 +132,11 @@ class ProductController extends Controller
         if ($product === null)
             return $this->error(404);
         $product['additionalPhotos'] = AdditionalPhotosProduct::getAdditionalPhotos($id);
-        // echo '<pre>';
-        // var_dump($product['additionalPhotos']);
-        // die;
+
+        if (Core::getInstance()->requestMethod === 'POST') {
+            Basket::addProduct($id);
+        }
+
         return $this->render(null, [
             'product' => $product
         ]);
@@ -157,6 +161,8 @@ class ProductController extends Controller
             $errors = [];
             if (empty($_POST['name']))
                 $errors['name'] = 'Назва не може бути порожньою';
+            else if (Product::checkProductByName($_POST['name']) && $_POST['name'] != $product['name'])
+                $errors['name'] = 'Товар з такою назвою вже існує';
             // if (empty($_POST['publisher_id']))
             //     $errors['publisher_id'] = 'Видавець не може бути порожншм';
             if ($_POST['price'] <= 0)
