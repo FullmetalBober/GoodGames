@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Час створення: Січ 08 2023 р., 18:39
+-- Час створення: Січ 09 2023 р., 15:21
 -- Версія сервера: 8.0.30
 -- Версія PHP: 8.1.9
 
@@ -56,9 +56,17 @@ INSERT INTO `additional_photos_product` (`id`, `product_id`, `photo`) VALUES
 CREATE TABLE `basket` (
   `id` int NOT NULL,
   `product_id` int NOT NULL,
-  `user_id` int NOT NULL,
-  `count` int NOT NULL
+  `user_id` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Дамп даних таблиці `basket`
+--
+
+INSERT INTO `basket` (`id`, `product_id`, `user_id`) VALUES
+(1, 10, 1),
+(2, 20, 1),
+(3, 19, 1);
 
 -- --------------------------------------------------------
 
@@ -213,7 +221,8 @@ INSERT INTO `user` (`id`, `login`, `password`, `lastname`, `firstname`, `access_
 (15, 'mankivskyi8@gmail.com', '098f6bcd4621d373cade4e832627b4f6', 'test', 'test', 1),
 (16, 'test@gmail.com', '098f6bcd4621d373cade4e832627b4f6', 'test', 'test', 1),
 (17, 'test1@gmail.com', '098f6bcd4621d373cade4e832627b4f6', 'test', 'test', 1),
-(18, 'test2@gmail.com', '098f6bcd4621d373cade4e832627b4f6', 'test', 'test', 1);
+(18, 'test2@gmail.com', '098f6bcd4621d373cade4e832627b4f6', 'test', 'test', 1),
+(19, 'test3@gmail.com', '098f6bcd4621d373cade4e832627b4f6', 'test', 'test', 1);
 
 --
 -- Індекси збережених таблиць
@@ -281,7 +290,7 @@ ALTER TABLE `additional_photos_product`
 -- AUTO_INCREMENT для таблиці `basket`
 --
 ALTER TABLE `basket`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT для таблиці `category`
@@ -311,7 +320,7 @@ ALTER TABLE `publisher`
 -- AUTO_INCREMENT для таблиці `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- Обмеження зовнішнього ключа збережених таблиць

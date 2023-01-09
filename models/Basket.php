@@ -7,7 +7,7 @@ use core\Core;
 class Basket
 {
     protected static $tableName = 'basket';
-    public static function addProduct($product_id, $count = 1)
+    public static function addProduct($product_id,)
     {
         if (User::isUserAuthentificated()) {
             $user_id = User::getCurrentAuthentificatedUser()['id'];
@@ -16,14 +16,13 @@ class Basket
                 [
                     'user_id' => $user_id,
                     'product_id' => $product_id,
-                    'count' => $count
                 ]
             );
         } else {
 
-            if (!is_array($_SESSION['basket']) || !isset($_SESSION['basket']))
+            if (!isset($_SESSION['basket']) || !is_array($_SESSION['basket']))
                 $_SESSION['basket'] = [];
-            $_SESSION['basket'] = array_merge($_SESSION['basket'], [$product_id => $count]);
+            $_SESSION['basket'] = array_merge($_SESSION['basket'], [$product_id]);
         }
     }
 
@@ -32,13 +31,10 @@ class Basket
         if (User::isUserAuthentificated()) {
             $user_id = User::getCurrentAuthentificatedUser()['id'];
             if (isset($_SESSION['basket']) && is_array($_SESSION['basket'])) {
-                foreach ($_SESSION['basket'] as $product_id => $count) {
+                foreach ($_SESSION['basket'] as $product_id) {
                     $basket = self::getProductInBasketDB($product_id);
-                    if ($basket) {
-                        self::updateProductInBasketDB($product_id, $basket['count'] + $count);
-                    } else {
-                        self::addProduct($product_id, $count);
-                    }
+                    if (!$basket)
+                        self::addProduct($product_id);
                 }
                 unset($_SESSION['basket']);
             }
@@ -63,23 +59,6 @@ class Basket
         return null;
     }
 
-    public static function updateProductInBasketDB($product_id, $count)
-    {
-        if (User::isUserAuthentificated()) {
-            $user_id = User::getCurrentAuthentificatedUser()['id'];
-            Core::getInstance()->db->update(
-                self::$tableName,
-                [
-                    'count' => $count
-                ],
-                [
-                    'user_id' => $user_id,
-                    'product_id' => $product_id
-                ]
-            );
-        }
-    }
-
     public static function getProductsInBasket()
     {
         if (User::isUserAuthentificated()) {
@@ -97,10 +76,9 @@ class Basket
                 $totalPrice = 0;
                 foreach ($rows as $row) {
                     $product = Product::getProductById($row['product_id']);
-                    $totalPrice += $product['price'] * $row['count'];
+                    $totalPrice += $product['price'];
                     $products[] = [
                         'product' => $product,
-                        'count' => $row['count']
                     ];
                 }
                 $result['products'] = $products;
@@ -113,12 +91,11 @@ class Basket
                 $result = [];
                 $products = [];
                 $totalPrice = 0;
-                foreach ($_SESSION['basket'] as $product_id => $count) {
+                foreach ($_SESSION['basket'] as $product_id) {
                     $product = Product::getProductById($product_id);
-                    $totalPrice += $product['price'] * $count;
+                    $totalPrice += $product['price'];
                     $products[] = [
                         'product' => $product,
-                        'count' => $count
                     ];
                 }
                 $result['products'] = $products;
@@ -127,6 +104,4 @@ class Basket
             }
         return null;
     }
-
-
 }

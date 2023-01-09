@@ -24,7 +24,7 @@ class ProductController extends Controller
         $page = 0;
         $count = 20;
         if (Core::getInstance()->requestMethod === 'GET') {
-
+            $_GET = array_map('trim', $_GET);
             if (!empty($_GET['sortBy'])) {
                 if ($_GET['sortBy'] === 'date')
                     $rows = Utils::sortByDate($rows);
@@ -51,8 +51,6 @@ class ProductController extends Controller
             if (!empty($_GET['page']))
                 $page = $_GET['page'] - 1;
 
-
-
             $model = $_GET;
         }
         $model['page'] = $page + 1;
@@ -72,6 +70,7 @@ class ProductController extends Controller
         $publishers = Publisher::getPublishers();
         $categories = Category::getCategories();
         if (Core::getInstance()->requestMethod === 'POST') {
+            $_POST = array_map('trim', $_POST);
             $errors = [];
             if (empty($_POST['name']))
                 $errors['name'] = 'Назва не може бути порожньою';
@@ -141,6 +140,7 @@ class ProductController extends Controller
         $product['additionalPhotos'] = AdditionalPhotosProduct::getAdditionalPhotos($id);
 
         if (Core::getInstance()->requestMethod === 'POST') {
+            $_POST = array_map('trim', $_POST);
             $errors = [];
             if (empty($_POST['name']))
                 $errors['name'] = 'Назва не може бути порожньою';
@@ -187,9 +187,6 @@ class ProductController extends Controller
             return $this->error(403);
         $product = Product::getProductById($id);
         if ($yes) {
-            // $filePath = 'files/product' . $product['photo'];
-            // if (file_exists($filePath))
-            //     unlink($filePath);
             Product::deleteProduct($id);
             $this->redirect('/product/index');
         }

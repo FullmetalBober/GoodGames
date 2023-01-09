@@ -4,10 +4,10 @@ use models\User;
 
 ?>
 
-<h2>Список категорій</h2>
+<h2>Список видавців</h2>
 <?php if (User::isAdmin()): ?>
     <div class="mb-3">
-        <a href="/publisher/add" class="btn btn-success">Додати категорію</a>
+        <a href="/publisher/add" class="btn btn-success">Додати видавця</a>
     </div>
 <?php endif; ?>
 

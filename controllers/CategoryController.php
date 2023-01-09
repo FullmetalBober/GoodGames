@@ -25,6 +25,7 @@ class CategoryController extends Controller
         if (!User::isAdmin())
             return $this->error(403);
         if (Core::getInstance()->requestMethod === 'POST') {
+            $_POST = array_map('trim', $_POST);
             $errors = [];
             if (empty($_POST['name']))
                 $errors['name'] = 'Назва не може бути порожньою';
@@ -57,6 +58,7 @@ class CategoryController extends Controller
         $model['name'] = $category['name'];
 
         if (Core::getInstance()->requestMethod === 'POST') {
+            $_POST = array_map('trim', $_POST);
             $model = $_POST;
             $errors = [];
             if (empty($_POST['name']))

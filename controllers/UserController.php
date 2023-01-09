@@ -18,6 +18,7 @@ class UserController extends Controller
         if (User::isUserAuthentificated())
             $this->redirect('/');
         if (Core::getInstance()->requestMethod == 'POST') {
+            $_POST = array_map('trim', $_POST);
             $errors = [];
             if (!filter_var($_POST['login'], FILTER_VALIDATE_EMAIL))
                 $errors['login'] = 'Помилка при введні електронної пошти';
@@ -47,7 +48,7 @@ class UserController extends Controller
         if (User::isUserAuthentificated())
             $this->redirect('/');
         if (Core::getInstance()->requestMethod == 'POST') {
-
+            $_POST = array_map('trim', $_POST);
             $user = User::getUserByLoginAndPassword($_POST['login'] ?? null, $_POST['password'] ?? null);
             $error = null;
             if (empty($user))

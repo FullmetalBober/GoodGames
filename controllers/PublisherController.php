@@ -22,6 +22,7 @@ class PublisherController extends Controller
         $count = 20;
 
         if (Core::getInstance()->requestMethod === 'GET') {
+            $_GET = array_map('trim', $_GET);
             if (!empty($_GET['sortBy'])) {
                 if ($_GET['sortBy'] === 'date')
                     $rows = Utils::sortByDate($rows);
@@ -56,7 +57,7 @@ class PublisherController extends Controller
         if (!User::isAdmin())
             return $this->error(403);
         if (Core::getInstance()->requestMethod === 'POST') {
-            $_POST['name'] = trim($_POST['name']);
+            $_POST = array_map('trim', $_POST);
 
             $errors = [];
             if (empty($_POST['name']))
@@ -89,7 +90,7 @@ class PublisherController extends Controller
             if (empty($publisher))
                 return $this->error(404);
             if (Core::getInstance()->requestMethod === 'POST') {
-
+                $_POST = array_map('trim', $_POST);
                 $errors = [];
                 if (empty($_POST['name']))
                     $errors['name'] = 'Назва не може бути порожньою';
@@ -126,9 +127,6 @@ class PublisherController extends Controller
             return $this->error(403);
         $publisher = Publisher::getPublisherById($id);
         if ($yes) {
-            $filePath = 'files/publisher' . $publisher['photo'];
-            if (file_exists($filePath))
-                unlink($filePath);
             Publisher::deletePublisher($id);
             $this->redirect('/publisher/index');
         }
@@ -149,6 +147,7 @@ class PublisherController extends Controller
         $count = 20;
 
         if (Core::getInstance()->requestMethod === 'GET') {
+            $_GET = array_map('trim', $_GET);
             if (!empty($_GET['sortBy'])) {
                 if ($_GET['sortBy'] === 'date')
                     $rows = Utils::sortByDate($rows);
