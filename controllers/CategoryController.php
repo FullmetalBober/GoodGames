@@ -12,6 +12,8 @@ class CategoryController extends Controller
 {
     public function indexAction()
     {
+        if (!User::isAdmin())
+            return $this->error(403);
         $categories = Category::getCategoriesWithCount();
         return $this->render(null, [
             'categories' => $categories
@@ -59,7 +61,7 @@ class CategoryController extends Controller
             $errors = [];
             if (empty($_POST['name']))
                 $errors['name'] = 'Назва не може бути порожньою';
-            else if (Category::checkCategoryName($_POST['name']))
+            else if (Category::checkCategoryName($_POST['name']) && $_POST['name'] !== $category['name'])
                 $errors['name'] = 'Категорія з такою назвою вже існує';
             if (empty($errors)) {
                 Category::updateCategory($id, $_POST['name']);

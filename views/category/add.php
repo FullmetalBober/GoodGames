@@ -14,7 +14,7 @@
             <div id="nameHelp" class="form-text text-danger">
                 <?= $errors['name'] ?>
             </div>
-            <?php endif; ?>
+        <?php endif; ?>
     </div>
     <div>
         <button class="btn btn-primary">Додати</button>

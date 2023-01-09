@@ -2,6 +2,7 @@
 
 namespace models;
 
+use core\Core;
 use core\Utils;
 
 class User
@@ -9,7 +10,7 @@ class User
     protected static $tableName = 'user';
     public static function addUser($login, $password, $lastname, $firstname)
     {
-        \core\Core::getInstance()->db->insert(
+        Core::getInstance()->db->insert(
             self::$tableName,
             [
                 'login' => $login,
@@ -28,7 +29,7 @@ class User
     public static function updateUser($id, $updatesArray)
     {
         $updatesArray = Utils::filterArray($updatesArray, ['lastname', 'firstname']);
-        \core\Core::getInstance()->db->update(
+        Core::getInstance()->db->update(
             self::$tableName,
             $updatesArray,
             ['id' => $id]
@@ -37,7 +38,7 @@ class User
 
     public static function isEmailExists($login)
     {
-        $user = \core\Core::getInstance()->db->select(
+        $user = Core::getInstance()->db->select(
             self::$tableName,
             '*',
             ['login' => $login]
@@ -47,7 +48,7 @@ class User
 
     public static function verifyUser($login, $password)
     {
-        $user = \core\Core::getInstance()->db->select(
+        $user = Core::getInstance()->db->select(
             self::$tableName,
             '*',
             [
@@ -60,7 +61,7 @@ class User
 
     public static function getUserByLoginAndPassword($login, $password)
     {
-        $user = \core\Core::getInstance()->db->select(
+        $user = Core::getInstance()->db->select(
             self::$tableName,
             '*',
             [

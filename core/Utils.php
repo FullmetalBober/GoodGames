@@ -13,4 +13,60 @@ class Utils
         }
         return $newArray;
     }
+
+    public static function sortByName($rows)
+    {
+        usort($rows, function ($a, $b) {
+            return strcmp($a['name'], $b['name']);
+        });
+        return $rows;
+    }
+
+    public static function sortByPrice($rows)
+    {
+        usort($rows, function ($a, $b) {
+            return $a['price'] - $b['price'];
+        });
+        return $rows;
+    }
+
+    public static function sortByDate($rows)
+    {
+        return array_reverse($rows);
+    }
+
+    public static function filterByName($rows, $name)
+    {
+        $name = strtolower($name);
+        return array_filter($rows, function ($row) use ($name) {
+            if (strpos(strtolower($row['name']), $name) !== false)
+                return $row;
+        });
+    }
+
+    public static function filterByPublisher($rows, $publisher_id)
+    {
+        return array_filter($rows, function ($row) use ($publisher_id) {
+            if ($row['publisher_id'] == $publisher_id)
+                return $row;
+        });
+    }
+
+    public static function filterByCategories($rows, $categories_id)
+    {
+        return array_filter($rows, function ($row) use ($categories_id) {
+            $array1 = $categories_id;
+            $array2 = \models\CategoryList::getCategoryListByProductId($row['id']);
+            if (array_intersect($array1, $array2) == $array1)
+                return $row;
+        });
+    }
+
+    public static function filterByPrice($rows, $price)
+    {
+        return array_filter($rows, function ($row) use ($price) {
+            if ($row['price'] <= $price)
+                return $row;
+        });
+    }
 }

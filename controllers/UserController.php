@@ -4,6 +4,7 @@ namespace controllers;
 
 use core\Controller;
 use core\Core;
+use models\Basket;
 use models\User;
 
 class UserController extends Controller
@@ -35,7 +36,7 @@ class UserController extends Controller
                 ]);
             } else {
                 User::addUser($_POST['login'], $_POST['password'], $_POST['lastname'], $_POST['firstname']);
-                return $this->renderView('register-success');
+                return $this->renderView('login');
             }
         } else
             return $this->render();
@@ -53,6 +54,7 @@ class UserController extends Controller
                 $error = 'Невірний логін або пароль';
             else {
                 User::authentificateUser($user);
+                Basket::addProductFromSessionToDB();
                 $this->redirect('/');
             }
         }

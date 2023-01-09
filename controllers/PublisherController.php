@@ -4,6 +4,7 @@ namespace controllers;
 
 use core\Controller;
 use core\Core;
+use core\Utils;
 use models\Category;
 use models\CategoryList;
 use models\Publisher;
@@ -15,7 +16,6 @@ class PublisherController extends Controller
     public function indexAction()
     {
         $rows = Publisher::getPublishers();
-        $rows = array_reverse($rows);
         $viewPath = null;
 
         $page = 0;
@@ -23,17 +23,14 @@ class PublisherController extends Controller
 
         if (Core::getInstance()->requestMethod === 'GET') {
             if (!empty($_GET['sortBy'])) {
-                if ($_GET['sortBy'] === 'name') {
-                    usort($rows, function ($a, $b) {
-                        return strcmp($a['name'], $b['name']);
-                    });
-                }
+                if ($_GET['sortBy'] === 'date')
+                    $rows = Utils::sortByDate($rows);
+
+                if ($_GET['sortBy'] === 'name')
+                    $rows = Utils::sortByName($rows);
             }
             if (!empty($_GET['name']))
-                $rows = array_filter($rows, function ($row) {
-                    if (strpos($row['name'], $_GET['name']) !== false)
-                        return $row;
-                });
+                $rows = Utils::filterByName($rows, $_GET['name']);
 
             if (!empty($_GET['page']))
                 $page = $_GET['page'] - 1;
@@ -153,38 +150,24 @@ class PublisherController extends Controller
 
         if (Core::getInstance()->requestMethod === 'GET') {
             if (!empty($_GET['sortBy'])) {
-                if ($_GET['sortBy'] === 'name') {
-                    usort($rows, function ($a, $b) {
-                        return strcmp($a['name'], $b['name']);
-                    });
-                }
+                if ($_GET['sortBy'] === 'date')
+                    $rows = Utils::sortByDate($rows);
 
-                if ($_GET['sortBy'] === 'price') {
-                    usort($rows, function ($a, $b) {
-                        return $a['price'] - $b['price'];
-                    });
-                }
+                if ($_GET['sortBy'] === 'name')
+                    $rows = Utils::sortByName($rows);
+
+                if ($_GET['sortBy'] === 'price')
+                    $rows = Utils::sortByPrice($rows);
             }
 
             if (!empty($_GET['name']))
-                $rows = array_filter($rows, function ($row) {
-                    if (strpos($row['name'], $_GET['name']) !== false)
-                        return $row;
-                });
+                $rows = Utils::filterByName($rows, $_GET['name']);
 
             if (!empty($_GET['categories_id']))
-                $rows = array_filter($rows, function ($row) {
-                    $array1 = $_GET['categories_id'];
-                    $array2 = CategoryList::getCategoryListByProductId($row['id']);
-                    if (array_intersect($array1, $array2) == $array1)
-                        return $row;
-                });
+                $rows = Utils::filterByCategories($rows, $_GET['categories_id']);
 
             if (isset($_GET['price']) && $_GET['price'] <= 480)
-                $rows = array_filter($rows, function ($row) {
-                    if ($row['price'] <= $_GET['price'])
-                        return $row;
-                });
+                $rows = Utils::filterByPrice($rows, $_GET['price']);
 
             if (!empty($_GET['page']))
                 $page = $_GET['page'] - 1;
