@@ -11,6 +11,9 @@ class Basket
     {
         if (User::isUserAuthentificated()) {
             $user_id = User::getCurrentAuthentificatedUser()['id'];
+            $basket = self::getProductInBasket($product_id);
+            $library = Library::getProductInLibrary($product_id);
+            if (!$basket && !$library)
             Core::getInstance()->db->insert(
                 self::$tableName,
                 [
@@ -19,7 +22,10 @@ class Basket
                 ]
             );
         } else {
-
+            $basket = self::getProductInBasket($product_id);
+            $library = Library::getProductInLibrary($product_id);
+            if (!$basket && !$library)
+                return;
             if (!isset($_SESSION['basket']) || !is_array($_SESSION['basket']))
                 $_SESSION['basket'] = [];
             $_SESSION['basket'] = array_merge($_SESSION['basket'], [$product_id]);
@@ -29,11 +35,11 @@ class Basket
     public static function addProductFromSessionToDB()
     {
         if (User::isUserAuthentificated()) {
-            $user_id = User::getCurrentAuthentificatedUser()['id'];
             if (isset($_SESSION['basket']) && is_array($_SESSION['basket'])) {
                 foreach ($_SESSION['basket'] as $product_id) {
-                    $basket = self::getProductInBasketDB($product_id);
-                    if (!$basket)
+                    $basket = self::getProductInBasket($product_id);
+                    $library = Library::getProductInLibrary($product_id);
+                    if (!$basket && !$library)
                         self::addProduct($product_id);
                 }
                 unset($_SESSION['basket']);
@@ -41,7 +47,7 @@ class Basket
         }
     }
 
-    public static function getProductInBasketDB($product_id)
+    public static function getProductInBasket($product_id)
     {
         if (User::isUserAuthentificated()) {
             $user_id = User::getCurrentAuthentificatedUser()['id'];
@@ -55,6 +61,11 @@ class Basket
             );
             if (!empty($rows))
                 return $rows[0];
+        }else{
+            if (isset($_SESSION['basket']) && is_array($_SESSION['basket'])) {
+                if (in_array($product_id, $_SESSION['basket']))
+                    return true;
+            }
         }
         return null;
     }
@@ -71,20 +82,7 @@ class Basket
                 ]
             );
             if (!empty($rows)) {
-                $result = [];
-                $products = [];
-                $totalPrice = 0;
-                foreach ($rows as $row) {
-                    $product = Product::getProductById($row['product_id']);
-                    $totalPrice += $product['price'];
-                    $products[] = [
-                        'product' => $product,
-                    ];
-                }
-                $result['products'] = $products;
-                $result['totalPrice'] = $totalPrice;
-                return $result;
-
+                return self::reconstructRows($rows);
             }
         } else
             if (isset($_SESSION['basket']) && is_array($_SESSION['basket'])) {
@@ -96,6 +94,7 @@ class Basket
                     $totalPrice += $product['price'];
                     $products[] = [
                         'product' => $product,
+                        'id' => $product_id
                     ];
                 }
                 $result['products'] = $products;
@@ -103,5 +102,84 @@ class Basket
                 return $result;
             }
         return null;
+    }
+
+    public static function deleteOneProduct($product_id){
+        if (User::isUserAuthentificated()) {
+            $user_id = User::getCurrentAuthentificatedUser()['id'];
+            Core::getInstance()->db->delete(
+                self::$tableName,
+                [
+                    'user_id' => $user_id,
+                    'product_id' => $product_id
+                ]
+            );
+        } else{
+            if (($key = array_search($product_id, $_SESSION['basket'])) !== false) {
+                unset($_SESSION['basket'][$key]);
+            }
+        }
+    }
+
+    public static function deleteOneProductById($id){
+        if (User::isUserAuthentificated()) {
+            $user_id = User::getCurrentAuthentificatedUser()['id'];
+            Core::getInstance()->db->delete(
+                self::$tableName,
+                [
+                    'user_id' => $user_id,
+                    'id' => $id
+                ]
+            );
+        }
+    }
+
+    public static function deleteAllProducts(){
+        if (User::isUserAuthentificated()) {
+            $user_id = User::getCurrentAuthentificatedUser()['id'];
+            Core::getInstance()->db->delete(
+                self::$tableName,
+                [
+                    'user_id' => $user_id
+                ]
+            );
+        }else{
+            if (isset($_SESSION['basket']) && is_array($_SESSION['basket']))
+                unset($_SESSION['basket']);
+        }
+    }
+
+    public static function getProductById($id)
+    {
+        $rows = Core::getInstance()->db->select(
+            self::$tableName,
+            '*',
+            [
+                'id' => $id
+            ]
+        );
+        if (!empty($rows)) {
+            return self::reconstructRows($rows);
+        }
+
+        return null;
+    }
+
+    public static function reconstructRows($rows){
+        $result = [];
+        $products = [];
+        $totalPrice = 0;
+        foreach ($rows as $row) {
+            $product = Product::getProductById($row['product_id']);
+            $id = $row['id'];
+            $totalPrice += $product['price'];
+            $products[] = [
+                'product' => $product,
+                'id' => $id
+            ];
+        }
+        $result['products'] = $products;
+        $result['totalPrice'] = $totalPrice;
+        return $result;
     }
 }

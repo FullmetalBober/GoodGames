@@ -18,6 +18,7 @@ else
     <title>
         <?= $siteName ?> | <?= $title ?>
     </title>
+    <link rel="icon" type="image/x-icon" href="/static/images/logo.png">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
     <script async src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
@@ -133,6 +134,37 @@ else
                                     Кошик
                                 </a>
                             </li>
+                            <li>
+                                <?php if (User::isUserAuthentificated()): ?>
+                                    <div class="dropdown nav-link mt-2">
+                                        <a href="#" class="d-block text-decoration-none dropdown-toggle show text-white"
+                                            data-bs-toggle="dropdown" aria-expanded="true">
+                                            <?php $filePath = 'files/publisher/' . $user['photo']; ?>
+                                            <?php if (is_file($filePath)): ?>
+                                                <img src="/<?= $filePath ?>" class="rounded-circle" width="32" height="32"
+                                                    alt="<?= $user['firstname'] ?>">
+                                            <?php else: ?>
+                                                <img src="/static/images/default.jpg" class="rounded-circle" width="32"
+                                                    height="32" alt="default">
+                                            <?php endif; ?>
+                                        </a>
+                                        <ul class="dropdown-menu text-small" data-popper-placement="bottom-end"
+                                            style="position: absolute; inset: 0px 0px auto auto; margin: 0px; transform: translate(0px, 34px);">
+                                            <li><a class="dropdown-item" href="#">Профіль</a></li>
+                                            <li><a class="dropdown-item" href="#">Бібліотека</a></li>
+                                            <li><a class="dropdown-item" href="#">Налаштування</a></li>
+
+                                            <li>
+                                                <hr class="dropdown-divider">
+                                            </li>
+                                            <li><a class="dropdown-item" href="/user/logout">Вийти</a></li>
+                                        </ul>
+                                    </div>
+
+                                <?php else: ?>
+                                    <a href="/user/login" class="btn btn-outline-light navbar-text mt-2">Увійти</a>
+                                <?php endif ?>
+                            </li>
                             <!-- <li>
                             <a href="#" class="nav-link text-white">
                                 <svg class="bi d-block mx-auto mb-1" width="24" height="24">
@@ -142,18 +174,6 @@ else
                             </a>
                         </li> -->
                         </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="px-3 py-2 border-bottom mb-3 text-bg-light">
-                <div class="container d-flex flex-wrap justify-content-center">
-                    <div class="text-end">
-                        <?php if (User::isUserAuthentificated()): ?>
-                            <a href="/user/logout" class="btn btn-light text-dark me-2">Вийти</a>
-                        <?php else: ?>
-                            <a href="/user/login" class="btn btn-light text-dark me-2">Увійти</a>
-                            <a href="/user/register" class="btn btn-primary">Реєстрація</a>
-                        <?php endif ?>
                     </div>
                 </div>
             </div>

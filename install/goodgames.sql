@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Час створення: Січ 09 2023 р., 15:21
+-- Час створення: Січ 10 2023 р., 18:22
 -- Версія сервера: 8.0.30
 -- Версія PHP: 8.1.9
 
@@ -58,15 +58,6 @@ CREATE TABLE `basket` (
   `product_id` int NOT NULL,
   `user_id` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
---
--- Дамп даних таблиці `basket`
---
-
-INSERT INTO `basket` (`id`, `product_id`, `user_id`) VALUES
-(1, 10, 1),
-(2, 20, 1),
-(3, 19, 1);
 
 -- --------------------------------------------------------
 
@@ -127,6 +118,25 @@ INSERT INTO `category_list` (`id`, `product_id`, `category_id`) VALUES
 (61, 10, 8),
 (62, 10, 9),
 (63, 10, 10);
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблиці `library`
+--
+
+CREATE TABLE `library` (
+  `id` int NOT NULL,
+  `product_id` int NOT NULL,
+  `user_id` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Дамп даних таблиці `library`
+--
+
+INSERT INTO `library` (`id`, `product_id`, `user_id`) VALUES
+(2, 19, 1);
 
 -- --------------------------------------------------------
 
@@ -202,27 +212,28 @@ CREATE TABLE `user` (
   `password` varchar(255) NOT NULL,
   `lastname` varchar(255) NOT NULL,
   `firstname` varchar(255) NOT NULL,
-  `access_level` int NOT NULL DEFAULT '1'
+  `access_level` int NOT NULL DEFAULT '1',
+  `photo` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Дамп даних таблиці `user`
 --
 
-INSERT INTO `user` (`id`, `login`, `password`, `lastname`, `firstname`, `access_level`) VALUES
-(1, 'mankivskiy.vlsd@gmail.com', '21232f297a57a5a743894a0e4a801fc3', 'Mankivskyi', 'Vladyslav', 10),
-(8, 'mankivskyi.vlad@gmail.com', '098f6bcd4621d373cade4e832627b4f6', 'test', '', 1),
-(9, 'mankivskyi@gmail.com', '098f6bcd4621d373cade4e832627b4f6', 'test', 'test', 1),
-(10, 'mankivskyi3@gmail.com', '098f6bcd4621d373cade4e832627b4f6', 'test', 'test', 1),
-(11, 'mankivskyi4@gmail.com', '098f6bcd4621d373cade4e832627b4f6', 'test', 'test', 1),
-(12, 'mankivskyi5@gmail.com', '098f6bcd4621d373cade4e832627b4f6', 'test', 'test', 1),
-(13, 'mankivskyi6@gmail.com', '098f6bcd4621d373cade4e832627b4f6', 'test', 'test', 1),
-(14, 'mankivskyi7@gmail.com', '098f6bcd4621d373cade4e832627b4f6', 'test', 'test', 1),
-(15, 'mankivskyi8@gmail.com', '098f6bcd4621d373cade4e832627b4f6', 'test', 'test', 1),
-(16, 'test@gmail.com', '098f6bcd4621d373cade4e832627b4f6', 'test', 'test', 1),
-(17, 'test1@gmail.com', '098f6bcd4621d373cade4e832627b4f6', 'test', 'test', 1),
-(18, 'test2@gmail.com', '098f6bcd4621d373cade4e832627b4f6', 'test', 'test', 1),
-(19, 'test3@gmail.com', '098f6bcd4621d373cade4e832627b4f6', 'test', 'test', 1);
+INSERT INTO `user` (`id`, `login`, `password`, `lastname`, `firstname`, `access_level`, `photo`) VALUES
+(1, 'mankivskiy.vlsd@gmail.com', '21232f297a57a5a743894a0e4a801fc3', 'Mankivskyi', 'Vladyslav', 10, ''),
+(8, 'mankivskyi.vlad@gmail.com', '098f6bcd4621d373cade4e832627b4f6', 'test', '', 1, ''),
+(9, 'mankivskyi@gmail.com', '098f6bcd4621d373cade4e832627b4f6', 'test', 'test', 1, ''),
+(10, 'mankivskyi3@gmail.com', '098f6bcd4621d373cade4e832627b4f6', 'test', 'test', 1, ''),
+(11, 'mankivskyi4@gmail.com', '098f6bcd4621d373cade4e832627b4f6', 'test', 'test', 1, ''),
+(12, 'mankivskyi5@gmail.com', '098f6bcd4621d373cade4e832627b4f6', 'test', 'test', 1, ''),
+(13, 'mankivskyi6@gmail.com', '098f6bcd4621d373cade4e832627b4f6', 'test', 'test', 1, ''),
+(14, 'mankivskyi7@gmail.com', '098f6bcd4621d373cade4e832627b4f6', 'test', 'test', 1, ''),
+(15, 'mankivskyi8@gmail.com', '098f6bcd4621d373cade4e832627b4f6', 'test', 'test', 1, ''),
+(16, 'test@gmail.com', '098f6bcd4621d373cade4e832627b4f6', 'test', 'test', 1, ''),
+(17, 'test1@gmail.com', '098f6bcd4621d373cade4e832627b4f6', 'test', 'test', 1, ''),
+(18, 'test2@gmail.com', '098f6bcd4621d373cade4e832627b4f6', 'test', 'test', 1, ''),
+(19, 'test3@gmail.com', '098f6bcd4621d373cade4e832627b4f6', 'test', 'test', 1, '');
 
 --
 -- Індекси збережених таблиць
@@ -240,8 +251,8 @@ ALTER TABLE `additional_photos_product`
 --
 ALTER TABLE `basket`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `product_id` (`product_id`),
-  ADD KEY `user_id` (`user_id`);
+  ADD KEY `basket_ibfk_1` (`product_id`),
+  ADD KEY `basket_ibfk_2` (`user_id`);
 
 --
 -- Індекси таблиці `category`
@@ -254,7 +265,15 @@ ALTER TABLE `category`
 --
 ALTER TABLE `category_list`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `category_id` (`category_id`),
+  ADD KEY `category_list_ibfk_1` (`category_id`),
+  ADD KEY `category_list_ibfk_2` (`product_id`);
+
+--
+-- Індекси таблиці `library`
+--
+ALTER TABLE `library`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_id` (`user_id`),
   ADD KEY `product_id` (`product_id`);
 
 --
@@ -290,7 +309,7 @@ ALTER TABLE `additional_photos_product`
 -- AUTO_INCREMENT для таблиці `basket`
 --
 ALTER TABLE `basket`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT для таблиці `category`
@@ -305,6 +324,12 @@ ALTER TABLE `category_list`
   MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=64;
 
 --
+-- AUTO_INCREMENT для таблиці `library`
+--
+ALTER TABLE `library`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
 -- AUTO_INCREMENT для таблиці `product`
 --
 ALTER TABLE `product`
@@ -314,7 +339,7 @@ ALTER TABLE `product`
 -- AUTO_INCREMENT для таблиці `publisher`
 --
 ALTER TABLE `publisher`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT COMMENT 'ID', AUTO_INCREMENT=17;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT COMMENT 'ID', AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT для таблиці `user`
@@ -336,15 +361,22 @@ ALTER TABLE `additional_photos_product`
 -- Обмеження зовнішнього ключа таблиці `basket`
 --
 ALTER TABLE `basket`
-  ADD CONSTRAINT `basket_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-  ADD CONSTRAINT `basket_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+  ADD CONSTRAINT `basket_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `basket_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Обмеження зовнішнього ключа таблиці `category_list`
 --
 ALTER TABLE `category_list`
-  ADD CONSTRAINT `category_list_ibfk_1` FOREIGN KEY (`category_id`) REFERENCES `category` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-  ADD CONSTRAINT `category_list_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+  ADD CONSTRAINT `category_list_ibfk_1` FOREIGN KEY (`category_id`) REFERENCES `category` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `category_list_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Обмеження зовнішнього ключа таблиці `library`
+--
+ALTER TABLE `library`
+  ADD CONSTRAINT `library_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `library_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Обмеження зовнішнього ключа таблиці `product`
