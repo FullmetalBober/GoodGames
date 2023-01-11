@@ -17,7 +17,7 @@ use models\User;
             <div class="row row-cols-2 row-cols-md-5 g-4 categories-list mb-5">
                 <?php foreach ($rows as $row): ?>
                     <div class="col">
-                        <div class="card" onclick="window.location='/publisher/view/<?= $row['id'] ?>';"
+                        <div class="card h-100" onclick="window.location='/publisher/view/<?= $row['id'] ?>';"
                             style="cursor:pointer;">
                             <div class="ratio ratio-1x1">
                                 <?php $filePath = 'files/publisher/' . $row['photo']; ?>

@@ -14,14 +14,15 @@ class Product
         $fieldsList = ['name', 'publisher_id', 'price', 'short_description', 'description', 'visible', 'photo'];
         $row = Utils::filterArray($row, $fieldsList);
         if (!empty($row['photo'])) {
-            $row['photo'] = self::addProductPhoto($row['photo']);
+            $row['photo'] = Utils::addPhoto($row['photo'], 'product');
         }
         return Core::getInstance()->db->insert(self::$tableName, $row);
     }
 
     public static function deleteProduct($id)
     {
-        self::deleteProductPhoto($id);
+        $product = self::getProductById($id);
+        Utils::deletePhoto($product['photo'], 'product');
         AdditionalPhotosProduct::deleteAdditionalPhotos($id);
         CategoryList::deleteCategoryListByProduct($id);
         Core::getInstance()->db->delete(self::$tableName, [
@@ -41,29 +42,11 @@ class Product
         ]);
     }
 
-    public static function addProductPhoto($photo)
-    {
-        do {
-            $fileName = uniqid() . '.jpg';
-            $newPath = "files/product/$fileName";
-        }
-        while (file_exists($newPath));
-        move_uploaded_file($photo, $newPath);
-        return $fileName;
-    }
-
-    public static function deleteProductPhoto($id)
-    {
-        $row = self::getProductById($id);
-        $photoPath = "files/product/" . $row['photo'];
-        if (is_file($photoPath))
-            unlink($photoPath);
-    }
-
     public static function updateProductPhoto($id, $newPhoto)
     {
-        self::deleteProductPhoto($id);
-        return self::addProductPhoto($newPhoto);
+        $product = self::getProductById($id);
+        Utils::deletePhoto($product['photo'], 'product');
+        return Utils::addPhoto($newPhoto, 'product');
     }
 
     public static function getProductById($id)

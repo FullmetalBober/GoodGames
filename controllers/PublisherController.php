@@ -139,9 +139,11 @@ class PublisherController extends Controller
     {
         $id = intval($params[0]);
         $publisher = Publisher::getPublisherById($id);
+        if ($publisher === null)
+            return $this->error(404);
         $categories = Category::getCategories();
         $rows = Product::getProductsInPublisherId($id);
-        $rows = array_reverse($rows);
+        Utils::sortByDate($rows);
 
         $page = 0;
         $count = 20;

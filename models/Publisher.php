@@ -13,12 +13,7 @@ class Publisher
         if (empty($photoPath))
             $fileName = null;
         else {
-            do {
-                $fileName = uniqid() . '.jpg';
-                $newPath = "files/publisher/$fileName";
-            }
-            while (file_exists($newPath));
-            move_uploaded_file($photoPath, $newPath);
+            $fileName = Utils::addPhoto($photoPath, 'publisher');
         }
         Core::getInstance()->db->insert(
             self::$tableName,
@@ -29,23 +24,11 @@ class Publisher
         );
     }
 
-    public static function deletePhotoFile($id)
-    {
-        $row = self::getPublisherById($id);
-        $photoPath = "files/publisher/" . $row['photo'];
-        if (is_file($photoPath))
-            unlink($photoPath);
-    }
-
     public static function changePhoto($id, $newPhoto)
     {
-        self::deletePhotoFile($id);
-        do {
-            $fileName = uniqid() . '.jpg';
-            $newPath = "files/publisher/$fileName";
-        }
-        while (file_exists($newPath));
-        move_uploaded_file($newPhoto, $newPath);
+        $publisher = self::getPublisherById($id);
+        Utils::deletePhoto($publisher['photo'], 'publisher');
+        $fileName = Utils::addPhoto($newPhoto, 'publisher');
         Core::getInstance()->db->update(
             self::$tableName,
             [
@@ -90,7 +73,8 @@ class Publisher
 
     public static function deletePublisher($id)
     {
-        self::deletePhotoFile($id);
+        $publisher = self::getPublisherById($id);
+        Utils::deletePhoto($publisher['photo'], 'publisher');
         Core::getInstance()->db->delete(
             self::$tableName,
             [

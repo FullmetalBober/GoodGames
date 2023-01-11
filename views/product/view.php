@@ -82,6 +82,15 @@ use models\User;
                 </div>
             </div>
 
+            <div class="row mb-3">
+                <div class="col-5 text-muted">
+                    РЕЙТИНГ
+                </div>
+                <div class="col-7">
+                    <?= $product['rating'] ?> %
+                </div>
+            </div>
+
             <div class="col mb-3">
                 <form method="post" action="">
                     <button class="btn btn-lg btn-primary w-100" name="toBasket" value="toBasket">Придбати</button>
@@ -160,17 +169,36 @@ use models\User;
         <div class="col">
             <div class="card-body">
                 <div class="d-flex align-items-center justify-content-between">
-                    <div>
-                    <label class="h2 card-title">
-                        <?= $row['user'] ?>
-                    </label>
-                    <?php if ($row['rating'] == 1): ?>
-                        <label class="btn btn-success"><i class="fa-solid fa-thumbs-up fa-xl"></i></label>
-<?php endif; ?>
-</div>
-                    <button type="button" class="btn-close" aria-label="Close"></button>
+                    <div class="d-flex">
+                        <?php $filePath = 'files/user/' . $row['photo']; ?>
+                        <?php if (is_file($filePath)): ?>
+                            <img src="/<?= $filePath ?>" class="rounded-circle" width="32" height="32"
+                                alt="<?= $row['name'] ?>">
+                        <?php else: ?>
+                            <img src="/static/images/default.jpg" class="rounded-circle" width="32" height="32" alt="default">
+                        <?php endif; ?>
+                        <label class="h2 card-title m-0 ms-2 me-2">
+                            <?= $row['user'] ?>
+                        </label>
+                        <?php if ($row['rating'] == 1): ?>
+                            <label class="btn btn-success"><i class="fa-solid fa-thumbs-up fa-xl"></i></label>
+                        <?php else: ?>
+                            <label class="btn btn-danger"><i class="fa-solid fa-thumbs-down fa-xl"></i></label>
+                        <?php endif; ?>
+                    </div>
+                    <?php if (
+                        (User::isUserAuthentificated() && User::getCurrentAuthentificatedUser()['id'] == $row['user_id'])
+                        || User::isAdmin()
+                    ): ?>
+                        <form method="post" action="">
+                            <button type="submit" class="btn-close" aria-label="Close" name="deleteComment"
+                                value="<?= $row['id'] ?>"></button>
+                        </form>
+                    <?php endif; ?>
                 </div>
-                <p class="card-text h5"><?= $row['comment'] ?></p>
+                <p class="card-text h5">
+                    <?= $row['comment'] ?>
+                </p>
                 <small class="text">
                     <?= date("d M. Y", strtotime($row['date'])) ?>
                 </small>

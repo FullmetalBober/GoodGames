@@ -111,22 +111,46 @@ class ProductController extends Controller
 
     public function viewAction($params)
     {
-        $id = intval($params[0]);
-        $product = Product::getProductById($id);
+        $product_id = intval($params[0]);
+        $product = Product::getProductById($product_id);
         if ($product === null)
             return $this->error(404);
-        $product['additionalPhotos'] = AdditionalPhotosProduct::getAdditionalPhotos($id);
-        $product['publisher'] = Publisher::getPublisherById($product['publisher_id'])['name'];
-        $product['categories'] = CategoryList::getCategoryesNamesByProductId($id);
+        $checkUser = User::isUserAuthentificated();
+        if ($checkUser) {
+            $user_id = User::getCurrentAuthentificatedUser()['id'];
+            $userComment = Comment::getCommentByUserId($product_id, $user_id);
+        }
         if (Core::getInstance()->requestMethod === 'POST') {
             $_POST = Utils::trimArray($_POST);
             if (!empty($_POST['toBasket'])) {
-                Basket::addProduct($id);
+                Basket::addProduct($product_id);
                 return $this->redirect('/basket');
-            } else if (!empty($_POST['sendComment']) && !empty($_POST['comment']))
-                Comment::addComment($id, $_POST);
+            } else if ($checkUser && !empty($_POST['sendComment']) && !empty($_POST['comment'])) {
+                if (empty($_POST['rating']))
+                    $_POST['rating'] = 0;
+                if (empty($userComment))
+                    Comment::addComment($product_id, $_POST);
+                else
+                    Comment::updateComment($product_id, $_POST);
+            } else if (
+                $checkUser && !empty($_POST['deleteComment']) && ($userComment[0]['id'] == $_POST['deleteComment']
+                    || User::isAdmin())
+            )
+                Comment::deleteComment($_POST['deleteComment']);
         }
-        $comments = Comment::getComments($id);
+        $comments = Comment::getComments($product_id);
+        $comments = Utils::sortByDate($comments);
+        $product['additionalPhotos'] = AdditionalPhotosProduct::getAdditionalPhotos($product_id);
+        if (!empty($product['publisher_id']))
+            $product['publisher'] = Publisher::getPublisherById($product['publisher_id'])['name'];
+        else
+            $product['publisher'] = 'Невідомо';
+        $product['categories'] = CategoryList::getCategoryesNamesByProductId($product_id);
+        $product['rating'] = Comment::getRating($product_id, $comments);
+        if ($checkUser) {
+            if (!empty($userComment))
+                $comments = Utils::moveItemToFirstPosition($comments, $userComment[0]);
+        }
         return $this->render(null, [
             'product' => $product,
             'comments' => $comments

@@ -79,4 +79,32 @@ class Utils
             return $value;
         });
     }
+
+    public static function moveItemToFirstPosition($array, $item)
+    {
+        $key = array_search($item, $array);
+        if ($key !== false) {
+            unset($array[$key]);
+            array_unshift($array, $item);
+        }
+        return $array;
+    }
+
+    public static function addPhoto($photo, $path)
+    {
+        do {
+            $fileName = uniqid() . '.jpg';
+            $newPath = "files/$path/$fileName";
+        }
+        while (file_exists($newPath));
+        move_uploaded_file($photo, $newPath);
+        return $fileName;
+    }
+
+    public static function deletePhoto($fileName, $path)
+    {
+        $photoPath = "files/$path/" . $fileName;
+        if (is_file($photoPath))
+            unlink($photoPath);
+    }
 }
