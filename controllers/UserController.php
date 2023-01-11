@@ -36,7 +36,7 @@ class UserController extends Controller
                     'model' => $model
                 ]);
             } else {
-                User::addUser($_POST['login'], $_POST['password'], $_POST['lastname'], $_POST['firstname']);
+                User::addUser($_POST['login'], $_POST['password'], $_POST['name']);
                 return $this->renderView('login');
             }
         } else

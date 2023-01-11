@@ -32,7 +32,7 @@ class Library
         if (User::isUserAuthentificated()) {
             $user_id = User::getCurrentAuthentificatedUser()['id'];
             $rows = Core::getInstance()->db->select(
-                self::$tableName,
+                self::$tableName, '*',
                 [
                     'user_id' => $user_id,
                     'product_id' => $product_id,

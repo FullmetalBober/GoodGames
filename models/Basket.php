@@ -13,7 +13,7 @@ class Basket
             $user_id = User::getCurrentAuthentificatedUser()['id'];
             $basket = self::getProductInBasket($product_id);
             $library = Library::getProductInLibrary($product_id);
-            if (!$basket && !$library)
+            if (empty($basket) && empty($library))
             Core::getInstance()->db->insert(
                 self::$tableName,
                 [

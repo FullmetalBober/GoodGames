@@ -47,16 +47,6 @@ class CategoryList
         self::addCategoryList($product_id, $category_idArray);
     }
 
-
-    public static function getCategoriesList()
-    {
-        $rows = Core::getInstance()->db->select(
-            self::$tableName,
-            '*'
-        );
-        return $rows;
-    }
-
     public static function getCategoryCount($category_id)
     {
         $rows = Core::getInstance()->db->select(
@@ -80,6 +70,21 @@ class CategoryList
         );
         $rows = array_map(function ($item) {
             return $item['category_id'];
+        }, $rows);
+        return $rows;
+    }
+
+    public static function getCategoryesNamesByProductId($product_id)
+    {
+        $rows = Core::getInstance()->db->select(
+            self::$tableName,
+            '*',
+            [
+                'product_id' => $product_id
+            ]
+        );
+        $rows = array_map(function ($item) {
+            return Category::getCategoryById($item['category_id']);
         }, $rows);
         return $rows;
     }

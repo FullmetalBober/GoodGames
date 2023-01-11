@@ -24,6 +24,7 @@ else
     <script async src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
         crossorigin="anonymous"></script>
+    <script async src="https://kit.fontawesome.com/e25019c3dc.js" crossorigin="anonymous"></script>
     <!-- defer async -->
     <link rel="stylesheet" href="/themes/light/css/style.css">
 </head>
@@ -139,10 +140,10 @@ else
                                     <div class="dropdown nav-link mt-2">
                                         <a href="#" class="d-block text-decoration-none dropdown-toggle show text-white"
                                             data-bs-toggle="dropdown" aria-expanded="true">
-                                            <?php $filePath = 'files/publisher/' . $user['photo']; ?>
+                                            <?php $filePath = 'files/user/' . $user['photo']; ?>
                                             <?php if (is_file($filePath)): ?>
                                                 <img src="/<?= $filePath ?>" class="rounded-circle" width="32" height="32"
-                                                    alt="<?= $user['firstname'] ?>">
+                                                    alt="<?= $user['name'] ?>">
                                             <?php else: ?>
                                                 <img src="/static/images/default.jpg" class="rounded-circle" width="32"
                                                     height="32" alt="default">

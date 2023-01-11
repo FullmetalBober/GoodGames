@@ -9,6 +9,7 @@ use models\AdditionalPhotosProduct;
 use models\Basket;
 use models\Category;
 use models\CategoryList;
+use models\Comment;
 use models\Product;
 use models\Publisher;
 use models\User;
@@ -24,7 +25,6 @@ class ProductController extends Controller
         $page = 0;
         $count = 20;
         if (Core::getInstance()->requestMethod === 'GET') {
-            $_GET = array_map('trim', $_GET);
             if (!empty($_GET['sortBy'])) {
                 if ($_GET['sortBy'] === 'date')
                     $rows = Utils::sortByDate($rows);
@@ -36,8 +36,10 @@ class ProductController extends Controller
                     $rows = Utils::sortByPrice($rows);
             }
 
-            if (!empty($_GET['name']))
+            if (!empty($_GET['name'])) {
+                $_GET['name'] = trim($_GET['name']);
                 $rows = Utils::filterByName($rows, $_GET['name']);
+            }
 
             if (!empty($_GET['publisher_id']))
                 $rows = Utils::filterByPublisher($rows, $_GET['publisher_id']);
@@ -70,7 +72,7 @@ class ProductController extends Controller
         $publishers = Publisher::getPublishers();
         $categories = Category::getCategories();
         if (Core::getInstance()->requestMethod === 'POST') {
-            $_POST = array_map('trim', $_POST);
+            $_POST = Utils::trimArray($_POST);
             $errors = [];
             if (empty($_POST['name']))
                 $errors['name'] = 'Назва не може бути порожньою';
@@ -114,13 +116,20 @@ class ProductController extends Controller
         if ($product === null)
             return $this->error(404);
         $product['additionalPhotos'] = AdditionalPhotosProduct::getAdditionalPhotos($id);
-
+        $product['publisher'] = Publisher::getPublisherById($product['publisher_id'])['name'];
+        $product['categories'] = CategoryList::getCategoryesNamesByProductId($id);
         if (Core::getInstance()->requestMethod === 'POST') {
-            Basket::addProduct($id);
+            $_POST = Utils::trimArray($_POST);
+            if (!empty($_POST['toBasket'])) {
+                Basket::addProduct($id);
+                return $this->redirect('/basket');
+            } else if (!empty($_POST['sendComment']) && !empty($_POST['comment']))
+                Comment::addComment($id, $_POST);
         }
-
+        $comments = Comment::getComments($id);
         return $this->render(null, [
-            'product' => $product
+            'product' => $product,
+            'comments' => $comments
         ]);
     }
 
@@ -140,7 +149,8 @@ class ProductController extends Controller
         $product['additionalPhotos'] = AdditionalPhotosProduct::getAdditionalPhotos($id);
 
         if (Core::getInstance()->requestMethod === 'POST') {
-            $_POST = array_map('trim', $_POST);
+            $_POST = Utils::trimArray($_POST);
+            $_POST['visible'] = isset($_POST['visible']) ? 1 : 0;
             $errors = [];
             if (empty($_POST['name']))
                 $errors['name'] = 'Назва не може бути порожньою';

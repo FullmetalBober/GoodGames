@@ -8,15 +8,14 @@ use core\Utils;
 class User
 {
     protected static $tableName = 'user';
-    public static function addUser($login, $password, $lastname, $firstname)
+    public static function addUser($login, $password, $name)
     {
         Core::getInstance()->db->insert(
             self::$tableName,
             [
                 'login' => $login,
                 'password' => self::hashPassword($password),
-                'lastname' => $lastname,
-                'firstname' => $firstname
+                'name' => $name
             ]
         );
     }
@@ -28,7 +27,7 @@ class User
 
     public static function updateUser($id, $updatesArray)
     {
-        $updatesArray = Utils::filterArray($updatesArray, ['lastname', 'firstname']);
+        $updatesArray = Utils::filterArray($updatesArray, ['name', 'login', 'password', 'access_level']);
         Core::getInstance()->db->update(
             self::$tableName,
             $updatesArray,
@@ -100,5 +99,17 @@ class User
         if (empty($user))
             return false;
         return $user['access_level'] == 10;
+    }
+
+    public static function getUserById($id)
+    {
+        $user = Core::getInstance()->db->select(
+            self::$tableName,
+            '*',
+            ['id' => $id]
+        );
+        if (!empty($user))
+            return $user[0];
+        return null;
     }
 }

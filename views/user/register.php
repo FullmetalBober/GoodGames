@@ -43,27 +43,15 @@ core\Core::getInstance()->pageParams['title'] = 'Реєстрація на са�
                 </div>
                 <?php endif; ?>
         </div>
-        <!-- lastname -->
+        <!-- name -->
         <div class="mb-3">
-            <label for="lastname" class="form-label">Прізвище</label>
-            <input type="text" class="form-control" name="lastname" id="lastname"
-                value="<?= $model['lastname'] ?? null ?>" aria-describedby="lastnameHelp">
+            <label for="name" class="form-label">Ім'я</label>
+            <input type="text" class="form-control" name="name" id="name"
+                value="<?= $model['name'] ?? null ?>" aria-describedby="nameHelp">
 
-            <?php if (!empty($errors['lastname'])): ?>
-                <div id="lastnameHelp" class="form-text text-danger">
-                    <?= $errors['lastname'] ?>
-                </div>
-                <?php endif; ?>
-        </div>
-        <!-- firstname -->
-        <div class="mb-3">
-            <label for="firstname" class="form-label">Ім'я</label>
-            <input type="text" class="form-control" name="firstname" id="firstname"
-                value="<?= $model['firstname'] ?? null ?>" aria-describedby="firstnameHelp">
-
-            <?php if (!empty($errors['firstname'])): ?>
-                <div id="firstnameHelp" class="form-text text-danger">
-                    <?= $errors['firstname'] ?>
+            <?php if (!empty($errors['name'])): ?>
+                <div id="nameHelp" class="form-text text-danger">
+                    <?= $errors['name'] ?>
                 </div>
                 <?php endif; ?>
         </div>

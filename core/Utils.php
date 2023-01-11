@@ -69,4 +69,14 @@ class Utils
                 return $row;
         });
     }
+
+    public static function trimArray($array)
+    {
+        return array_filter($array, function ($value) {
+            if (!is_array($value)) {
+                return trim($value);
+            }
+            return $value;
+        });
+    }
 }
