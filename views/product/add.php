@@ -9,18 +9,22 @@ if (empty($model['visible']))
 ?>
 <h2>Додавання товару</h2>
 
+<?php if (!empty($errors)): ?>
+    <div class="alert alert-danger text-start" role="alert">
+        <ul class="m-0">
+            <?php foreach ($errors as $error): ?>
+                <li><?= $error ?></li>
+            <?php endforeach; ?>
+        </ul>
+    </div>
+<?php endif; ?>
+
 <form method="post" action="" enctype="multipart/form-data">
     <!-- name -->
     <div class="mb-3">
         <label for="name" class="form-label">Назва</label>
         <input type="text" class="form-control" id="name" name="name" placeholder="" aria-describedby="nameHelp"
             value="<?= $model['name'] ?? null ?>">
-
-        <?php if (!empty($errors['name'])): ?>
-            <div id="nameHelp" class="form-text text-danger">
-                <?= $errors['name'] ?>
-            </div>
-        <?php endif; ?>
     </div>
     <!-- publisher_id -->
     <div class="accordion mb-3" id="accordionPublisher">
@@ -87,77 +91,53 @@ if (empty($model['visible']))
         <label for="price" class="form-label">Ціна</label>
         <input type="number" class="form-control" id="price" name="price" placeholder="" aria-describedby="priceHelp"
             value="<?= $model['price'] ?? null ?>">
-
-        <?php if (!empty($errors['price'])): ?>
-            <div id="priceHelp" class="form-text text-danger">
-                <?= $errors['price'] ?>
+        <!-- short_description -->
+        <div class="mb-3">
+            <label for="short_description" class="form-label">Короткий опис</label>
+            <textarea class="form-control" id="short_description" name="short_description" placeholder=""
+                aria-describedby="short_descriptionHelp"><?= $model['short_description'] ?? null ?></textarea>
+        </div>
+        <!-- description -->
+        <div class="mb-3">
+            <label for="description" class="form-label">Повний опис</label>
+            <textarea class="form-control ckeditor" id="description" name="description" placeholder=""
+                aria-describedby="descriptionHelp"><?= $model['description'] ?? null ?></textarea>
+        </div>
+        <!-- visible -->
+        <div class="mb-3">
+            <label for="visible" class="form-label">Чи відображати товар?</label>
+            <select class="form-select" id="visible" name="visible" placeholder="" aria-describedby="visibleHelp">
+                <option value="1" <?php if ($model['visible'] == 1)
+                    echo 'selected' ?>>так</option>
+                    <option value="0" <?php if ($model['visible'] == 0)
+                    echo 'selected' ?>>ні</option>
+                </select>
             </div>
-        <?php endif; ?>
-    </div>
-    <!-- short_description -->
-    <div class="mb-3">
-        <label for="short_description" class="form-label">Короткий опис</label>
-        <textarea class="form-control" id="short_description" name="short_description" placeholder=""
-            aria-describedby="short_descriptionHelp"><?= $model['short_description'] ?? null ?></textarea>
-
-        <?php if (!empty($errors['short_description'])): ?>
-            <div id="short_descriptionHelp" class="form-text text-danger">
-                <?= $errors['short_description'] ?>
+            <!-- file -->
+            <div class="mb-3">
+                <label for="file" class="form-label">Файли з фотографією для товару</label>
+                <input type="file" class="form-control" id="file" name="file" accept="imaje/jpeg">
             </div>
-        <?php endif; ?>
-    </div>
-    <!-- description -->
-    <div class="mb-3">
-        <label for="description" class="form-label">Повний опис</label>
-        <textarea class="form-control ckeditor" id="description" name="description" placeholder=""
-            aria-describedby="descriptionHelp"><?= $model['description'] ?? null ?></textarea>
-
-        <?php if (!empty($errors['description'])): ?>
-            <div id="descriptionHelp" class="form-text text-danger">
-                <?= $errors['description'] ?>
+            <!-- additionalFiles -->
+            <div class="mb-3">
+                <label for="additionalFiles" class="form-label">Додаткові фотографії</label>
+                <input type="file" multiple class="form-control" id="additionalFiles" name="additionalFiles[]"
+                    accept="imaje/jpeg">
             </div>
-        <?php endif; ?>
-    </div>
-    <!-- visible -->
-    <div class="mb-3">
-        <label for="visible" class="form-label">Чи відображати товар?</label>
-        <select class="form-select" id="visible" name="visible" placeholder="" aria-describedby="visibleHelp">
-            <option value="1" <?php if ($model['visible'] == 1)
-                echo 'selected' ?>>так</option>
-                <option value="0" <?php if ($model['visible'] == 0)
-                echo 'selected' ?>>ні</option>
-            </select>
-        <?php if (!empty($errors['visible'])): ?>
-            <div id="visibleHelp" class="form-text text-danger">
-                <?= $errors['visible'] ?>
+
+            <div>
+                <button class="btn btn-primary">Додати</button>
             </div>
-        <?php endif; ?>
-    </div>
-    <!-- file -->
-    <div class="mb-3">
-        <label for="file" class="form-label">Файли з фотографією для товару</label>
-        <input type="file" class="form-control" id="file" name="file" accept="imaje/jpeg">
-    </div>
-    <!-- additionalFiles -->
-    <div class="mb-3">
-        <label for="additionalFiles" class="form-label">Додаткові фотографії</label>
-        <input type="file" multiple class="form-control" id="additionalFiles" name="additionalFiles[]"
-            accept="imaje/jpeg">
-    </div>
+    </form>
 
-    <div>
-        <button class="btn btn-primary">Додати</button>
-    </div>
-</form>
-
-<script src="https://cdn.ckeditor.com/ckeditor5/35.4.0/classic/ckeditor.js"></script>
-<script>
-    let editors = document.querySelectorAll('.ckeditor');
-    for (let editor of editors) {
-        ClassicEditor
-            .create(editor)
-            .catch(error => {
-                console.error(error);
-            });
-    }
-</script>
+    <script src="https://cdn.ckeditor.com/ckeditor5/35.4.0/classic/ckeditor.js"></script>
+    <script>
+        let editors = document.querySelectorAll('.ckeditor');
+        for (let editor of editors) {
+            ClassicEditor
+                .create(editor)
+                .catch(error => {
+                    console.error(error);
+                });
+        }
+    </script>

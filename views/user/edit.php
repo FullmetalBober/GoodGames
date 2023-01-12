@@ -1,11 +1,10 @@
 <?php
 /** @var array $errors */
 /** @var array $model */
-
 core\Core::getInstance()->pageParams['title'] = 'Реєстрація на сайті';
 ?>
 <main class="form-signin w-100 m-auto">
-    <form method="post" action="">
+    <form method="post" action="" enctype="multipart/form-data">
         <h1 class="h3 mb-3 fw-normal text-center">Реєстрація</h1>
 
         <?php if (!empty($errors)): ?>
@@ -42,14 +41,29 @@ core\Core::getInstance()->pageParams['title'] = 'Реєстрація на са�
                 placeholder="Name">
             <label for="name">Ім'я</label>
         </div>
+        <!-- file -->
+        <div class="mb-3 input-group custom-file-button">
+            <label for="file" class="input-group-text ratio ratio-1x1 w-25">
+                                    <?php 
+                                    if(empty($model['photo']))
+                                        $model['photo'] = 'default.jpg';
+                                    $filePath = 'files/user/' . $model['photo']; ?>
+                                    <?php if (is_file($filePath)): ?>
+                                        <img src="/<?= $filePath ?>" class="card-img-top" alt="<?= $model['name'] ?>">
+                                    <?php else: ?>
+                                        <img src="/static/images/default.jpg" class="card-img-top" alt="default">
+                                    <?php endif; ?>
+            </label>
+            <input type="file" class="form-control form-control-lg" id="file" name="file" accept="imaje/jpeg">
+        </div>
         <!-- button -->
         <div class="form-floating">
             <div class="row justify-content-between">
                 <div class="col text-start">
-                    <button class="btn btn-lg btn-success" type="submit">Зареєструватися</button>
+                    <button class="btn btn-lg btn-success" type="submit">Оновити</button>
                 </div>
                 <div class="col text-end">
-                    <a href="/user/login" class="btn btn-lg btn-outline-secondary">Увійти</a>
+                    <a href="/user/delete/<?= $model['id'] ?>" class="btn btn-lg btn-outline-danger">Видалити</a>
                 </div>
             </div>
         </div>

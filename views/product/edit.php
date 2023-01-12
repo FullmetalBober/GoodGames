@@ -6,9 +6,19 @@
 /** @var array $product */
 if (empty($product['publisher_id']))
     $product['publisher_id'] = 0;
-    ?>
+?>
 
 <h2>Редагування продукту</h2>
+
+<?php if (!empty($errors)): ?>
+    <div class="alert alert-danger text-start" role="alert">
+        <ul class="m-0">
+            <?php foreach ($errors as $error): ?>
+                <li><?= $error ?></li>
+            <?php endforeach; ?>
+        </ul>
+    </div>
+<?php endif; ?>
 
 <form method="post" action="" enctype="multipart/form-data">
 
@@ -17,12 +27,6 @@ if (empty($product['publisher_id']))
         <label for="name" class="form-label">Назва</label>
         <input type="text" class="form-control" id="name" name="name" placeholder="" aria-describedby="nameHelp"
             value="<?= $model['name'] ?? null ?>">
-
-        <?php if (!empty($errors['name'])): ?>
-            <div id="nameHelp" class="form-text text-danger">
-                <?= $errors['name'] ?>
-            </div>
-        <?php endif; ?>
     </div>
     <!-- publisher_id -->
     <div class="accordion mb-3" id="accordionPublisher">
@@ -90,36 +94,18 @@ if (empty($product['publisher_id']))
         <label for="price" class="form-label">Ціна</label>
         <input type="number" class="form-control" id="price" name="price" placeholder="" aria-describedby="priceHelp"
             value="<?= $model['price'] ?? null ?>">
-
-        <?php if (!empty($errors['price'])): ?>
-            <div id="priceHelp" class="form-text text-danger">
-                <?= $errors['price'] ?>
-            </div>
-        <?php endif; ?>
     </div>
     <!-- short_description -->
     <div class="mb-3">
         <label for="short_description" class="form-label">Короткий опис</label>
         <textarea class="form-control" id="short_description" name="short_description" placeholder=""
             aria-describedby="short_descriptionHelp"><?= $model['short_description'] ?? null ?></textarea>
-
-        <?php if (!empty($errors['short_description'])): ?>
-            <div id="short_descriptionHelp" class="form-text text-danger">
-                <?= $errors['short_description'] ?>
-            </div>
-        <?php endif; ?>
     </div>
     <!-- description -->
     <div class="mb-3">
         <label for="description" class="form-label">Повний опис</label>
         <textarea class="form-control ckeditor" id="description" name="description" placeholder=""
             aria-describedby="descriptionHelp"><?= $model['description'] ?? null ?></textarea>
-
-        <?php if (!empty($errors['description'])): ?>
-            <div id="descriptionHelp" class="form-text text-danger">
-                <?= $errors['description'] ?>
-            </div>
-        <?php endif; ?>
     </div>
     <!-- visible -->
     <div class="mb-3">
@@ -130,17 +116,15 @@ if (empty($product['publisher_id']))
                 <option value="0" <?php if ($model['visible'] == 0)
                 echo 'selected' ?>>ні</option>
             </select>
-        <?php if (!empty($errors['visible'])): ?>
-            <div id="visibleHelp" class="form-text text-danger">
-                <?= $errors['visible'] ?>
-            </div>
-        <?php endif; ?>
-    </div>
-    <!-- file -->
+        </div>
+        <!-- file -->
 
-    <div class="col-3">
-        <div class="ratio ratio-16x9">
-            <?php $filePath = 'files/product/' . $product['photo']; ?>
+        <div class="col-3">
+            <div class="ratio ratio-16x9">
+            <?php
+            if (empty($product['photo']))
+                $product['photo'] = 'default.jpg';
+            $filePath = 'files/product/' . $product['photo']; ?>
             <?php if (is_file($filePath)): ?>
                 <img src="/<?= $filePath ?>" class="card-img-top img-thumbnail" alt="<?= $publisher['name'] ?>">
             <?php else: ?>

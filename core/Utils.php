@@ -90,10 +90,21 @@ class Utils
         return $array;
     }
 
+    public static function deleteItemFromArray($array, $item)
+    {
+        $key = array_search($item, $array);
+        if ($key !== false) {
+            unset($array[$key]);
+        }
+        return $array;
+    }
+
     public static function addPhoto($photo, $path)
     {
+        $photoType = pathinfo($photo['name'], PATHINFO_EXTENSION);
+        $photo = $photo['tmp_name'];
         do {
-            $fileName = uniqid() . '.jpg';
+            $fileName = uniqid() . '.' . $photoType;
             $newPath = "files/$path/$fileName";
         }
         while (file_exists($newPath));

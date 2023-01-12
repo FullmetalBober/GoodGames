@@ -2,8 +2,10 @@
 /** @var array $product */
 /** @var array $comments */
 /** @var array $models */
+/** @var array $user */
 use models\User;
-
+use models\Basket;
+use models\Library;
 ?>
 <h1 class="mb-3 fw-normal">
     <?= $product['name'] ?>
@@ -93,7 +95,13 @@ use models\User;
 
             <div class="col mb-3">
                 <form method="post" action="">
-                    <button class="btn btn-lg btn-primary w-100" name="toBasket" value="toBasket">Придбати</button>
+                <?php if(!empty($user) && !empty(Basket::getProductInBasket($product['id']))): ?>
+                    <a href="/basket/index/<?= $user['id'] ?>" class="btn btn-lg btn-success w-100">До кошика</a>
+                <?php elseif(!empty($user) && !empty(Library::getProductInLibrary($product['id']))): ?>
+                    <a href="/user/index/<?= $user['id'] ?>" class="btn btn-lg btn-primary w-100">До бібліотеки</a>
+                    <?php else: ?>
+                        <button class="btn btn-lg btn-primary w-100" name="toBasket" value="toBasket">Придбати</button>  
+                <?php endif; ?>
                 </form>
             </div>
         </div>
@@ -154,7 +162,7 @@ use models\User;
                         </div>
                         <textarea class="form-control mb-2" rows="4" name="comment"></textarea>
                         <button class="btn btn-lg btn-outline-dark" name="sendComment" value="sendComment">
-                            Send
+                            Відправити
                         </button>
                     </form>
                 </div>
@@ -170,15 +178,20 @@ use models\User;
             <div class="card-body">
                 <div class="d-flex align-items-center justify-content-between">
                     <div class="d-flex">
-                        <?php $filePath = 'files/user/' . $row['photo']; ?>
-                        <?php if (is_file($filePath)): ?>
-                            <img src="/<?= $filePath ?>" class="rounded-circle" width="32" height="32"
-                                alt="<?= $row['name'] ?>">
-                        <?php else: ?>
-                            <img src="/static/images/default.jpg" class="rounded-circle" width="32" height="32" alt="default">
-                        <?php endif; ?>
+                        <a href="/user/index/<?= $row['user_id'] ?>">
+                            <?php $filePath = 'files/user/' . $row['photo']; ?>
+                            <?php if (is_file($filePath)): ?>
+                                <img src="/<?= $filePath ?>" class="rounded-circle" width="32" height="32"
+                                    alt="<?= $row['user'] ?>">
+                            <?php else: ?>
+                                <img src="/static/images/default.jpg" class="rounded-circle" width="32" height="32"
+                                    alt="default">
+                            <?php endif; ?>
+                        </a>
                         <label class="h2 card-title m-0 ms-2 me-2">
-                            <?= $row['user'] ?>
+                            <a href="/user/index/<?= $row['user_id'] ?>" class="text-decoration-none text-dark">
+                                <?= $row['user'] ?>
+                            </a>
                         </label>
                         <?php if ($row['rating'] == 1): ?>
                             <label class="btn btn-success"><i class="fa-solid fa-thumbs-up fa-xl"></i></label>

@@ -127,9 +127,12 @@ else
                                         </a>
                                         <ul class="dropdown-menu text-small" data-popper-placement="bottom-end"
                                             style="position: absolute; inset: 0px 0px auto auto; margin: 0px; transform: translate(0px, 34px);">
-                                            <li><a class="dropdown-item" href="#">Профіль</a></li>
-                                            <li><a class="dropdown-item" href="#">Бібліотека</a></li>
-                                            <li><a class="dropdown-item" href="#">Налаштування</a></li>
+                                            <li><a class="dropdown-item"
+                                                    href="/user/index/<?= User::getCurrentAuthentificatedUser()['id'] ?>">Профіль</a></li>
+                                            <?php if (User::isSuperAdmin()): ?>
+                                                <li><a class="dropdown-item" href="/user/access">Рівень доступу</a></li>
+                                            <?php endif; ?>
+                                            <li><a class="dropdown-item" href="/user/edit/<?= User::getCurrentAuthentificatedUser()['id'] ?>">Налаштування</a></li>
 
                                             <li>
                                                 <hr class="dropdown-divider">

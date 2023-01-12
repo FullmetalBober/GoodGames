@@ -31,8 +31,6 @@ class CategoryController extends Controller
                 $errors['name'] = 'Назва не може бути порожньою';
             else if (Category::checkCategoryName($_POST['name']))
                 $errors['name'] = 'Категорія з такою назвою вже існує';
-            if (Category::checkCategoryName($_POST['name']))
-                $errors['name'] = 'Категорія з такою назвою вже існує';
             if (empty($errors)) {
                 Category::addCategory($_POST['name']);
                 $this->redirect('/category');

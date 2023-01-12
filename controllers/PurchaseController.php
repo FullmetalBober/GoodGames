@@ -26,7 +26,7 @@ class PurchaseController extends Controller
             if (!empty($purchase)) {
                 foreach ($purchase['products'] as $product) {
                     Basket::deleteOneProductById($product['id']);
-                    Library::addProduct($product['id']);
+                    Library::addProduct($product['product']['id']);
                 }
             }
             return $this->redirect('/');

@@ -95,7 +95,7 @@ class Comment
         if ($comments === null)
             $comments = self::getComments($product_id);
         if (empty($comments))
-            return 0;
+            return 50;
         $rating = 0;
         foreach ($comments as $comment)
             $rating += $comment['rating'];

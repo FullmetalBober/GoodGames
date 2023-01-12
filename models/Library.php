@@ -14,7 +14,7 @@ class Library
             $user_id = User::getCurrentAuthentificatedUser()['id'];
 
             $check = self::getProductInLibrary($product_id);
-            
+
             if (empty($check)) {
                 Core::getInstance()->db->insert(
                     self::$tableName,
@@ -32,7 +32,8 @@ class Library
         if (User::isUserAuthentificated()) {
             $user_id = User::getCurrentAuthentificatedUser()['id'];
             $rows = Core::getInstance()->db->select(
-                self::$tableName, '*',
+                self::$tableName,
+                '*',
                 [
                     'user_id' => $user_id,
                     'product_id' => $product_id,
@@ -40,6 +41,24 @@ class Library
             );
             if (!empty($rows))
                 return $rows[0];
+        }
+        return null;
+    }
+
+    public static function getProductsInLibrary($user_id)
+    {
+        $rows = Core::getInstance()->db->select(
+            self::$tableName,
+            '*',
+            [
+                'user_id' => $user_id,
+            ]
+        );
+        if (!empty($rows)) {
+            foreach ($rows as &$row) {
+                $row = Product::getProductById($row['product_id']);
+            }
+            return $rows;
         }
         return null;
     }

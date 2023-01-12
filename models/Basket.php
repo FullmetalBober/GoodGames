@@ -11,9 +11,7 @@ class Basket
     {
         if (User::isUserAuthentificated()) {
             $user_id = User::getCurrentAuthentificatedUser()['id'];
-            $basket = self::getProductInBasket($product_id);
-            $library = Library::getProductInLibrary($product_id);
-            if (empty($basket) && empty($library))
+            if (!Product::checkBasketAndLibrary($product_id))
             Core::getInstance()->db->insert(
                 self::$tableName,
                 [
@@ -22,13 +20,11 @@ class Basket
                 ]
             );
         } else {
-            $basket = self::getProductInBasket($product_id);
-            $library = Library::getProductInLibrary($product_id);
-            if (!$basket && !$library)
-                return;
-            if (!isset($_SESSION['basket']) || !is_array($_SESSION['basket']))
-                $_SESSION['basket'] = [];
-            $_SESSION['basket'] = array_merge($_SESSION['basket'], [$product_id]);
+            if (!Product::checkBasketAndLibrary($product_id)) {
+                if (!isset($_SESSION['basket']) || !is_array($_SESSION['basket']))
+                    $_SESSION['basket'] = [];
+                $_SESSION['basket'] = array_merge($_SESSION['basket'], [$product_id]);
+            }
         }
     }
 
@@ -37,9 +33,7 @@ class Basket
         if (User::isUserAuthentificated()) {
             if (isset($_SESSION['basket']) && is_array($_SESSION['basket'])) {
                 foreach ($_SESSION['basket'] as $product_id) {
-                    $basket = self::getProductInBasket($product_id);
-                    $library = Library::getProductInLibrary($product_id);
-                    if (!$basket && !$library)
+                    if (!Product::checkBasketAndLibrary($product_id))
                         self::addProduct($product_id);
                 }
                 unset($_SESSION['basket']);

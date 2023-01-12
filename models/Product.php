@@ -84,4 +84,13 @@ class Product
         else
             return false;
     }
+
+    public static function checkBasketAndLibrary($product_id)
+    {
+        $basket = Basket::getProductInBasket($product_id);
+        $library = Library::getProductInLibrary($product_id);
+        if (empty($basket) && empty($library))
+            return false;
+        return true;
+    }
 }

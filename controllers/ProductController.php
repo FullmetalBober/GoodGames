@@ -79,11 +79,16 @@ class ProductController extends Controller
             else if (Product::checkProductByName($_POST['name']))
                 $errors['name'] = 'Товар з такою назвою вже існує';
             if (empty($_POST['publisher_id']))
-                $errors['publisher_id'] = 'Категорія не може бути порожньою';
-            if ($_POST['price'] <= 0)
+                $errors['publisher_id'] = 'Видавець не може бути порожншм';
+            if (empty($_POST['price']) || $_POST['price'] <= 0)
                 $errors['price'] = 'Ціна некоректна';
+            if (empty($_POST['visible']))
+                $errors['visible'] = 'Відображення не може бути порожнім';
             if (empty($errors)) {
-                $_POST['photo'] = $_FILES['file']['tmp_name'];
+                if (!empty($_FILES['file']['tmp_name'])) {
+                    $_POST['photo']['tmp_name'] = $_FILES['file']['tmp_name'];
+                    $_POST['photo']['name'] = $_FILES['file']['name'];
+                }
                 $id = Product::addProduct($_POST);
                 if (!empty($_POST['categories_id']))
                     CategoryList::addCategoryList($id, $_POST['categories_id']);
@@ -117,8 +122,11 @@ class ProductController extends Controller
             return $this->error(404);
         $checkUser = User::isUserAuthentificated();
         if ($checkUser) {
-            $user_id = User::getCurrentAuthentificatedUser()['id'];
+            $user = User::getCurrentAuthentificatedUser();
+            $user_id = $user['id'];
             $userComment = Comment::getCommentByUserId($product_id, $user_id);
+            if (!empty($userComment))
+                $userComment = $userComment[0];
         }
         if (Core::getInstance()->requestMethod === 'POST') {
             $_POST = Utils::trimArray($_POST);
@@ -132,10 +140,7 @@ class ProductController extends Controller
                     Comment::addComment($product_id, $_POST);
                 else
                     Comment::updateComment($product_id, $_POST);
-            } else if (
-                $checkUser && !empty($_POST['deleteComment']) && ($userComment[0]['id'] == $_POST['deleteComment']
-                    || User::isAdmin())
-            )
+            } else if ($checkUser && !empty($_POST['deleteComment']) && (!empty($userComment) && ($userComment['id'] == $_POST['deleteComment'] || User::isAdmin())))
                 Comment::deleteComment($_POST['deleteComment']);
         }
         $comments = Comment::getComments($product_id);
@@ -149,11 +154,12 @@ class ProductController extends Controller
         $product['rating'] = Comment::getRating($product_id, $comments);
         if ($checkUser) {
             if (!empty($userComment))
-                $comments = Utils::moveItemToFirstPosition($comments, $userComment[0]);
+                $comments = Utils::moveItemToFirstPosition($comments, $userComment);
         }
         return $this->render(null, [
             'product' => $product,
-            'comments' => $comments
+            'comments' => $comments,
+            'user' => $user ?? null,
         ]);
     }
 
@@ -180,13 +186,17 @@ class ProductController extends Controller
                 $errors['name'] = 'Назва не може бути порожньою';
             else if (Product::checkProductByName($_POST['name']) && $_POST['name'] != $product['name'])
                 $errors['name'] = 'Товар з такою назвою вже існує';
-            // if (empty($_POST['publisher_id']))
-            //     $errors['publisher_id'] = 'Видавець не може бути порожншм';
-            if ($_POST['price'] <= 0)
+            if (empty($_POST['publisher_id']))
+                $errors['publisher_id'] = 'Видавець не може бути порожншм';
+            if (empty($_POST['price']) || $_POST['price'] <= 0)
                 $errors['price'] = 'Ціна некоректна';
+            if (empty($_POST['visible']))
+                $errors['visible'] = 'Відображення не може бути порожнім';
             if (empty($errors)) {
-                if (!empty($_FILES['file']['tmp_name']))
-                    $_POST['photo'] = $_FILES['file']['tmp_name'];
+                if (!empty($_FILES['file']['tmp_name'])) {
+                    $_POST['photo']['tmp_name'] = $_FILES['file']['tmp_name'];
+                    $_POST['photo']['name'] = $_FILES['file']['name'];
+                }
                 Product::updateProduct($id, $_POST);
                 CategoryList::updateCategoryList($id, $_POST['categories_id']);
                 if (!empty($_FILES['additionalFiles']['tmp_name'][0]))
@@ -198,7 +208,7 @@ class ProductController extends Controller
                     'errors' => $errors,
                     'model' => $model,
                     'publishers' => $publishers,
-                    'categories' => $categories
+                    'categories' => $categories,
                 ]);
             }
         }
