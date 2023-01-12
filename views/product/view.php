@@ -6,6 +6,7 @@
 use models\User;
 use models\Basket;
 use models\Library;
+
 ?>
 <h1 class="mb-3 fw-normal">
     <?= $product['name'] ?>
@@ -13,7 +14,6 @@ use models\Library;
 <div class="row mb-3">
     <div class="col-lg-9">
         <div id="carouselDark" class="carousel carousel-dark slide carousel-fade" data-bs-ride="carousel">
-
             <div class="carousel-inner">
                 <div class="carousel-item active">
                     <div class="ratio ratio-16x9">
@@ -28,7 +28,7 @@ use models\Library;
                 <?php foreach ($product['additionalPhotos'] as $additionalPhoto): ?>
                     <div class="carousel-item">
                         <div class="ratio ratio-16x9">
-                            <?php $filePath = 'files/product/' . $additionalPhoto['photo']; ?>
+                            <?php $filePath = 'files/additional/' . $additionalPhoto['photo']; ?>
                             <?php if (is_file($filePath)): ?>
                                 <img src="/<?= $filePath ?>" class="d-block w-100" alt="<?= $product['name'] ?>">
                             <?php else: ?>
@@ -95,13 +95,13 @@ use models\Library;
 
             <div class="col mb-3">
                 <form method="post" action="">
-                <?php if(!empty($user) && !empty(Basket::getProductInBasket($product['id']))): ?>
-                    <a href="/basket/index/<?= $user['id'] ?>" class="btn btn-lg btn-success w-100">До кошика</a>
-                <?php elseif(!empty($user) && !empty(Library::getProductInLibrary($product['id']))): ?>
-                    <a href="/user/index/<?= $user['id'] ?>" class="btn btn-lg btn-primary w-100">До бібліотеки</a>
+                    <?php if (!empty(Basket::getProductInBasket($product['id']))): ?>
+                        <a href="/basket/index/<?= $user['id'] ?>" class="btn btn-lg btn-success w-100">До кошика</a>
+                    <?php elseif (!empty($user) && !empty(Library::getProductInLibrary($product['id']))): ?>
+                        <a href="/user/index/<?= $user['id'] ?>" class="btn btn-lg btn-primary w-100">До бібліотеки</a>
                     <?php else: ?>
-                        <button class="btn btn-lg btn-primary w-100" name="toBasket" value="toBasket">Придбати</button>  
-                <?php endif; ?>
+                        <button class="btn btn-lg btn-primary w-100" name="toBasket" value="toBasket">Придбати</button>
+                    <?php endif; ?>
                 </form>
             </div>
         </div>
@@ -150,7 +150,7 @@ use models\Library;
                 <div class="card-body">
                     <form method="post" action="">
                         <div class="card-top mb-2">
-                            <label class="card-title h3 me-2">Comment</label>
+                            <label class="card-title h3 me-2">Коментарій</label>
                             <input type="radio" class="btn-check" name="rating" id="rating-success" value="1" checked>
                             <label class="btn btn-outline-success" for="rating-success"><i
                                     class="fa-solid fa-thumbs-up fa-xl"></i></label>

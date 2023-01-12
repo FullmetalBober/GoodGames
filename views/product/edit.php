@@ -148,7 +148,7 @@ if (empty($product['publisher_id']))
                     <?php foreach ($product['additionalPhotos'] as $additionalPhoto): ?>
                         <div class="carousel-item active">
 
-                            <?php $filePath = 'files/product/' . $additionalPhoto['photo']; ?>
+                            <?php $filePath = 'files/additional/' . $additionalPhoto['photo']; ?>
                             <?php if (is_file($filePath)): ?>
                                 <img src="/<?= $filePath ?>" class="d-block w-100" alt="<?= $product['name'] ?>">
                             <?php else: ?>

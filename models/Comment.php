@@ -101,4 +101,14 @@ class Comment
             $rating += $comment['rating'];
         return $rating / count($comments) * 100;
     }
+
+    public static function getCommentsAll()
+    {
+        $rows = Core::getInstance()->db->select(
+            self::$tableName,
+            '*'
+        );
+        return $rows;
+    }
+
 }

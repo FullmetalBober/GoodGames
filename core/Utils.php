@@ -118,4 +118,25 @@ class Utils
         if (is_file($photoPath))
             unlink($photoPath);
     }
+
+    public static function getFilesArray($files)
+    {
+        $photosArray = [];
+        foreach ($_FILES['additionalFiles']['tmp_name'] as $key => $value) {
+            $photosArray[$key]['tmp_name'] = $value;
+            $photosArray[$key]['name'] = $_FILES['additionalFiles']['name'][$key];
+        }
+        return $photosArray;
+    }
+
+    public static function getPhotosFromArray($array, $items, $count)
+    {
+        $itemsArray = [];
+        for ($i = 0; $i < $count; $i++) {
+            // var_dump($array[$items[$i]]['photo']);
+            // die;
+            $itemsArray[$i] = $array[$items[$i]]['photo'];
+        }
+        return $itemsArray;
+    }
 }

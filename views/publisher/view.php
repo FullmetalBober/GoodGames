@@ -33,7 +33,7 @@ use models\User;
 <form method="get" action="">
     <div class="row mb-5">
         <div class="col-md-10 order-2 order-md-1">
-            <div class="row row-cols-2 row-cols-md-4 g-4 categories-list">
+            <div class="row row-cols-2 row-cols-md-4 g-4 cards-list">
                 <?php foreach ($rows as $row): ?>
                     <?php if ($row['visible'] == 1 || User::isAdmin()): ?>
                         <div class="col">

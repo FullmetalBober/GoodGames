@@ -4,7 +4,7 @@
 /** @var array $errors */
 ?>
 
-<h2>Редагування категорії</h2>
+<h2>Редагування видавця</h2>
 
 <?php if (!empty($errors)): ?>
     <div class="alert alert-danger text-start" role="alert">
@@ -18,7 +18,7 @@
 
 <form method="post" action="" enctype="multipart/form-data">
     <div class="mb-3">
-        <label for="name" class="form-label">Назва категорії</label>
+        <label for="name" class="form-label">Назва видавця</label>
         <input type="text" class="form-control" id="name" name="name" placeholder="" value="<?= $publisher['name'] ?>">
     </div>
 
@@ -34,7 +34,7 @@
     </div>
 
     <div class="mb-3">
-        <label for="file" class="form-label">Файл з фотографією для категорії</label>
+        <label for="file" class="form-label">Файл з фотографією для видавця</label>
         <input type="file" class="form-control" id="file" name="file" accept="imaje/jpeg">
     </div>
     <div>

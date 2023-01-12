@@ -16,6 +16,7 @@ class PublisherController extends Controller
     public function indexAction()
     {
         $rows = Publisher::getPublishers();
+        $rows = Utils::sortByDate($rows);
         $viewPath = null;
 
         $page = 0;
@@ -24,9 +25,6 @@ class PublisherController extends Controller
         if (Core::getInstance()->requestMethod === 'GET') {
             $_GET = Utils::trimArray($_GET);
             if (!empty($_GET['sortBy'])) {
-                if ($_GET['sortBy'] === 'date')
-                    $rows = Utils::sortByDate($rows);
-
                 if ($_GET['sortBy'] === 'name')
                     $rows = Utils::sortByName($rows);
             }
@@ -155,9 +153,6 @@ class PublisherController extends Controller
         if (Core::getInstance()->requestMethod === 'GET') {
             $_GET = Utils::trimArray($_GET);
             if (!empty($_GET['sortBy'])) {
-                if ($_GET['sortBy'] === 'date')
-                    $rows = Utils::sortByDate($rows);
-
                 if ($_GET['sortBy'] === 'name')
                     $rows = Utils::sortByName($rows);
 

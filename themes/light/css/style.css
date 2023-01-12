@@ -33,21 +33,21 @@ body {
   fill: currentColor;
 }
 
-.categories-list a {
+.cards-list a {
   text-decoration: none;
 }
-.categories-list .card {
+.cards-list .card {
   transition-duration: 0.5s;
 }
-.categories-list .card:hover {
+.cards-list .card:hover {
   background-color: #f8f9fa;
 }
-.categories-list .card:hover img {
+.cards-list .card:hover img {
   transition-duration: 0.5s;
   background-color: #f8f9fa;
   opacity: 0.8;
 }
-.categories-list .card .card-title {
+.cards-list .card .card-title {
   color: black;
 }
 

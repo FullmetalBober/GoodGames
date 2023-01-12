@@ -9,7 +9,7 @@ use models\User;
         <a href="/category/add" class="btn btn-success">Додати категорію</a>
     </div>
 <?php endif; ?>
-<table class="table">
+<table class="table table-hover">
     <thead>
         <tr>
             <td>#</td>
@@ -26,7 +26,7 @@ use models\User;
         <?php
         $index = 1;
         foreach ($categories as $row): ?>
-            <tr>
+            <tr onclick="window.location='/product?categories_id%5B%5D=<?= $row['id'] ?>';" style="cursor:pointer;">
                 <td>
                     <?= $index ?>
                 </td>

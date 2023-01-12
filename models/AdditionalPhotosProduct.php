@@ -3,6 +3,7 @@
 namespace models;
 
 use core\Core;
+use core\Utils;
 
 class AdditionalPhotosProduct
 {
@@ -11,7 +12,7 @@ class AdditionalPhotosProduct
     public static function addAdditionalPhotos($product_id, $photoArray)
     {
         foreach ($photoArray as $photo) {
-            $photo = self::getNewPhotoPath($photo);
+            $photo = Utils::addPhoto($photo, 'additional');
             Core::getInstance()->db->insert(
                 self::$tableName,
                 [
@@ -22,24 +23,11 @@ class AdditionalPhotosProduct
         }
     }
 
-    public static function getNewPhotoPath($photo)
-    {
-        do {
-            $fileName = uniqid() . '.jpg';
-            $newPath = "files/product/$fileName";
-        }
-        while (file_exists($newPath));
-        move_uploaded_file($photo, $newPath);
-        return $fileName;
-    }
-
     public static function deleteAdditionalPhotos($product_id)
     {
         $rows = self::getAdditionalPhotos($product_id);
         foreach ($rows as $row) {
-            $photoPath = "files/product/" . $row['photo'];
-            if (is_file($photoPath))
-                unlink($photoPath);
+            Utils::deletePhoto($row['photo'], 'additional');
         }
         Core::getInstance()->db->delete(
             self::$tableName,
@@ -66,4 +54,12 @@ class AdditionalPhotosProduct
         self::addAdditionalPhotos($product_id, $photoArray);
     }
 
+    public static function getPhotos()
+    {
+        $rows = Core::getInstance()->db->select(
+            self::$tableName,
+            '*'
+        );
+        return $rows;
+    }
 }

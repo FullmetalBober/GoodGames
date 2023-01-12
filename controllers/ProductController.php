@@ -19,6 +19,7 @@ class ProductController extends Controller
     public function indexAction()
     {
         $rows = Product::getProducts();
+        $rows = Utils::sortByDate($rows);
         $publishers = Publisher::getPublishers();
         $categories = Category::getCategories();
 
@@ -26,9 +27,6 @@ class ProductController extends Controller
         $count = 20;
         if (Core::getInstance()->requestMethod === 'GET') {
             if (!empty($_GET['sortBy'])) {
-                if ($_GET['sortBy'] === 'date')
-                    $rows = Utils::sortByDate($rows);
-
                 if ($_GET['sortBy'] === 'name')
                     $rows = Utils::sortByName($rows);
 
@@ -73,6 +71,8 @@ class ProductController extends Controller
         $categories = Category::getCategories();
         if (Core::getInstance()->requestMethod === 'POST') {
             $_POST = Utils::trimArray($_POST);
+            if (!isset($_POST['price']))
+                $_POST['price'] = 0;
             $errors = [];
             if (empty($_POST['name']))
                 $errors['name'] = 'Назва не може бути порожньою';
@@ -80,7 +80,7 @@ class ProductController extends Controller
                 $errors['name'] = 'Товар з такою назвою вже існує';
             if (empty($_POST['publisher_id']))
                 $errors['publisher_id'] = 'Видавець не може бути порожншм';
-            if (empty($_POST['price']) || $_POST['price'] <= 0)
+            if (!isset($_POST['price']) || $_POST['price'] < 0)
                 $errors['price'] = 'Ціна некоректна';
             if (empty($_POST['visible']))
                 $errors['visible'] = 'Відображення не може бути порожнім';
@@ -92,8 +92,10 @@ class ProductController extends Controller
                 $id = Product::addProduct($_POST);
                 if (!empty($_POST['categories_id']))
                     CategoryList::addCategoryList($id, $_POST['categories_id']);
-                if (!empty($_FILES['additionalFiles']['tmp_name']))
-                    AdditionalPhotosProduct::addAdditionalPhotos($id, $_FILES['additionalFiles']['tmp_name']);
+                if (!empty($_FILES['additionalFiles']['tmp_name'])) {
+                    $photosArray = Utils::getFilesArray($_FILES['additionalFiles']);
+                    AdditionalPhotosProduct::addAdditionalPhotos($id, $photosArray);
+                }
                 $this->redirect('/product');
             } else {
                 $model = $_POST;
@@ -181,6 +183,8 @@ class ProductController extends Controller
         if (Core::getInstance()->requestMethod === 'POST') {
             $_POST = Utils::trimArray($_POST);
             $_POST['visible'] = isset($_POST['visible']) ? 1 : 0;
+            if (!isset($_POST['price']))
+                $_POST['price'] = 0;
             $errors = [];
             if (empty($_POST['name']))
                 $errors['name'] = 'Назва не може бути порожньою';
@@ -188,7 +192,7 @@ class ProductController extends Controller
                 $errors['name'] = 'Товар з такою назвою вже існує';
             if (empty($_POST['publisher_id']))
                 $errors['publisher_id'] = 'Видавець не може бути порожншм';
-            if (empty($_POST['price']) || $_POST['price'] <= 0)
+            if (!isset($_POST['price']) || $_POST['price'] < 0)
                 $errors['price'] = 'Ціна некоректна';
             if (empty($_POST['visible']))
                 $errors['visible'] = 'Відображення не може бути порожнім';
@@ -199,8 +203,10 @@ class ProductController extends Controller
                 }
                 Product::updateProduct($id, $_POST);
                 CategoryList::updateCategoryList($id, $_POST['categories_id']);
-                if (!empty($_FILES['additionalFiles']['tmp_name'][0]))
-                    AdditionalPhotosProduct::updateAdditionalPhotos($id, $_FILES['additionalFiles']['tmp_name']);
+                if (!empty($_FILES['additionalFiles']['tmp_name'][0])) {
+                    $photosArray = Utils::getFilesArray($_FILES['additionalFiles']);
+                    AdditionalPhotosProduct::updateAdditionalPhotos($id, $photosArray);
+                }
                 $this->redirect('/product');
             } else {
                 $model = $_POST;

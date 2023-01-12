@@ -3,12 +3,34 @@
 namespace controllers;
 
 use core\Controller;
+use core\Utils;
+use models\AdditionalPhotosProduct;
+use models\Category;
+use models\Comment;
+use models\Product;
+use models\Publisher;
+use models\User;
 
 class MainController extends Controller
 {
     public function indexAction()
     {
-        return $this->render();
+        $info['users'] = count(User::getAllUsers());
+        $info['products'] = count(Product::getProducts());
+        $info['publishers'] = count(Publisher::getPublishers());
+        $info['categories'] = count(Category::getCategories());
+        $info['comments'] = count(Comment::getCommentsAll());
+        $photos = AdditionalPhotosProduct::getPhotos();
+        $randPhotos = array_rand($photos, 6);
+        $photos = Utils::getPhotosFromArray($photos, $randPhotos, 6);
+        $photoFirst = $photos[0];
+        $photos = Utils::deleteItemFromArray($photos, $photoFirst);
+        return $this->render(null,
+            [
+                'info' => $info,
+                'photos' => $photos,
+                'photoFirst' => $photoFirst
+            ]);
     }
 
     public function errorAction($code)
