@@ -72,12 +72,13 @@ class Utils
 
     public static function trimArray($array)
     {
-        return array_filter($array, function ($value) {
-            if (!is_array($value)) {
-                return trim($value);
-            }
-            return $value;
-        });
+        foreach ($array as $key => $value) {
+            if (is_array($value))
+                $array[$key] = self::trimArray($value);
+            else
+                $array[$key] = trim($value);
+        }
+        return $array;
     }
 
     public static function moveItemToFirstPosition($array, $item)

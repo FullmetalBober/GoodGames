@@ -93,4 +93,26 @@ class Product
             return false;
         return true;
     }
+
+    public static function errorValidate($array)
+    {
+        $errors = [];
+        if (empty($_POST['name']))
+            $errors['name'] = 'Назва не може бути порожньою';
+        else if (self::checkProductByName($_POST['name']))
+            $errors['name'] = 'Товар з такою назвою вже існує';
+        if (empty($_POST['publisher_id']))
+            $errors['publisher_id'] = 'Видавець не може бути порожншм';
+        if (!isset($_POST['price']) || $_POST['price'] < 0)
+            $errors['price'] = 'Ціна некоректна';
+        if (empty($_POST['visible']))
+            $errors['visible'] = 'Відображення не може бути порожнім';
+        if (empty($_POST['categories_id']))
+            $errors['categories_id'] = 'Категорії не можуть бути порожніми';
+        if (empty($_POST['short_description']))
+            $errors['short_description'] = 'Короткий опис не може бути порожнім';
+        if (empty($_POST['description']))
+            $errors['description'] = 'Опис не може бути порожнім';
+        return $errors;
+    }
 }

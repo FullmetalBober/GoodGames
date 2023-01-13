@@ -26,7 +26,7 @@ use models\User;
         <?php
         $index = 1;
         foreach ($categories as $row): ?>
-            <tr onclick="window.location='/product?categories_id%5B%5D=<?= $row['id'] ?>';" style="cursor:pointer;">
+            <tr onclick="trHref(event, '/product?categories_id%5B%5D=<?= $row['id'] ?>')" style="cursor:pointer;">
                 <td>
                     <?= $index ?>
                 </td>

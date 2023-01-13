@@ -24,7 +24,7 @@ class ProductController extends Controller
         $categories = Category::getCategories();
 
         $page = 0;
-        $count = 20;
+        $count = 12;
         if (Core::getInstance()->requestMethod === 'GET') {
             if (!empty($_GET['sortBy'])) {
                 if ($_GET['sortBy'] === 'name')
@@ -73,17 +73,7 @@ class ProductController extends Controller
             $_POST = Utils::trimArray($_POST);
             if (!isset($_POST['price']))
                 $_POST['price'] = 0;
-            $errors = [];
-            if (empty($_POST['name']))
-                $errors['name'] = 'Назва не може бути порожньою';
-            else if (Product::checkProductByName($_POST['name']))
-                $errors['name'] = 'Товар з такою назвою вже існує';
-            if (empty($_POST['publisher_id']))
-                $errors['publisher_id'] = 'Видавець не може бути порожншм';
-            if (!isset($_POST['price']) || $_POST['price'] < 0)
-                $errors['price'] = 'Ціна некоректна';
-            if (empty($_POST['visible']))
-                $errors['visible'] = 'Відображення не може бути порожнім';
+            $errors = Product::errorValidate($_POST);
             if (empty($errors)) {
                 if (!empty($_FILES['file']['tmp_name'])) {
                     $_POST['photo']['tmp_name'] = $_FILES['file']['tmp_name'];
@@ -113,6 +103,76 @@ class ProductController extends Controller
             'publishers' => $publishers,
             'publisher_id' => $publisher_id,
             'categories' => $categories
+        ]);
+    }
+
+    public function editAction($params)
+    {
+        $id = intval($params[0]);
+        if (!User::isAdmin())
+            return $this->error(403);
+        $product = Product::getProductById($id);
+        if (empty($product))
+            return $this->error(404);
+        $model = $product;
+        $model['categories_id'] = CategoryList::getCategoryListByProductId($id);
+        $publishers = Publisher::getPublishers();
+        $categories = Category::getCategories();
+        $product['additionalPhotos'] = [];
+        $product['additionalPhotos'] = AdditionalPhotosProduct::getAdditionalPhotos($id);
+
+        if (Core::getInstance()->requestMethod === 'POST') {
+            $_POST = Utils::trimArray($_POST);
+            $_POST['visible'] = isset($_POST['visible']) ? 1 : 0;
+            if (!isset($_POST['price']))
+                $_POST['price'] = 0;
+            $errors = Product::errorValidate($_POST);
+            if (empty($errors)) {
+                if (!empty($_FILES['file']['tmp_name'])) {
+                    $_POST['photo']['tmp_name'] = $_FILES['file']['tmp_name'];
+                    $_POST['photo']['name'] = $_FILES['file']['name'];
+                }
+                Product::updateProduct($id, $_POST);
+                CategoryList::updateCategoryList($id, $_POST['categories_id']);
+                if (!empty($_FILES['additionalFiles']['tmp_name'][0])) {
+                    $photosArray = Utils::getFilesArray($_FILES['additionalFiles']);
+                    AdditionalPhotosProduct::updateAdditionalPhotos($id, $photosArray);
+                }
+                $this->redirect('/product');
+            } else {
+                $model = $_POST;
+                return $this->render(null, [
+                    'errors' => $errors,
+                    'model' => $model,
+                    'publishers' => $publishers,
+                    'categories' => $categories,
+                ]);
+            }
+        }
+
+        return $this->render(null, [
+            'product' => $product,
+            'publishers' => $publishers,
+            'categories' => $categories,
+            'model' => $model
+        ]);
+    }
+
+    public function deleteAction($params)
+    {
+        $id = intval($params[0]);
+        $yes = isset($params[1]) ? boolval($params[1] === 'yes') : false;
+        if (!User::isAdmin())
+            return $this->error(403);
+        if ($id <= 0)
+            return $this->error(403);
+        $product = Product::getProductById($id);
+        if ($yes) {
+            Product::deleteProduct($id);
+            $this->redirect('/product/index');
+        }
+        return $this->render(null, [
+            'product' => $product
         ]);
     }
 
@@ -162,86 +222,6 @@ class ProductController extends Controller
             'product' => $product,
             'comments' => $comments,
             'user' => $user ?? null,
-        ]);
-    }
-
-    public function editAction($params)
-    {
-        $id = intval($params[0]);
-        if (!User::isAdmin())
-            return $this->error(403);
-        $product = Product::getProductById($id);
-        if (empty($product))
-            return $this->error(404);
-        $model = $product;
-        $model['categories_id'] = CategoryList::getCategoryListByProductId($id);
-        $publishers = Publisher::getPublishers();
-        $categories = Category::getCategories();
-        $product['additionalPhotos'] = [];
-        $product['additionalPhotos'] = AdditionalPhotosProduct::getAdditionalPhotos($id);
-
-        if (Core::getInstance()->requestMethod === 'POST') {
-            $_POST = Utils::trimArray($_POST);
-            $_POST['visible'] = isset($_POST['visible']) ? 1 : 0;
-            if (!isset($_POST['price']))
-                $_POST['price'] = 0;
-            $errors = [];
-            if (empty($_POST['name']))
-                $errors['name'] = 'Назва не може бути порожньою';
-            else if (Product::checkProductByName($_POST['name']) && $_POST['name'] != $product['name'])
-                $errors['name'] = 'Товар з такою назвою вже існує';
-            if (empty($_POST['publisher_id']))
-                $errors['publisher_id'] = 'Видавець не може бути порожншм';
-            if (!isset($_POST['price']) || $_POST['price'] < 0)
-                $errors['price'] = 'Ціна некоректна';
-            if (empty($_POST['visible']))
-                $errors['visible'] = 'Відображення не може бути порожнім';
-            if (empty($errors)) {
-                if (!empty($_FILES['file']['tmp_name'])) {
-                    $_POST['photo']['tmp_name'] = $_FILES['file']['tmp_name'];
-                    $_POST['photo']['name'] = $_FILES['file']['name'];
-                }
-                Product::updateProduct($id, $_POST);
-                CategoryList::updateCategoryList($id, $_POST['categories_id']);
-                if (!empty($_FILES['additionalFiles']['tmp_name'][0])) {
-                    $photosArray = Utils::getFilesArray($_FILES['additionalFiles']);
-                    AdditionalPhotosProduct::updateAdditionalPhotos($id, $photosArray);
-                }
-                $this->redirect('/product');
-            } else {
-                $model = $_POST;
-                return $this->render(null, [
-                    'errors' => $errors,
-                    'model' => $model,
-                    'publishers' => $publishers,
-                    'categories' => $categories,
-                ]);
-            }
-        }
-
-        return $this->render(null, [
-            'product' => $product,
-            'publishers' => $publishers,
-            'categories' => $categories,
-            'model' => $model
-        ]);
-    }
-
-    public function deleteAction($params)
-    {
-        $id = intval($params[0]);
-        $yes = isset($params[1]) ? boolval($params[1] === 'yes') : false;
-        if (!User::isAdmin())
-            return $this->error(403);
-        if ($id <= 0)
-            return $this->error(403);
-        $product = Product::getProductById($id);
-        if ($yes) {
-            Product::deleteProduct($id);
-            $this->redirect('/product/index');
-        }
-        return $this->render(null, [
-            'product' => $product
         ]);
     }
 }

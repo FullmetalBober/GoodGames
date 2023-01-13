@@ -4,7 +4,7 @@
 /** @var array $photos */
 ?>
 
-<div id="carouselDark" class="carousel carousel-dark slide carousel-fade" data-bs-ride="carousel">
+<div id="carouselDark" class="carousel carousel-dark slide" data-bs-ride="carousel">
     <div class="carousel-inner">
         <div class="carousel-item active">
             <div class="ratio ratio-21x9">

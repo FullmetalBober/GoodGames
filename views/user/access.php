@@ -20,7 +20,7 @@
             <?php if (!empty($users)): ?>
                 <tbody>
                     <?php foreach ($users as $row): ?>
-                        <tr onclick="window.location='/user/index/<?= $row['id'] ?>';" style="cursor:pointer;">
+                        <tr onclick="trHref(event, '/user/index/<?= $row['id'] ?>')" style="cursor:pointer;">
                             <td>
                                 <?= $row['id'] ?>
                             </td>

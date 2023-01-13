@@ -20,7 +20,7 @@ class PublisherController extends Controller
         $viewPath = null;
 
         $page = 0;
-        $count = 20;
+        $count = 12;
 
         if (Core::getInstance()->requestMethod === 'GET') {
             $_GET = Utils::trimArray($_GET);
@@ -100,11 +100,11 @@ class PublisherController extends Controller
 
             if (empty($errors)) {
                 Publisher::updatePublisher($id, $_POST['name']);
-                if (!empty($_FILES['file']['tmp_name'])) {
+                if (!empty($_FILES['file']['tmp_name'][0])) {
                     $_POST['photo']['tmp_name'] = $_FILES['file']['tmp_name'];
                     $_POST['photo']['name'] = $_FILES['file']['name'];
+                    Publisher::changePhoto($id, $_POST['photo']);
                 }
-                Publisher::changePhoto($id, $_POST['photo']);
                 $this->redirect('/publisher/index');
             } else {
                 return $this->render(null, [
@@ -148,7 +148,7 @@ class PublisherController extends Controller
         Utils::sortByDate($rows);
 
         $page = 0;
-        $count = 20;
+        $count = 12;
 
         if (Core::getInstance()->requestMethod === 'GET') {
             $_GET = Utils::trimArray($_GET);

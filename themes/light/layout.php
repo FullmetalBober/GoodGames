@@ -25,6 +25,7 @@ else
         integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
         crossorigin="anonymous"></script>
     <script defer src="https://kit.fontawesome.com/e25019c3dc.js" crossorigin="anonymous"></script>
+    <script defer src="/js/setHref.js"></script>
     <!-- defer async -->
     <link rel="stylesheet" href="/themes/light/css/style.css">
 </head>

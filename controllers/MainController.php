@@ -21,8 +21,9 @@ class MainController extends Controller
         $info['categories'] = count(Category::getCategories());
         $info['comments'] = count(Comment::getCommentsAll());
         $photos = AdditionalPhotosProduct::getPhotos();
-        $randPhotos = array_rand($photos, 6);
-        $photos = Utils::getPhotosFromArray($photos, $randPhotos, 6);
+        $countPhotos = floor(count($photos) / 2);
+        $randPhotos = array_rand($photos, $countPhotos);
+        $photos = Utils::getPhotosFromArray($photos, $randPhotos, $countPhotos);
         $photoFirst = $photos[0];
         $photos = Utils::deleteItemFromArray($photos, $photoFirst);
         return $this->render(null,

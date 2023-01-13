@@ -17,7 +17,7 @@
         <?php if (!empty($basket['products'])): ?>
             <tbody>
                 <?php foreach ($basket['products'] as $row): ?>
-                    <tr onclick="window.location='/product/view/<?= $row['product']['id'] ?>';" style="cursor:pointer;">
+                    <tr onclick="trHref(event, '/product/view/<?= $row['product']['id'] ?>')" style="cursor:pointer;">
                         <td>
                             <div class="ratio ratio-16x9">
                                 <?php $filePath = 'files/product/' . $row['product']['photo']; ?>
