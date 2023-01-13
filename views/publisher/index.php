@@ -1,7 +1,7 @@
 <?php
 /** @var array $rows */
 use models\User;
-
+core\Core::getInstance()->pageParams['title'] = 'Видавці';
 ?>
 
 <h2>Список видавців</h2>

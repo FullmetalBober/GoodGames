@@ -4,6 +4,7 @@
 /** @var array $publishers */
 /** @var int|null $publisher_id */
 /** @var array $categories */
+core\Core::getInstance()->pageParams['title'] = 'Додати товар';
 if (empty($model['visible']))
     $model['visible'] = 1;
 ?>

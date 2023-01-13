@@ -2,6 +2,7 @@
 /** @var array $info */
 /** @var string $photoFirst */
 /** @var array $photos */
+core\Core::getInstance()->pageParams['title'] = 'Про сайт';
 ?>
 
 <div id="carouselDark" class="carousel carousel-dark slide" data-bs-ride="carousel">

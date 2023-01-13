@@ -1,8 +1,7 @@
 <?php
 /** @var array $errors */
 /** @var array $model */
-
-core\Core::getInstance()->pageParams['title'] = 'Реєстрація на сайті';
+core\Core::getInstance()->pageParams['title'] = 'Реєстрація';
 ?>
 <main class="form-signin w-100 m-auto">
     <form method="post" action="">

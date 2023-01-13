@@ -2,7 +2,7 @@
 /** @var array|null $rows */
 /** @var array $categories */
 use models\User;
-
+core\Core::getInstance()->pageParams['title'] = 'Товари';
 ?>
 <h1 class="h3 mb-3 fw-normal">Список товарів</h1>
 

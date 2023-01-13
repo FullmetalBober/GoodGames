@@ -2,6 +2,7 @@
 /** @var array $publisher */
 /** @var array $model */
 /** @var array $errors */
+core\Core::getInstance()->pageParams['title'] = 'Редагування видавця';
 ?>
 
 <h2>Редагування видавця</h2>

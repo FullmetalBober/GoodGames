@@ -6,8 +6,6 @@ core\Core::getInstance()->pageParams['title'] = 'Увійти';
 
 <main class="form-signin w-100 m-auto text-center mt-5">
     <form method="post" action="">
-        <!-- <img class="mb-4" src="/docs/5.3/assets/brand/bootstrap-logo.svg" alt="" width="72" height="57"> -->
-        <!-- <h1 class="h3 mb-3 fw-normal">Please sign in</h1> -->
         <h1 class="h3 mb-3 fw-normal text-start">УВІЙТИ</h1>
         
         <?php if (!empty($error)): ?>

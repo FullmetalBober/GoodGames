@@ -6,7 +6,7 @@
 use models\User;
 use models\Basket;
 use models\Library;
-
+core\Core::getInstance()->pageParams['title'] = $product['name'];
 ?>
 <h1 class="mb-3 fw-normal">
     <?= $product['name'] ?>
@@ -98,7 +98,7 @@ use models\Library;
                     <?php if (!empty(Basket::getProductInBasket($product['id']))): ?>
                         <a href="/basket/index/<?= $user['id'] ?>" class="btn btn-lg btn-success w-100">До кошика</a>
                     <?php elseif (!empty($user) && !empty(Library::getProductInLibrary($product['id']))): ?>
-                        <a href="/user/index/<?= $user['id'] ?>" class="btn btn-lg btn-primary w-100">До бібліотеки</a>
+                        <a href="/user/index/<?= $user['id'] ?>" class="btn btn-lg btn-success w-100">До бібліотеки</a>
                     <?php else: ?>
                         <button class="btn btn-lg btn-primary w-100" name="toBasket" value="toBasket">Придбати</button>
                     <?php endif; ?>
@@ -143,7 +143,7 @@ use models\Library;
     </div>
 </div>
 
-<?php if (User::isUserAuthentificated()): ?>
+<?php if (User::isUserAuthentificated() && !empty(Library::getProductInLibrary($product['id']))): ?>
     <div class="card text-bg-light  mb-3">
         <div class="row g-0">
             <div class="col">

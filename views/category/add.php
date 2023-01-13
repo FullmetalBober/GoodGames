@@ -1,6 +1,7 @@
 <?php
 /** @var array $model */
 /** @var array $errors */
+core\Core::getInstance()->pageParams['title'] = 'Додавання категорії';
 ?>
 
 <h2>Додавання категорії</h2>

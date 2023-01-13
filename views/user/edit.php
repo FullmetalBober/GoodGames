@@ -1,11 +1,12 @@
 <?php
+use models\User;
 /** @var array $errors */
 /** @var array $model */
-core\Core::getInstance()->pageParams['title'] = 'Реєстрація на сайті';
+core\Core::getInstance()->pageParams['title'] = 'Редагування користувача';
 ?>
 <main class="form-signin w-100 m-auto">
     <form method="post" action="" enctype="multipart/form-data">
-        <h1 class="h3 mb-3 fw-normal text-center">Реєстрація</h1>
+        <h1 class="h3 mb-3 fw-normal text-center">Редагування</h1>
 
         <?php if (!empty($errors)): ?>
             <div class="alert alert-danger text-start" role="alert">
@@ -62,9 +63,11 @@ core\Core::getInstance()->pageParams['title'] = 'Реєстрація на са�
                 <div class="col text-start">
                     <button class="btn btn-lg btn-success" type="submit">Оновити</button>
                 </div>
+                <?php if(!User::isSuperAdmin()): ?>
                 <div class="col text-end">
                     <a href="/user/delete/<?= $model['id'] ?>" class="btn btn-lg btn-outline-danger">Видалити</a>
                 </div>
+                <?php endif; ?>
             </div>
         </div>
     </form>

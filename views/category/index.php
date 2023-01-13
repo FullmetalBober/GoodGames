@@ -1,7 +1,7 @@
 <?php
 /** @var array|null $categories */
 use models\User;
-
+core\Core::getInstance()->pageParams['title'] = 'Категорії';
 ?>
 <h1>Категорії</h1>
 <?php if (User::isAdmin()): ?>

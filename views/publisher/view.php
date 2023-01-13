@@ -2,7 +2,7 @@
 /** @var array $publisher */
 /** @var array $rows */
 use models\User;
-
+core\Core::getInstance()->pageParams['title'] = $publisher['name'];
 ?>
 
 <div class="row mb-3">

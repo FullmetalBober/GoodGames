@@ -2,7 +2,7 @@
 /** @var array $user */
 /** @var array $library */
 use models\User;
-
+core\Core::getInstance()->pageParams['title'] = $user['name'];
 ?>
 
 <div class="row mb-3">
@@ -32,12 +32,12 @@ use models\User;
 <h2>Список покупок</h2>
 
 <form method="get" action="">
-    <div class="row row-cols-2 row-cols-md-4 g-4 categories-list">
+    <div class="row row-cols-2 row-cols-md-4 g-4 cards-list">
         <?php
         if (!empty($library))
             foreach ($library as $row): ?>
                 <div class="col">
-                    <div class="card h-100" onclick="window.location='/product/view/<?= $row['id'] ?>';"
+                    <div class="card h-100" onclick="trHref(event, '/product/view/<?= $row['id'] ?>')"
                         style="cursor:pointer;">
                         <div class="ratio ratio-16x9">
                             <?php $filePath = 'files/product/' . $row['photo']; ?>

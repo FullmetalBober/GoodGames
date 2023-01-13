@@ -1,6 +1,5 @@
 <?php
 use core\Core;
-
 Core::getInstance()->pageParams['title'] = 'Помилка 403';
 ?>
 

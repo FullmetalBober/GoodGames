@@ -20,7 +20,7 @@ class PublisherController extends Controller
         $viewPath = null;
 
         $page = 0;
-        $count = 12;
+        $count = 15;
 
         if (Core::getInstance()->requestMethod === 'GET') {
             $_GET = Utils::trimArray($_GET);
@@ -161,7 +161,7 @@ class PublisherController extends Controller
             }
 
             if (!empty($_GET['name']))
-                $_GET['name'] = trim($_GET['name']);
+                $rows = Utils::filterByName($rows, $_GET['name']);
 
             if (!empty($_GET['categories_id']))
                 $rows = Utils::filterByCategories($rows, $_GET['categories_id']);

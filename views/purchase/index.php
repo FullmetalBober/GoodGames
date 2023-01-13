@@ -1,5 +1,6 @@
 <?php
 /** @var array|null $purchase */
+core\Core::getInstance()->pageParams['title'] = 'Покупка';
 ?>
 <h1>Покупка</h1>
 

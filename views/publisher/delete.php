@@ -1,5 +1,6 @@
 <?php
 /** @var array $publisher */
+core\Core::getInstance()->pageParams['title'] = 'Видалення видавця';
 ?>
 
 <div class="alert alert-danger mt-3" role="alert">

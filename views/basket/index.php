@@ -1,5 +1,6 @@
 <?php
 /** @var array|null $basket */
+core\Core::getInstance()->pageParams['title'] = 'Кошик';
 ?>
 <h1>Кошик</h1>
 

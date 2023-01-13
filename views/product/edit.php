@@ -4,11 +4,12 @@
 /** @var array $publishers */
 /** @var array $categories */
 /** @var array $product */
+core\Core::getInstance()->pageParams['title'] = 'Редагування товару';
 if (empty($product['publisher_id']))
     $product['publisher_id'] = 0;
 ?>
 
-<h2>Редагування продукту</h2>
+<h2>Редагування товару</h2>
 
 <?php if (!empty($errors)): ?>
     <div class="alert alert-danger text-start" role="alert">

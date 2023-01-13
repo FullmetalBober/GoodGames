@@ -2,6 +2,7 @@
 /** @var array $model */
 /** @var array $errors */
 /** @var array $category */
+core\Core::getInstance()->pageParams['title'] = 'Редагування категорії';
 ?>
 
 <h2>Редагування категорії</h2>

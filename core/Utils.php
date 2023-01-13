@@ -32,7 +32,9 @@ class Utils
 
     public static function sortByDate($rows)
     {
-        return array_reverse($rows);
+        if(is_array($rows))
+            return array_reverse($rows);
+        return $rows;
     }
 
     public static function filterByName($rows, $name)

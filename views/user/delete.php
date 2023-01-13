@@ -1,5 +1,6 @@
 <?php
 /** @var array $user */
+core\Core::getInstance()->pageParams['title'] = 'Видалення користувача';
 ?>
 
 

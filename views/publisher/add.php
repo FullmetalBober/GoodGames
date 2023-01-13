@@ -1,9 +1,10 @@
 <?php
 /** @var array $model */
 /** @var array $errors */
+core\Core::getInstance()->pageParams['title'] = 'Додавання видавця';
 ?>
 
-<h2>Додавання категорії</h2>
+<h2>Додавання видавця</h2>
 
 <?php if (!empty($errors)): ?>
     <div class="alert alert-danger text-start" role="alert">

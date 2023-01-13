@@ -1,5 +1,6 @@
 <?php
 /** @var array|null $users */
+core\Core::getInstance()->pageParams['title'] = 'Рівень доступу';
 ?>
 <h1>Рівень доступу</h1>
 

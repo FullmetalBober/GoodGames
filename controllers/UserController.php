@@ -18,6 +18,7 @@ class UserController extends Controller
         if ($user === null)
             return $this->error(404);
         $library = Library::getProductsInLibrary($user_id);
+        $library = Utils::sortByDate($library);
         return $this->render(null, [
             'user' => $user,
             'library' => $library
