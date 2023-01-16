@@ -144,7 +144,10 @@ class PublisherController extends Controller
         if ($publisher === null)
             return $this->error(404);
         $categories = Category::getCategories();
-        $rows = Product::getProductsInPublisherId($id);
+        if (User::isAdmin())
+            $rows = Product::getProductsInPublisherId($id);
+        else
+            $rows = Product::getVisibleProductsInPublisherId($id);
         Utils::sortByDate($rows);
 
         $page = 0;
@@ -152,22 +155,8 @@ class PublisherController extends Controller
 
         if (Core::getInstance()->requestMethod === 'GET') {
             $_GET = Utils::trimArray($_GET);
-            if (!empty($_GET['sortBy'])) {
-                if ($_GET['sortBy'] === 'name')
-                    $rows = Utils::sortByName($rows);
 
-                if ($_GET['sortBy'] === 'price')
-                    $rows = Utils::sortByPrice($rows);
-            }
-
-            if (!empty($_GET['name']))
-                $rows = Utils::filterByName($rows, $_GET['name']);
-
-            if (!empty($_GET['categories_id']))
-                $rows = Utils::filterByCategories($rows, $_GET['categories_id']);
-
-            if (isset($_GET['price']) && $_GET['price'] <= 480)
-                $rows = Utils::filterByPrice($rows, $_GET['price']);
+            $rows = Utils::sortAndFilterProductArray($rows, $_GET);
 
             if (!empty($_GET['page']))
                 $page = $_GET['page'] - 1;

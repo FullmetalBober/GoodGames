@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Час створення: Січ 13 2023 р., 16:24
+-- Час створення: Січ 16 2023 р., 14:04
 -- Версія сервера: 8.0.30
 -- Версія PHP: 8.1.9
 
@@ -325,13 +325,6 @@ CREATE TABLE `basket` (
   `user_id` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
---
--- Дамп даних таблиці `basket`
---
-
-INSERT INTO `basket` (`id`, `product_id`, `user_id`) VALUES
-(43, 46, 1);
-
 -- --------------------------------------------------------
 
 --
@@ -358,7 +351,6 @@ INSERT INTO `category` (`id`, `name`) VALUES
 (12, 'Стратегії'),
 (13, 'Інді'),
 (14, 'Казуальні ігри'),
-(15, 'Службові програми'),
 (16, 'ММО');
 
 -- --------------------------------------------------------
@@ -392,8 +384,6 @@ INSERT INTO `category_list` (`id`, `product_id`, `category_id`) VALUES
 (180, 11, 4),
 (181, 11, 9),
 (182, 11, 10),
-(183, 13, 8),
-(184, 13, 9),
 (185, 15, 4),
 (186, 15, 9),
 (189, 16, 8),
@@ -420,7 +410,6 @@ INSERT INTO `category_list` (`id`, `product_id`, `category_id`) VALUES
 (213, 28, 13),
 (214, 29, 13),
 (215, 29, 14),
-(216, 29, 15),
 (217, 30, 8),
 (218, 30, 9),
 (219, 31, 8),
@@ -487,8 +476,11 @@ INSERT INTO `category_list` (`id`, `product_id`, `category_id`) VALUES
 (280, 57, 10),
 (281, 58, 8),
 (282, 58, 10),
-(283, 59, 8),
-(284, 59, 10);
+(287, 13, 4),
+(288, 13, 8),
+(289, 13, 9),
+(294, 59, 8),
+(295, 59, 10);
 
 -- --------------------------------------------------------
 
@@ -504,6 +496,17 @@ CREATE TABLE `comment` (
   `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `rating` int NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Дамп даних таблиці `comment`
+--
+
+INSERT INTO `comment` (`id`, `user_id`, `product_id`, `comment`, `date`, `rating`) VALUES
+(24, 1, 59, 'imba', '2023-01-13 17:22:41', 1),
+(25, 1, 15, 'Add the Ukrainian language plz.', '2023-01-13 22:06:18', 1),
+(26, 29, 15, 'new comment', '2023-01-13 22:43:11', 1),
+(27, 13, 59, 'ne', '2023-01-16 10:50:43', 0),
+(32, 14, 59, 'so good', '2023-01-16 10:54:44', 1);
 
 -- --------------------------------------------------------
 
@@ -524,7 +527,15 @@ CREATE TABLE `library` (
 INSERT INTO `library` (`id`, `product_id`, `user_id`) VALUES
 (2, 19, 1),
 (8, 4, 1),
-(9, 17, 1);
+(9, 17, 1),
+(10, 59, 1),
+(11, 57, 1),
+(12, 15, 1),
+(13, 15, 29),
+(14, 59, 13),
+(15, 59, 14),
+(16, 58, 14),
+(17, 57, 14);
 
 -- --------------------------------------------------------
 
@@ -657,15 +668,12 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id`, `login`, `password`, `name`, `access_level`, `photo`) VALUES
-(1, 'mankivskiy.vlsd@gmail.com', '21232f297a57a5a743894a0e4a801fc3', 'Mankivskyi', 11, '63c0069944aee.png'),
-(12, 'mankivskyi5@gmail.com', '098f6bcd4621d373cade4e832627b4f6', 'test', 1, ''),
-(13, 'mankivskyi6@gmail.com', '098f6bcd4621d373cade4e832627b4f6', 'test', 1, ''),
-(14, 'mankivskyi7@gmail.com', '098f6bcd4621d373cade4e832627b4f6', 'test', 1, ''),
-(15, 'mankivskyi8@gmail.com', '098f6bcd4621d373cade4e832627b4f6', 'test', 1, ''),
-(16, 'test@gmail.com', '098f6bcd4621d373cade4e832627b4f6', 'test', 1, ''),
-(17, 'test1@gmail.com', '098f6bcd4621d373cade4e832627b4f6', 'test', 1, ''),
+(1, 'mankivskiy.vlsd@gmail.com', '21232f297a57a5a743894a0e4a801fc3', 'RAK MANIAK', 11, '63c0069944aee.png'),
+(13, 'test__1@gmail.com', '098f6bcd4621d373cade4e832627b4f6', 'test', 1, '63c52f16b73ca.jpg'),
+(14, 'test__2@gmail.com', '098f6bcd4621d373cade4e832627b4f6', 'test', 1, ''),
 (18, 'test2@gmail.com', '098f6bcd4621d373cade4e832627b4f6', 'test', 1, ''),
-(19, 'test3@gmail.com', '098f6bcd4621d373cade4e832627b4f6', 'testqwe', 1, '');
+(19, 'admin@gmail.com', '21232f297a57a5a743894a0e4a801fc3', 'admin', 10, ''),
+(29, 'test@gmail.com', '098f6bcd4621d373cade4e832627b4f6', 'test', 1, '63c1dd62b0bfd.jpg');
 
 --
 -- Індекси збережених таблиць
@@ -743,55 +751,55 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT для таблиці `additional_photos_product`
 --
 ALTER TABLE `additional_photos_product`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=339;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=344;
 
 --
 -- AUTO_INCREMENT для таблиці `basket`
 --
 ALTER TABLE `basket`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=54;
 
 --
 -- AUTO_INCREMENT для таблиці `category`
 --
 ALTER TABLE `category`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT для таблиці `category_list`
 --
 ALTER TABLE `category_list`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=285;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=333;
 
 --
 -- AUTO_INCREMENT для таблиці `comment`
 --
 ALTER TABLE `comment`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
 -- AUTO_INCREMENT для таблиці `library`
 --
 ALTER TABLE `library`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT для таблиці `product`
 --
 ALTER TABLE `product`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT COMMENT 'ID', AUTO_INCREMENT=60;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT COMMENT 'ID', AUTO_INCREMENT=64;
 
 --
 -- AUTO_INCREMENT для таблиці `publisher`
 --
 ALTER TABLE `publisher`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT COMMENT 'ID', AUTO_INCREMENT=31;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT COMMENT 'ID', AUTO_INCREMENT=33;
 
 --
 -- AUTO_INCREMENT для таблиці `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
 -- Обмеження зовнішнього ключа збережених таблиць

@@ -30,7 +30,7 @@ class UserController extends Controller
         if (User::isUserAuthentificated())
             $this->redirect('/');
         if (Core::getInstance()->requestMethod == 'POST') {
-            $_POST = array_map('trim', $_POST);
+            $_POST = Utils::trimArray($_POST);
             $errors = [];
             if (!filter_var($_POST['login'], FILTER_VALIDATE_EMAIL))
                 $errors['login'] = 'Електронна пошта не введена';
@@ -43,6 +43,9 @@ class UserController extends Controller
 
             if ($_POST['password'] != $_POST['password2'])
                 $errors['password'] = 'Паролі не співпадають';
+
+            if (empty($_POST['name']))
+                $errors['name'] = "Ім'я не введене";
 
             if (count($errors) > 0) {
                 $model = $_POST;
@@ -67,7 +70,7 @@ class UserController extends Controller
         if (User::isUserAuthentificated())
             $this->redirect('/');
         if (Core::getInstance()->requestMethod == 'POST') {
-            $_POST = array_map('trim', $_POST);
+            $_POST = Utils::trimArray($_POST);
             $user = User::getUserByLoginAndPassword($_POST['login'] ?? null, $_POST['password'] ?? null);
             $error = null;
             if (empty($user))
@@ -102,7 +105,6 @@ class UserController extends Controller
 
             if (!empty($_POST['delete']))
                 return $this->redirect('/user/delete/' . $_POST['delete']);
-
         }
         $users = User::getAllUsers();
         $users = Utils::deleteItemFromArray($users, User::getCurrentAuthentificatedUser());
@@ -126,7 +128,7 @@ class UserController extends Controller
         if (User::getCurrentAuthentificatedUser()['id'] != $id && !User::isSuperAdmin())
             return $this->error(403);
         if (Core::getInstance()->requestMethod == 'POST') {
-            $_POST = array_map('trim', $_POST);
+            $_POST = Utils::trimArray($_POST);
             $errors = [];
             if (!filter_var($_POST['login'], FILTER_VALIDATE_EMAIL))
                 $errors['login'] = 'Електронна пошта не введена';
@@ -137,8 +139,13 @@ class UserController extends Controller
             if ($_POST['password'] != $_POST['password2'])
                 $errors['password'] = 'Паролі не співпадають';
 
+            if (empty($_POST['name']))
+                $errors['name'] = "Ім'я не введене";
+
             if (count($errors) > 0) {
                 $model = $_POST;
+                $model['photo'] = $user['photo'];
+                $model['id'] = $user['id'];
                 return $this->render(null, [
                     'errors' => $errors,
                     'model' => $model,
@@ -152,6 +159,8 @@ class UserController extends Controller
                 if (empty($_POST['password']))
                     unset($_POST['password']);
                 User::updateUser($id, $_POST);
+                if (User::getCurrentAuthentificatedUser()['id'] == $id)
+                    User::authentificateUser(User::getUserById($id));
                 return $this->redirect("/user/index/$id");
             }
         } else

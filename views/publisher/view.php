@@ -37,7 +37,7 @@ core\Core::getInstance()->pageParams['title'] = $publisher['name'];
                 <?php foreach ($rows as $row): ?>
                     <?php if ($row['visible'] == 1 || User::isAdmin()): ?>
                         <div class="col">
-                            <div class="card h-100 <?= $row['visible'] == 0 ? 'bg-warning' : null ?>"
+                            <div class="card h-100 <?= $row['visible'] == 2 ? 'bg-warning' : null ?>"
                                 onclick="trHref(event, '/product/view/<?= $row['id'] ?>')" style="cursor:pointer;">
                                 <div class="ratio ratio-16x9">
                                     <?php $filePath = 'files/product/' . $row['photo']; ?>

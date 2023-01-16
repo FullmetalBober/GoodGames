@@ -68,9 +68,26 @@ class Product
         return $rows;
     }
 
+    public static function getVisibleProductsInPublisherId($publisher_id)
+    {
+        $rows = Core::getInstance()->db->select(self::$tableName, '*', [
+            'publisher_id' => $publisher_id,
+            'visible' => 1
+        ]);
+        return $rows;
+    }
+
     public static function getProducts()
     {
         $rows = Core::getInstance()->db->select(self::$tableName);
+        return $rows;
+    }
+
+    public static function getVisibleProducts()
+    {
+        $rows = Core::getInstance()->db->select(self::$tableName, '*', [
+            'visible' => 1
+        ]);
         return $rows;
     }
 
@@ -94,24 +111,28 @@ class Product
         return true;
     }
 
-    public static function errorValidate($array)
+    public static function errorValidate($array, $id = null)
     {
         $errors = [];
-        if (empty($_POST['name']))
+        $product = self::getProductById($id);
+        if(empty($product))
+            $product = array('name' => null);
+
+        if (empty($array['name']))
             $errors['name'] = 'Назва не може бути порожньою';
-        else if (self::checkProductByName($_POST['name']))
+        else if (self::checkProductByName($array['name']) && $array['name'] != self::getProductById($id)['name'])
             $errors['name'] = 'Товар з такою назвою вже існує';
-        if (empty($_POST['publisher_id']))
+        if (empty($array['publisher_id']))
             $errors['publisher_id'] = 'Видавець не може бути порожншм';
-        if (!isset($_POST['price']) || $_POST['price'] < 0)
+        if (!isset($array['price']) || $array['price'] < 0)
             $errors['price'] = 'Ціна некоректна';
-        if (empty($_POST['visible']))
+        if (empty($array['visible']))
             $errors['visible'] = 'Відображення не може бути порожнім';
-        if (empty($_POST['categories_id']))
+        if (empty($array['categories_id']))
             $errors['categories_id'] = 'Категорії не можуть бути порожніми';
-        if (empty($_POST['short_description']))
+        if (empty($array['short_description']))
             $errors['short_description'] = 'Короткий опис не може бути порожнім';
-        if (empty($_POST['description']))
+        if (empty($array['description']))
             $errors['description'] = 'Опис не може бути порожнім';
         return $errors;
     }

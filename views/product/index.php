@@ -19,7 +19,7 @@ core\Core::getInstance()->pageParams['title'] = 'Товари';
                 <?php foreach ($rows as $row): ?>
                     <?php if ($row['visible'] == 1 || User::isAdmin()): ?>
                         <div class="col">
-                            <div class="card h-100 <?= $row['visible'] == 0 ? 'bg-warning' : null ?>"
+                            <div class="card h-100 <?= $row['visible'] == 2 ? 'bg-warning' : null ?>"
                                 onclick="trHref(event, '/product/view/<?= $row['id'] ?>')" style="cursor:pointer;">
                                 <div class="ratio ratio-16x9">
                                     <?php $filePath = 'files/product/' . $row['photo']; ?>
@@ -82,35 +82,6 @@ core\Core::getInstance()->pageParams['title'] = 'Товари';
             <div class="mb-3">
                 <input type="search" class="form-control" placeholder="Пошук..." aria-label="Search" name="name"
                     id="name" value="<?= $model['name'] ?? null ?>">
-            </div>
-
-            <!-- publisher -->
-            <div class="accordion mb-3" id="accordionPublisher">
-                <div class="accordion-item">
-                    <h2 class="accordion-header" id="headingPublisher">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#collapsePublisher" aria-expanded="true" aria-controls="collapsePublisher">
-                            Список видавців
-                        </button>
-                    </h2>
-                    <div id="collapsePublisher" class="accordion-collapse collapse" aria-labelledby="headingPublisher"
-                        data-bs-parent="#accordionPublisher">
-                        <ul class="list-group">
-                            <?php foreach ($publishers as $publisher): ?>
-                                <li class="list-group-item">
-                                    <input class="form-check-input me-1" type="radio" name="publisher_id"
-                                        value="<?= $publisher['id'] ?>" id="publisher_<?= $publisher['id'] ?>" <?php
-                                            if (!empty($model['publisher_id']) && $model['publisher_id'] == $publisher['id'])
-                                                echo 'checked';
-                                            ?> value="<?= $publisher['id'] ?>">
-                                    <label class="form-check-label stretched-link" for="publisher_<?= $publisher['id'] ?>">
-                                        <?= $publisher['name'] ?>
-                                    </label>
-                                </li>
-                            <?php endforeach; ?>
-                        </ul>
-                    </div>
-                </div>
             </div>
             <!-- categories -->
             <div class="accordion mb-3" id="accordionCategories">

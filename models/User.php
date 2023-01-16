@@ -35,8 +35,8 @@ class User
     }
 
     public static function updateUser($id, $updatesArray)
-    { 
-        $updatesArray = Utils::filterArray($updatesArray, ['name', 'login', 'password', 'access_level', 'photo']);  
+    {
+        $updatesArray = Utils::filterArray($updatesArray, ['name', 'login', 'password', 'access_level', 'photo']);
         if (!empty($updatesArray['photo'])) {
             $updatesArray['photo'] = self::updateUserPhoto($id, $updatesArray['photo']);
         }
@@ -157,7 +157,8 @@ class User
         $user = self::getUserById($id);
         if (!self::isSuperAdmin($user)) {
             Utils::deletePhoto($user['photo'], 'user');
-            self::logoutUser();
+            if (self::getCurrentAuthentificatedUser()['id'] == $id)
+                self::logoutUser();
             Core::getInstance()->db->delete(
                 self::$tableName,
                 [

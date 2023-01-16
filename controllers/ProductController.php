@@ -18,7 +18,10 @@ class ProductController extends Controller
 {
     public function indexAction()
     {
-        $rows = Product::getProducts();
+        if(User::isAdmin())
+            $rows = Product::getProducts();
+        else
+            $rows = Product::getVisibleProducts();
         $rows = Utils::sortByDate($rows);
         $publishers = Publisher::getPublishers();
         $categories = Category::getCategories();
@@ -26,27 +29,9 @@ class ProductController extends Controller
         $page = 0;
         $count = 12;
         if (Core::getInstance()->requestMethod === 'GET') {
-            if (!empty($_GET['sortBy'])) {
-                if ($_GET['sortBy'] === 'name')
-                    $rows = Utils::sortByName($rows);
+            $_GET = Utils::trimArray($_GET);
 
-                if ($_GET['sortBy'] === 'price')
-                    $rows = Utils::sortByPrice($rows);
-            }
-
-            if (!empty($_GET['name'])) {
-                $_GET['name'] = trim($_GET['name']);
-                $rows = Utils::filterByName($rows, $_GET['name']);
-            }
-
-            if (!empty($_GET['publisher_id']))
-                $rows = Utils::filterByPublisher($rows, $_GET['publisher_id']);
-
-            if (!empty($_GET['categories_id']))
-                $rows = Utils::filterByCategories($rows, $_GET['categories_id']);
-
-            if (isset($_GET['price']) && $_GET['price'] <= 480)
-                $rows = Utils::filterByPrice($rows, $_GET['price']);
+            $rows = Utils::sortAndFilterProductArray($rows, $_GET);
 
             if (!empty($_GET['page']))
                 $page = $_GET['page'] - 1;
@@ -58,7 +43,6 @@ class ProductController extends Controller
         $rows = array_slice($rows, $page * $count, $count);
         return $this->render(null, [
             'rows' => $rows,
-            'publishers' => $publishers,
             'categories' => $categories,
             'model' => $model
         ]);
@@ -66,6 +50,8 @@ class ProductController extends Controller
 
     public function addAction($params)
     {
+        if (!User::isAdmin())
+            return $this->error(403);
         $publisher_id = intval($params[0] ?? null);
         $publishers = Publisher::getPublishers();
         $categories = Category::getCategories();
@@ -123,10 +109,9 @@ class ProductController extends Controller
 
         if (Core::getInstance()->requestMethod === 'POST') {
             $_POST = Utils::trimArray($_POST);
-            $_POST['visible'] = isset($_POST['visible']) ? 1 : 0;
             if (!isset($_POST['price']))
                 $_POST['price'] = 0;
-            $errors = Product::errorValidate($_POST);
+            $errors = Product::errorValidate($_POST, $id);
             if (empty($errors)) {
                 if (!empty($_FILES['file']['tmp_name'])) {
                     $_POST['photo']['tmp_name'] = $_FILES['file']['tmp_name'];
@@ -164,9 +149,9 @@ class ProductController extends Controller
         $yes = isset($params[1]) ? boolval($params[1] === 'yes') : false;
         if (!User::isAdmin())
             return $this->error(403);
-        if ($id <= 0)
-            return $this->error(403);
         $product = Product::getProductById($id);
+        if (empty($product))
+            return $this->error(404);
         if ($yes) {
             Product::deleteProduct($id);
             $this->redirect('/product/index');
@@ -213,7 +198,7 @@ class ProductController extends Controller
         else
             $product['publisher'] = 'Невідомо';
         $product['categories'] = CategoryList::getCategoryesNamesByProductId($product_id);
-        $product['rating'] = Comment::getRating($product_id, $comments);
+        $product['rating'] = round(Comment::getRating($product_id, $comments), 0);
         if ($checkUser) {
             if (!empty($userComment))
                 $comments = Utils::moveItemToFirstPosition($comments, $userComment);

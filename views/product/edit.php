@@ -114,7 +114,7 @@ if (empty($product['publisher_id']))
         <select class="form-select" id="visible" name="visible" placeholder="" aria-describedby="visibleHelp">
             <option value="1" <?php if ($model['visible'] == 1)
                 echo 'selected' ?>>так</option>
-                <option value="0" <?php if ($model['visible'] == 0)
+                <option value="2" <?php if ($model['visible'] == 2)
                 echo 'selected' ?>>ні</option>
             </select>
         </div>

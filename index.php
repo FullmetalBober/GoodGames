@@ -1,5 +1,4 @@
 <?php
-
 include('config/database.php');
 include('config/params.php');
 

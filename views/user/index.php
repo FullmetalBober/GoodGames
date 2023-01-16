@@ -2,7 +2,7 @@
 /** @var array $user */
 /** @var array $library */
 use models\User;
-core\Core::getInstance()->pageParams['title'] = $user['name'];
+core\Core::getInstance()->pageParams['title'] = $user['id'];
 ?>
 
 <div class="row mb-3">

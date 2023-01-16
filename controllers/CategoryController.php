@@ -86,7 +86,6 @@ class CategoryController extends Controller
         $yes = isset($params[1]) ? boolval($params[1] === 'yes') : false;
         if (!User::isAdmin())
             return $this->error(403);
-
         $category = Category::getCategoryById($id);
         if (empty($category))
             return $this->error(404);

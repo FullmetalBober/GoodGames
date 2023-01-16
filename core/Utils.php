@@ -46,14 +46,6 @@ class Utils
         });
     }
 
-    public static function filterByPublisher($rows, $publisher_id)
-    {
-        return array_filter($rows, function ($row) use ($publisher_id) {
-            if ($row['publisher_id'] == $publisher_id)
-                return $row;
-        });
-    }
-
     public static function filterByCategories($rows, $categories_id)
     {
         return array_filter($rows, function ($row) use ($categories_id) {
@@ -70,6 +62,28 @@ class Utils
             if ($row['price'] <= $price)
                 return $row;
         });
+    }
+
+    public static function sortAndFilterProductArray($rows, $model)
+    {
+        if (!empty($model['sortBy'])) {
+            if ($model['sortBy'] === 'name')
+                $rows = self::sortByName($rows);
+
+            if ($model['sortBy'] === 'price')
+                $rows = self::sortByPrice($rows);
+        }
+
+        if (!empty($model['name']))
+            $rows = self::filterByName($rows, $model['name']);
+
+        if (!empty($model['categories_id']))
+            $rows = self::filterByCategories($rows, $model['categories_id']);
+
+        if (isset($model['price']) && $model['price'] <= 480)
+            $rows = self::filterByPrice($rows, $model['price']);
+
+        return $rows;
     }
 
     public static function trimArray($array)
