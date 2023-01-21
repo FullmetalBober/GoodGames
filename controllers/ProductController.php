@@ -187,7 +187,7 @@ class ProductController extends Controller
                     Comment::addComment($product_id, $_POST);
                 else
                     Comment::updateComment($product_id, $_POST);
-            } else if ($checkUser && !empty($_POST['deleteComment']) && (!empty($userComment) && ($userComment['id'] == $_POST['deleteComment'] || User::isAdmin())))
+            } else if ($checkUser && !empty($_POST['deleteComment']) && ((!empty($userComment) && ($userComment['id'] == $_POST['deleteComment']) || User::isAdmin())))
                 Comment::deleteComment($_POST['deleteComment']);
         }
         $comments = Comment::getComments($product_id);
